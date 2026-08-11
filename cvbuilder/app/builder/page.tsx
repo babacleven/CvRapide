@@ -215,8 +215,9 @@ export default function Home() {
     const element = cvPreviewRef.current;
     if (element) {
       try {
+        const isMobile = window.innerWidth < 768;
         const canvas = await html2canvas(element, {
-          scale: 3,
+          scale: isMobile ? 2 : 3,
           useCORS: true,
         });
         const imgData = canvas.toDataURL("image/png");
@@ -663,8 +664,9 @@ export default function Home() {
             </div>
           </div>
         </section>
+      </div>
 
-        <dialog id="pdf_modal" className="modal">
+      <dialog id="pdf_modal" className="modal">
           <div className="modal-box w-full max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
             <form method="dialog">
               <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">
@@ -698,7 +700,6 @@ export default function Home() {
             </div>
           </div>
         </dialog>
-      </div>
     </div>
   );
 }

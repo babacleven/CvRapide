@@ -283,6 +283,29 @@
   .entete .nav-principale a[aria-current="page"] {
     background: rgba(96, 165, 250, 0.1);
   }
+
+  .entete .entete-actions .bouton-principal {
+    display: none;
+  }
+
+  .entete .nav-principale .lien-navigation-cta {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    margin-top: 6px;
+    padding: 12px;
+    border-radius: 10px;
+    background: var(--color-primary);
+    color: #fff;
+    font-weight: 600;
+    min-height: 44px;
+  }
+
+  .entete .nav-principale .lien-navigation-cta:hover {
+    background: var(--color-primary-hover, var(--color-primary));
+    color: #fff;
+  }
 }
 
 @media (max-width: 640px) {

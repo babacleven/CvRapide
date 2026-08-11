@@ -240,6 +240,10 @@ pre {
   color: var(--color-text);
 }
 
+.nav-principale .lien-navigation-cta {
+  display: none;
+}
+
 .entete-actions {
   display: flex;
   align-items: center;

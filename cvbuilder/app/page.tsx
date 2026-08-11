@@ -241,6 +241,14 @@ export default function LandingPage() {
               <i className="fa-brands fa-github"></i>
               <span>GitHub</span>
             </a>
+            <a
+              href="/builder"
+              className="lien-navigation-cta"
+              onClick={() => setMenuOpen(false)}
+            >
+              <i className="fa-solid fa-file-pen"></i>
+              <span>Créer mon CV</span>
+            </a>
           </nav>
 
           <div className="entete-actions">
