@@ -155,6 +155,16 @@ export default function Home() {
   const [dialogZoom, setDialogZoom] = useState<number>(1);
   const pdfContainerRef = useRef<HTMLDivElement>(null);
   const [downloading, setDownloading] = useState(false);
+  const [pdfModalOpened, setPdfModalOpened] = useState(false);
+  const [isDesktop, setIsDesktop] = useState(false);
+
+  useEffect(() => {
+    const mq = window.matchMedia("(min-width: 1024px)");
+    const update = () => setIsDesktop(mq.matches);
+    update();
+    mq.addEventListener("change", update);
+    return () => mq.removeEventListener("change", update);
+  }, []);
 
   useEffect(() => {
     document.title = "CVFast Builder - Créez votre CV";
@@ -168,6 +178,14 @@ export default function Home() {
     window.addEventListener("resize", onResize);
     return () => window.removeEventListener("resize", onResize);
   }, []);
+
+  useEffect(() => {
+    if (!pdfModalOpened) return;
+    const modal = document.getElementById("pdf_modal") as HTMLDialogElement;
+    if (modal?.open) {
+      requestAnimationFrame(() => requestAnimationFrame(fitPdfPreview));
+    }
+  }, [pdfModalOpened]);
 
   const themes = [
     "cvfast",
@@ -223,67 +241,88 @@ export default function Home() {
   const handleResetHobbies = () => setHobbies([]);
 
   const cvPreviewRef = useRef<HTMLDivElement>(null);
+  const mobilePreviewRef = useRef<HTMLDivElement>(null);
+  const mobilePreviewScaleRef = useRef<HTMLDivElement>(null);
+
+  const generateAndSavePdf = async (element: HTMLElement) => {
+    setDownloading(true);
+    try {
+      const width = element.scrollWidth || 950;
+      const height = element.scrollHeight || 1300;
+      const maxDim = 4096;
+      const isMobile = window.matchMedia("(max-width: 1023px)").matches;
+      const scale = Math.min(
+        isMobile ? 1.5 : 2,
+        maxDim / Math.max(width, height),
+      );
+      const canvas = await html2canvas(element, {
+        scale,
+        backgroundColor: "#ffffff",
+        logging: false,
+      });
+      const imgData = canvas.toDataURL("image/jpeg", 0.92);
+
+      const pdf = new jsPDF({
+        orientation: "portrait",
+        unit: "mm",
+        format: "A4",
+      });
+
+      const pdfWidth = pdf.internal.pageSize.getWidth();
+      const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
+
+      pdf.addImage(imgData, "JPEG", 0, 0, pdfWidth, pdfHeight);
+
+      const fileName = `cv-${personalDetails.fullName || "sans-nom"}.pdf`;
+      const blob = pdf.output("blob");
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = fileName;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      setTimeout(() => URL.revokeObjectURL(url), 10000);
+
+      confetti({
+        particleCount: 100,
+        spread: 70,
+        origin: { y: 0.6 },
+        zIndex: 9999,
+      });
+    } catch (error) {
+      console.error("Erreur lors de la generation du PDF :", error);
+      const msg =
+        error instanceof Error ? error.message : String(error);
+      alert(
+        `Impossible de générer le PDF : ${msg}. Essayez de réduire la longueur du CV ou de réessayer.`,
+      );
+    } finally {
+      setDownloading(false);
+    }
+  };
 
   const handleDownloadPdf = async () => {
     const element = cvPreviewRef.current;
-    if (element) {
-      const wrapper = pdfContainerRef.current
-        ?.firstElementChild as HTMLElement | null;
-      const prevZoom = wrapper?.style.zoom;
-      if (wrapper) wrapper.style.zoom = "1";
-      setDownloading(true);
-      try {
-        const width = element.scrollWidth || 950;
-        const height = element.scrollHeight || 1300;
-        const maxDim = 4096;
-        const scale = Math.min(2, maxDim / Math.max(width, height));
-        const canvas = await html2canvas(element, {
-          scale,
-          backgroundColor: "#ffffff",
-        });
-        const imgData = canvas.toDataURL("image/jpeg", 0.92);
+    if (!element) return;
+    const wrapper = pdfContainerRef.current
+      ?.firstElementChild as HTMLElement | null;
+    const prevZoom = wrapper?.style.zoom;
+    if (wrapper) wrapper.style.zoom = "1";
+    await generateAndSavePdf(element);
+    if (wrapper && prevZoom) wrapper.style.zoom = prevZoom;
+    const modal = document.getElementById("pdf_modal") as HTMLDialogElement;
+    if (modal) modal.close();
+  };
 
-        const pdf = new jsPDF({
-          orientation: "portrait",
-          unit: "mm",
-          format: "A4",
-        });
-
-        const pdfWidth = pdf.internal.pageSize.getWidth();
-        const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
-
-        pdf.addImage(imgData, "JPEG", 0, 0, pdfWidth, pdfHeight);
-
-        const fileName = `cv-${personalDetails.fullName || "sans-nom"}.pdf`;
-        const blob = pdf.output("blob");
-        const url = URL.createObjectURL(blob);
-        const link = document.createElement("a");
-        link.href = url;
-        link.download = fileName;
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-        setTimeout(() => URL.revokeObjectURL(url), 10000);
-
-        const modal = document.getElementById("pdf_modal") as HTMLDialogElement;
-        if (modal) modal.close();
-
-        confetti({
-          particleCount: 100,
-          spread: 70,
-          origin: { y: 0.6 },
-          zIndex: 9999,
-        });
-      } catch (error) {
-        console.error("Erreur lors de la generation du PDF :", error);
-        alert(
-          "Impossible de générer le PDF sur cet appareil. Essayez de réduire la longueur du CV ou de réessayer.",
-        );
-      } finally {
-        if (wrapper && prevZoom) wrapper.style.zoom = prevZoom;
-        setDownloading(false);
-      }
-    }
+  const handleDirectDownload = async () => {
+    const element = mobilePreviewRef.current;
+    if (!element) return;
+    const scaleDiv = mobilePreviewScaleRef.current;
+    const prevTransform = scaleDiv?.style.transform;
+    if (scaleDiv) scaleDiv.style.transform = "none";
+    await generateAndSavePdf(element);
+    if (scaleDiv) scaleDiv.style.transform = prevTransform || "";
   };
 
   const toggleSection = (section: string) => {
@@ -304,6 +343,7 @@ export default function Home() {
   };
 
   const openPdfModal = () => {
+    setPdfModalOpened(true);
     const modal = document.getElementById("pdf_modal") as HTMLDialogElement;
     if (!modal) return;
     modal.showModal();
@@ -510,6 +550,7 @@ export default function Home() {
         </div>
         <div className="flex-1 overflow-auto bg-base-200 rounded-lg relative">
           <div
+            ref={mobilePreviewScaleRef}
             className="absolute left-1/2 top-0"
             style={{
               transform: `translateX(-50%) scale(${zoom / 100})`,
@@ -518,6 +559,7 @@ export default function Home() {
             }}
           >
             <CVPreview
+              ref={mobilePreviewRef}
               personalDetails={personalDetails}
               file={file}
               theme={theme}
@@ -531,11 +573,16 @@ export default function Home() {
           </div>
         </div>
         <button
-          onClick={openPdfModal}
+          onClick={handleDirectDownload}
           className="btn btn-primary w-full mt-3"
+          disabled={downloading}
         >
-          <Download className="w-4 h-4 mr-2" />
-          Telecharger mon CV
+          {downloading ? (
+            <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+          ) : (
+            <Download className="w-4 h-4 mr-2" />
+          )}
+          {downloading ? "Téléchargement..." : "Telecharger mon CV"}
         </button>
       </div>
     </div>
@@ -543,13 +590,16 @@ export default function Home() {
 
   return (
     <div>
-      <div className="lg:hidden">
-        {MobileHeader()}
-        {activeTab === "edit" ? MobileEditView() : MobilePreviewView()}
-      </div>
+      {!isDesktop && (
+        <div>
+          {MobileHeader()}
+          {activeTab === "edit" ? MobileEditView() : MobilePreviewView()}
+        </div>
+      )}
 
-      <div className="hidden lg:block">
-        <section className="flex items-center h-screen">
+      {isDesktop && (
+        <div>
+          <section className="flex items-center h-screen">
           <div className="lg:w-2/5 xl:w-1/3 h-full p-6 lg:p-10 bg-base-200 scrollable no-scrollbar overflow-y-auto">
             <div className="mb-4 flex justify-between items-center">
               <h1 className="text-2xl font-bold italic">
@@ -714,7 +764,8 @@ export default function Home() {
             </div>
           </div>
         </section>
-      </div>
+        </div>
+      )}
 
       <dialog id="pdf_modal" className="modal">
           <div className="modal-box w-full max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -761,10 +812,11 @@ export default function Home() {
                   {downloading ? "Téléchargement..." : "Telecharger"}
                 </button>
               </div>
-              <div
-                ref={pdfContainerRef}
-                className="w-full max-w-full overflow-auto"
-              >
+              {pdfModalOpened && (
+                <div
+                  ref={pdfContainerRef}
+                  className="w-full max-w-full overflow-auto"
+                >
                 <div
                   className="mx-auto"
                   style={{
@@ -785,8 +837,9 @@ export default function Home() {
                     download={true}
                     ref={cvPreviewRef}
                   />
+                  </div>
                 </div>
-              </div>
+              )}
             </div>
           </div>
         </dialog>

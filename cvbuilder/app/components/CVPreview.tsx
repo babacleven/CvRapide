@@ -1,5 +1,6 @@
 'use client'
 
+import React from 'react'
 import { Education, Experience, Hobby, Language, PersonalDetails, Skill, CVTemplate } from '@/type'
 import { templates } from './cv-templates'
 
@@ -17,12 +18,16 @@ interface Props {
   ref?: React.Ref<HTMLDivElement>
 }
 
-export default function CVPreview({ template, theme, ...props }: Props) {
-  const TemplateComponent = templates[template] || templates.classic
-  
+export default React.memo(function CVPreview({
+  template,
+  theme,
+  ...props
+}: Props) {
+  const TemplateComponent = templates[template] || templates.classic;
+
   return (
     <div data-theme={theme}>
       <TemplateComponent {...props} />
     </div>
-  )
-}
+  );
+});
