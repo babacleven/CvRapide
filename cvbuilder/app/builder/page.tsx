@@ -101,7 +101,18 @@ export default function Home() {
     "template",
     "classic",
   );
-  const [zoom, setZoom] = useLocalStorage<number>("zoom", 50);
+  const [zoom, setZoom] = useLocalStorage<number>("zoom", 77);
+
+  useEffect(() => {
+    if (
+      zoom === 77 &&
+      typeof window !== "undefined" &&
+      window.matchMedia("(max-width: 1023px)").matches
+    ) {
+      setZoom(35);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   // Gestion de la photo (fichier) : stockage en base64
   const [file, setFile] = useState<File | null>(null);
@@ -319,12 +330,16 @@ export default function Home() {
   const handleDirectDownload = async () => {
     if (downloading) return;
     setDownloading(true);
-    await new Promise((resolve) =>
-      requestAnimationFrame(() => requestAnimationFrame(resolve)),
-    );
-    const element = hiddenCaptureRef.current;
-    if (element) await generateAndSavePdf(element);
-    setDownloading(false);
+    try {
+      let element = hiddenCaptureRef.current;
+      for (let i = 0; i < 40 && !element; i++) {
+        await new Promise((resolve) => setTimeout(resolve, 25));
+        element = hiddenCaptureRef.current;
+      }
+      if (element) await generateAndSavePdf(element);
+    } finally {
+      setDownloading(false);
+    }
   };
 
   const toggleSection = (section: string) => {
@@ -847,27 +862,30 @@ export default function Home() {
       {downloading && activeTab === "preview" && (
         <div
           aria-hidden
-          style={{
-            position: "fixed",
-            top: 0,
-            left: -9999,
-            width: 950,
-            pointerEvents: "none",
-          }}
+          className="fixed inset-0 z-[9999]"
+          style={{ pointerEvents: "none" }}
         >
-          <CVPreview
-            ref={hiddenCaptureRef}
-            personalDetails={personalDetails}
-            file={file}
-            theme={theme}
-            template={template}
-            experiences={experiences}
-            educations={educations}
-            languages={languages}
-            hobbies={hobbies}
-            skills={skills}
-            download={true}
-          />
+          <div className="absolute top-0 left-0" style={{ width: 950 }}>
+            <CVPreview
+              ref={hiddenCaptureRef}
+              personalDetails={personalDetails}
+              file={file}
+              theme={theme}
+              template={template}
+              experiences={experiences}
+              educations={educations}
+              languages={languages}
+              hobbies={hobbies}
+              skills={skills}
+              download={true}
+            />
+          </div>
+          <div className="absolute inset-0 bg-white flex items-center justify-center">
+            <Loader2 className="w-10 h-10 animate-spin text-primary" />
+            <p className="font-semibold ml-3">
+              Téléchargement du CV en cours...
+            </p>
+          </div>
         </div>
       )}
     </div>
