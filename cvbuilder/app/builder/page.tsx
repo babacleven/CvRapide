@@ -494,7 +494,7 @@ export default function Home() {
 
       <div className="hidden lg:block">
         <section className="flex items-center h-screen">
-          <div className="w-1/3 h-full p-10 bg-base-200 scrollable no-scrollbar overflow-y-auto">
+          <div className="lg:w-2/5 xl:w-1/3 h-full p-6 lg:p-10 bg-base-200 scrollable no-scrollbar overflow-y-auto">
             <div className="mb-4 flex justify-between items-center">
               <h1 className="text-2xl font-bold italic">
                 CVFast<span className="text-primary"> Builder</span>
@@ -632,7 +632,7 @@ export default function Home() {
             </div>
           </div>
 
-          <div className="w-2/3 h-full bg-base-100 bg-[url('/file.svg')] bg-cover bg-center scrollable-preview relative">
+          <div className="lg:w-3/5 xl:w-2/3 h-full bg-base-100 bg-[url('/file.svg')] bg-cover bg-center scrollable-preview relative">
             <div className="flex items-center justify-center fixed z-[9999] top-5 right-5">
               <input
                 type="range"

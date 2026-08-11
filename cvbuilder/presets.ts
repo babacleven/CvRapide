@@ -8,53 +8,57 @@ import {
 } from "./type";
 
 export const personalDetailsPreset: PersonalDetails = {
-  fullName: "Marie Dupont",
-  email: "marie.dupont@email.com",
-  phone: "+33 6 12 34 56 78",
-  address: "Paris, France",
+  fullName: "Aristote Cleven Baba",
+  email: "aristote.baba@email.com",
+  phone: "+242 06 123 45 67",
+  address: "Brazzaville, Congo-Brazzaville",
   photoUrl: "/profile.jpg",
-  postSeeking: "Développeuse Full Stack",
+  postSeeking: "Développeur Full Stack",
   description:
-    "Développeuse passionnée avec 5 ans d'expérience.\nSpécialisée en React, Node.js et TypeScript.",
+    "Développeur passionné avec 5 ans d'expérience.\nSpécialisé en React, Node.js et TypeScript.",
 };
 
 export const experiencesPreset: Experience[] = [
   {
-    jobTitle: "Développeuse Full Stack",
-    companyName: "TechCorp",
+    jobTitle: "Développeur Full Stack",
+    companyName: "TechCongo",
     startDate: "2021-01-01",
     endDate: "",
     isCurrent: true,
     description: "Création d'applications web avec React et Node.js.",
+    city: "Brazzaville, Congo-Brazzaville",
   },
   {
-    jobTitle: "Développeuse Front-End",
-    companyName: "WebStudio",
+    jobTitle: "Développeur Front-End",
+    companyName: "WebStudio Pointe-Noire",
     startDate: "2019-06-01",
     endDate: "2020-12-31",
     isCurrent: false,
     description: "Intégration de maquettes et optimisation des performances.",
+    city: "Pointe-Noire, Congo-Brazzaville",
   },
 ];
 
 export const educationsPreset: Education[] = [
   {
-    school: "Université Paris-Saclay",
+    school: "Université Marien Ngouabi",
     degree: "Master Informatique",
     level: "Master",
     description: "Spécialisation Génie Logiciel",
     startDate: "2018-09-01",
     endDate: "2020-06-30",
     isCurrent: false,
+    city: "Brazzaville, Congo-Brazzaville",
   },
   {
-    school: "IUT Paris",
-    degree: "DUT Informatique",
+    school: "Institut Guy Pasteur",
+    degree: "Brevet d'études du premier cycle (BEPC)",
     level: "Bac+2",
     description: "",
     startDate: "2016-09-01",
     endDate: "2018-06-30",
     isCurrent: false,
+    city: "Brazzaville, Congo-Brazzaville",
   },
 ];
 

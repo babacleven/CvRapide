@@ -226,34 +226,21 @@
     pointer-events: auto;
   }
 
-  body:not(.page-accueil) .entete-contenu {
-    display: grid;
-    grid-template-columns: 42px minmax(0, 1fr) auto;
-  }
-
-  body:not(.page-accueil) .logo {
-    justify-self: center;
-  }
-
-  body:not(.page-accueil) .entete-actions {
-    justify-self: end;
-  }
-
-  .page-accueil .entete-contenu {
+  .entete .entete-contenu {
     position: relative;
     gap: 12px;
   }
 
-  .page-accueil .entete-actions {
+  .entete .entete-actions {
     margin-left: auto;
     gap: 10px;
   }
 
-  .page-accueil .bouton-navigation-mobile {
+  .entete .bouton-navigation-mobile {
     display: inline-flex;
   }
 
-  .page-accueil .nav-principale {
+  .entete .nav-principale {
     position: absolute;
     top: calc(100% + 12px);
     right: 20px;
@@ -279,21 +266,21 @@
       transform 0.2s cubic-bezier(0.2, 0, 0, 1);
   }
 
-  .page-accueil .nav-principale.est-ouvert {
+  .entete .nav-principale.est-ouvert {
     opacity: 1;
     visibility: visible;
     transform: translateY(0);
     pointer-events: auto;
   }
 
-  .page-accueil .nav-principale a {
+  .entete .nav-principale a {
     min-height: 44px;
     padding: 10px 12px;
     border-radius: 8px;
   }
 
-  .page-accueil .nav-principale a:hover,
-  .page-accueil .nav-principale a[aria-current="page"] {
+  .entete .nav-principale a:hover,
+  .entete .nav-principale a[aria-current="page"] {
     background: rgba(96, 165, 250, 0.1);
   }
 }
@@ -394,24 +381,45 @@
     padding-inline: 16px;
   }
 
-  body:not(.page-accueil) .logo {
+  .entete .logo {
     font-size: 13px;
   }
 
-  body:not(.page-accueil) .entete-actions .lien-source span {
+  .entete .entete-actions .lien-source span {
     display: none;
   }
 
-  body:not(.page-accueil) .entete-actions .lien-source {
+  .entete .entete-actions .lien-source {
     width: 42px;
     height: 42px;
     justify-content: center;
   }
 
-  .page-accueil .entete-actions .bouton-principal {
+  .entete .entete-actions .bouton-principal {
     padding: 0.5rem 0.85rem;
     font-size: 0.8rem;
     white-space: nowrap;
+  }
+
+  .entete .entete-contenu {
+    gap: 8px;
+  }
+
+  .entete .logo {
+    gap: 6px;
+  }
+
+  .entete .logo i {
+    font-size: 16px;
+  }
+
+  .entete .entete-actions {
+    gap: 6px;
+  }
+
+  .entete .bouton-navigation-mobile {
+    width: 38px;
+    height: 38px;
   }
 
   .review-modal-content {

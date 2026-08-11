@@ -185,6 +185,7 @@ const CVSkills: React.FC<Props> = ({
                 </div>
                 <p className="text-primary text-sm font-medium">
                   {exp.companyName}
+                  {exp.city && <span> - {exp.city}</span>}
                 </p>
                 <p className="text-sm leading-relaxed break-words whitespace-pre-wrap">
                   {exp.description}
@@ -214,7 +215,10 @@ const CVSkills: React.FC<Props> = ({
                     {formatDate(edu.endDate, edu.isCurrent)}
                   </span>
                 </div>
-                <p className="text-primary text-sm font-medium">{edu.school}</p>
+                <p className="text-primary text-sm font-medium">
+                  {edu.school}
+                  {edu.city && <span> - {edu.city}</span>}
+                </p>
                 {edu.description && (
                   <p className="text-sm mt-1 break-words whitespace-pre-wrap">
                     {edu.description}

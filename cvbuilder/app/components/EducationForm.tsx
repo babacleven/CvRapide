@@ -16,6 +16,7 @@ const EducationForm: React.FC<Props> = ({ educations, setEducations }) => {
     startDate: "",
     endDate: "",
     isCurrent: false,
+    city: "",
   });
   const [editingIndex, setEditingIndex] = useState<number | null>(null);
 
@@ -49,6 +50,7 @@ const EducationForm: React.FC<Props> = ({ educations, setEducations }) => {
       startDate: "",
       endDate: "",
       isCurrent: false,
+      city: "",
     });
   };
 
@@ -84,6 +86,7 @@ const EducationForm: React.FC<Props> = ({ educations, setEducations }) => {
       startDate: "",
       endDate: "",
       isCurrent: false,
+      city: "",
     });
   };
 
@@ -102,6 +105,13 @@ const EducationForm: React.FC<Props> = ({ educations, setEducations }) => {
           placeholder="Diplôme (ex: Licence Informatique)"
           value={newEducation.degree}
           onChange={(e) => handleChange(e, "degree")}
+          className="input input-bordered w-full"
+        />
+        <input
+          type="text"
+          placeholder="Ville / Lieu (ex: Brazzaville, Congo-Brazzaville)"
+          value={newEducation.city}
+          onChange={(e) => handleChange(e, "city")}
           className="input input-bordered w-full"
         />
         <select
@@ -181,7 +191,10 @@ const EducationForm: React.FC<Props> = ({ educations, setEducations }) => {
                 <div className="font-semibold">
                   {edu.degree} ({edu.level})
                 </div>
-                <div className="text-sm text-base-content/70">{edu.school}</div>
+                <div className="text-sm text-base-content/70">
+                  {edu.school}
+                  {edu.city && <span> - {edu.city}</span>}
+                </div>
                 <div className="text-xs text-base-content/50">
                   {edu.startDate} - {edu.isCurrent ? "présent" : edu.endDate}
                 </div>

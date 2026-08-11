@@ -311,8 +311,8 @@
   min-height: 0;
 }
 
-.page-accueil .entete-contenu,
-.page-accueil .pied-de-page .conteneur {
+.entete .entete-contenu,
+.pied-de-page .conteneur {
   max-width: 1120px;
 }
 

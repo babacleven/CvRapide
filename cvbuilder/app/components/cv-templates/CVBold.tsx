@@ -165,6 +165,12 @@ const CVBold: React.FC<Props> = ({
                   <h3 className="font-bold text-lg">{exp.jobTitle}</h3>
                   <p className="text-primary font-medium mb-2">
                     {exp.companyName}
+                    {exp.city && (
+                      <span className="text-sm text-base-content/60">
+                        {" "}
+                        - {exp.city}
+                      </span>
+                    )}
                   </p>
                   <p className="text-sm text-base-content/60 mb-2">
                     {formatDate(exp.startDate)} —{" "}
@@ -201,7 +207,15 @@ const CVBold: React.FC<Props> = ({
                       ({edu.level})
                     </span>
                   </h3>
-                  <p className="text-primary font-medium mb-2">{edu.school}</p>
+                  <p className="text-primary font-medium mb-2">
+                    {edu.school}
+                    {edu.city && (
+                      <span className="text-sm text-base-content/60">
+                        {" "}
+                        - {edu.city}
+                      </span>
+                    )}
+                  </p>
                   <p className="text-sm text-base-content/60">
                     {formatDate(edu.startDate)} —{" "}
                     {formatDate(edu.endDate, edu.isCurrent)}

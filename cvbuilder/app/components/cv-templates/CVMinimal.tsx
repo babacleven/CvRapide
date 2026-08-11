@@ -146,6 +146,7 @@ const CVMinimal: React.FC<Props> = ({
                     </div>
                     <p className="text-sm text-gray-600 mb-2">
                       {exp.companyName}
+                      {exp.city && <span> - {exp.city}</span>}
                     </p>
                     <p className="break-words whitespace-pre-wrap text-sm leading-relaxed">
                       {exp.description}
@@ -172,7 +173,10 @@ const CVMinimal: React.FC<Props> = ({
                         {formatDate(edu.endDate, edu.isCurrent)}
                       </span>
                     </div>
-                    <p className="text-sm text-gray-600">{edu.school}</p>
+                    <p className="text-sm text-gray-600">
+                      {edu.school}
+                      {edu.city && <span> - {edu.city}</span>}
+                    </p>
                     {edu.description && (
                       <p className="break-words whitespace-pre-wrap text-sm text-gray-600 mt-1">
                         {edu.description}

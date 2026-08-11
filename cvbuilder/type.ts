@@ -18,6 +18,7 @@ export type Education = {
   startDate: string;
   endDate: string;
   isCurrent: boolean;
+  city?: string;
 };
 
 export type Experience = {
@@ -28,6 +29,7 @@ export type Experience = {
   endDate: string;
   isCurrent: boolean;
   description: string;
+  city?: string;
 };
 
 export type Skill = {

@@ -15,6 +15,7 @@ const ExperienceForm: React.FC<Props> = ({ experience, setExperiences }) => {
     endDate: "",
     isCurrent: false,
     description: "",
+    city: "",
   });
   const [editingIndex, setEditingIndex] = useState<number | null>(null);
 
@@ -48,6 +49,7 @@ const ExperienceForm: React.FC<Props> = ({ experience, setExperiences }) => {
       endDate: "",
       isCurrent: false,
       description: "",
+      city: "",
     });
   };
 
@@ -81,6 +83,7 @@ const ExperienceForm: React.FC<Props> = ({ experience, setExperiences }) => {
       endDate: "",
       isCurrent: false,
       description: "",
+      city: "",
     });
   };
 
@@ -101,6 +104,13 @@ const ExperienceForm: React.FC<Props> = ({ experience, setExperiences }) => {
             placeholder="Entreprise"
             value={newExperience.companyName}
             onChange={(e) => handleChange(e, "companyName")}
+            className="input input-bordered w-full"
+          />
+          <input
+            type="text"
+            placeholder="Ville / Lieu"
+            value={newExperience.city}
+            onChange={(e) => handleChange(e, "city")}
             className="input input-bordered w-full"
           />
         </div>
@@ -172,6 +182,7 @@ const ExperienceForm: React.FC<Props> = ({ experience, setExperiences }) => {
                 <div className="font-semibold">{exp.jobTitle}</div>
                 <div className="text-sm text-base-content/70">
                   {exp.companyName}
+                  {exp.city && <span> - {exp.city}</span>}
                 </div>
                 <div className="text-xs text-base-content/50">
                   {exp.startDate} - {exp.isCurrent ? "présent" : exp.endDate}

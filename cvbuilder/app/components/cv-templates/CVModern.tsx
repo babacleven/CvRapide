@@ -209,6 +209,12 @@ const CVModern: React.FC<Props> = ({
                     <h3 className="font-bold text-lg">{exp.jobTitle}</h3>
                     <p className="text-primary font-medium mb-2">
                       {exp.companyName}
+                      {exp.city && (
+                        <span className="text-sm text-base-content/60">
+                          {" "}
+                          - {exp.city}
+                        </span>
+                      )}
                     </p>
                     <p className="break-words whitespace-pre-wrap text-sm text-base-content/80 leading-relaxed">
                       {exp.description}
@@ -240,6 +246,12 @@ const CVModern: React.FC<Props> = ({
                     </h3>
                     <p className="text-primary font-medium mb-2">
                       {edu.school}
+                      {edu.city && (
+                        <span className="text-sm text-base-content/60">
+                          {" "}
+                          - {edu.city}
+                        </span>
+                      )}
                     </p>
                     <p className="break-words whitespace-pre-wrap text-sm text-base-content/80">
                       {edu.description}

@@ -227,15 +227,16 @@ export default function LandingPage() {
             id="navigation"
             aria-label="Navigation principale"
           >
-            <a href="#templates">Modèles</a>
-            <a href="#features">Fonctionnalités</a>
-            <a href="#reviews">Avis</a>
-            <a href="#faq">FAQ</a>
+            <a href="#templates" onClick={() => setMenuOpen(false)}>Modèles</a>
+            <a href="#features" onClick={() => setMenuOpen(false)}>Fonctionnalités</a>
+            <a href="#reviews" onClick={() => setMenuOpen(false)}>Avis</a>
+            <a href="#faq" onClick={() => setMenuOpen(false)}>FAQ</a>
             <a
               href="https://github.com"
               className="lien-source"
               target="_blank"
               rel="noopener noreferrer"
+              onClick={() => setMenuOpen(false)}
             >
               <i className="fa-brands fa-github"></i>
               <span>GitHub</span>

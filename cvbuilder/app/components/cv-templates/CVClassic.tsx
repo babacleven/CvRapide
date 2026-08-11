@@ -202,6 +202,11 @@ const CVClassic: React.FC<Props> = ({
                       <span className="badge badge-primary">
                         {exp.companyName}
                       </span>
+                      {exp.city && (
+                        <span className="badge badge-outline ml-2">
+                          {exp.city}
+                        </span>
+                      )}
                       <span className="italic ml-2">
                         {formatDate(exp.startDate)} -{" "}
                         {formatDate(exp.endDate, exp.isCurrent)}
@@ -230,6 +235,11 @@ const CVClassic: React.FC<Props> = ({
                     </h2>
                     <div className="text-sm my-2">
                       <span className="badge badge-primary">{edu.school}</span>
+                      {edu.city && (
+                        <span className="badge badge-outline ml-2">
+                          {edu.city}
+                        </span>
+                      )}
                       <span className="italic ml-2">
                         {formatDate(edu.startDate)} -{" "}
                         {formatDate(edu.endDate, edu.isCurrent)}
