@@ -241,11 +241,9 @@ export default function Home() {
   const handleResetHobbies = () => setHobbies([]);
 
   const cvPreviewRef = useRef<HTMLDivElement>(null);
-  const mobilePreviewRef = useRef<HTMLDivElement>(null);
-  const mobilePreviewScaleRef = useRef<HTMLDivElement>(null);
+  const hiddenCaptureRef = useRef<HTMLDivElement>(null);
 
   const generateAndSavePdf = async (element: HTMLElement) => {
-    setDownloading(true);
     try {
       const width = element.scrollWidth || 950;
       const height = element.scrollHeight || 1300;
@@ -297,8 +295,6 @@ export default function Home() {
       alert(
         `Impossible de générer le PDF : ${msg}. Essayez de réduire la longueur du CV ou de réessayer.`,
       );
-    } finally {
-      setDownloading(false);
     }
   };
 
@@ -309,20 +305,26 @@ export default function Home() {
       ?.firstElementChild as HTMLElement | null;
     const prevZoom = wrapper?.style.zoom;
     if (wrapper) wrapper.style.zoom = "1";
-    await generateAndSavePdf(element);
-    if (wrapper && prevZoom) wrapper.style.zoom = prevZoom;
+    setDownloading(true);
+    try {
+      await generateAndSavePdf(element);
+    } finally {
+      if (wrapper && prevZoom) wrapper.style.zoom = prevZoom;
+      setDownloading(false);
+    }
     const modal = document.getElementById("pdf_modal") as HTMLDialogElement;
     if (modal) modal.close();
   };
 
   const handleDirectDownload = async () => {
-    const element = mobilePreviewRef.current;
-    if (!element) return;
-    const scaleDiv = mobilePreviewScaleRef.current;
-    const prevTransform = scaleDiv?.style.transform;
-    if (scaleDiv) scaleDiv.style.transform = "none";
-    await generateAndSavePdf(element);
-    if (scaleDiv) scaleDiv.style.transform = prevTransform || "";
+    if (downloading) return;
+    setDownloading(true);
+    await new Promise((resolve) =>
+      requestAnimationFrame(() => requestAnimationFrame(resolve)),
+    );
+    const element = hiddenCaptureRef.current;
+    if (element) await generateAndSavePdf(element);
+    setDownloading(false);
   };
 
   const toggleSection = (section: string) => {
@@ -550,7 +552,6 @@ export default function Home() {
         </div>
         <div className="flex-1 overflow-auto bg-base-200 rounded-lg relative">
           <div
-            ref={mobilePreviewScaleRef}
             className="absolute left-1/2 top-0"
             style={{
               transform: `translateX(-50%) scale(${zoom / 100})`,
@@ -559,7 +560,6 @@ export default function Home() {
             }}
           >
             <CVPreview
-              ref={mobilePreviewRef}
               personalDetails={personalDetails}
               file={file}
               theme={theme}
@@ -843,6 +843,33 @@ export default function Home() {
             </div>
           </div>
         </dialog>
+
+      {downloading && activeTab === "preview" && (
+        <div
+          aria-hidden
+          style={{
+            position: "fixed",
+            top: 0,
+            left: -9999,
+            width: 950,
+            pointerEvents: "none",
+          }}
+        >
+          <CVPreview
+            ref={hiddenCaptureRef}
+            personalDetails={personalDetails}
+            file={file}
+            theme={theme}
+            template={template}
+            experiences={experiences}
+            educations={educations}
+            languages={languages}
+            hobbies={hobbies}
+            skills={skills}
+            download={true}
+          />
+        </div>
+      )}
     </div>
   );
 }
