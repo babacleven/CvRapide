@@ -13,7 +13,7 @@ export type Education = {
   id?: string;
   school: string;
   degree: string;
-  level: "Bac" | "Bac+2" | "Bac+3" | "Master" | "Doctorat" | "Autre";
+  level: "" | "Bac" | "Bac+2" | "Bac+3" | "Master" | "Doctorat" | "Autre";
   description: string;
   startDate: string;
   endDate: string;

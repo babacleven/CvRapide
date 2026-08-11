@@ -95,21 +95,21 @@ const EducationForm: React.FC<Props> = ({ educations, setEducations }) => {
       <div className="space-y-3 p-4 border border-base-300 rounded-lg">
         <input
           type="text"
-          placeholder="Nom de l'école"
+          placeholder="NOM DE L'ÉCOLE"
           value={newEducation.school}
           onChange={(e) => handleChange(e, "school")}
           className="input input-bordered w-full"
         />
         <input
           type="text"
-          placeholder="Diplôme (ex: Licence Informatique)"
+          placeholder="NOM DU DIPLÔME"
           value={newEducation.degree}
           onChange={(e) => handleChange(e, "degree")}
           className="input input-bordered w-full"
         />
         <input
           type="text"
-          placeholder="Ville / Lieu (ex: Brazzaville, Congo-Brazzaville)"
+          placeholder="Ville / Lieu"
           value={newEducation.city}
           onChange={(e) => handleChange(e, "city")}
           className="input input-bordered w-full"
@@ -119,6 +119,7 @@ const EducationForm: React.FC<Props> = ({ educations, setEducations }) => {
           onChange={(e) => handleChange(e, "level")}
           className="select select-bordered w-full"
         >
+          <option value="">Niveau (laisser vide)</option>
           <option value="Bac">Bac</option>
           <option value="Bac+2">Bac+2 (BTS, DUT)</option>
           <option value="Bac+3">Bac+3 (Licence)</option>
@@ -154,7 +155,7 @@ const EducationForm: React.FC<Props> = ({ educations, setEducations }) => {
           <span className="text-sm">En cours (jusqu'à présent)</span>
         </label>
         <textarea
-          placeholder="Description"
+          placeholder="Décrivez ici votre formation et ce que vous y avez appris."
           value={newEducation.description}
           onChange={(e) => handleChange(e, "description")}
           className="textarea textarea-bordered w-full"
@@ -189,7 +190,8 @@ const EducationForm: React.FC<Props> = ({ educations, setEducations }) => {
             >
               <div className="flex-1">
                 <div className="font-semibold">
-                  {edu.degree} ({edu.level})
+                  {edu.degree}
+                  {edu.level && ` (${edu.level})`}
                 </div>
                 <div className="text-sm text-base-content/70">
                   {edu.school}

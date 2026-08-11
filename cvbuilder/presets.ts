@@ -8,73 +8,66 @@ import {
 } from "./type";
 
 export const personalDetailsPreset: PersonalDetails = {
-  fullName: "Aristote Cleven Baba",
-  email: "aristote.baba@email.com",
-  phone: "+242 06 123 45 67",
-  address: "Brazzaville, Congo-Brazzaville",
+  fullName: "PRÉNOM NOM",
+  email: "exemple@email.com",
+  phone: "+242 00 00 00 00",
+  address: "Ville, Pays",
   photoUrl: "/profile.jpg",
-  postSeeking: "Développeur Full Stack",
+  postSeeking: "Titre du poste",
   description:
-    "Développeur passionné avec 5 ans d'expérience.\nSpécialisé en React, Node.js et TypeScript.",
+    "Décrivez en quelques lignes votre parcours professionnel, vos compétences clés pour le poste et vos objectifs de carrière. Ceci est bien fait une introduction à votre lettre de motivation. Décrivez en quelques lignes votre parcours professionnel, vos compétences clés pour le poste et vos objectifs de carrière.",
 };
 
 export const experiencesPreset: Experience[] = [
   {
-    jobTitle: "Développeur Full Stack",
-    companyName: "TechCongo",
-    startDate: "2021-01-01",
-    endDate: "",
-    isCurrent: true,
-    description: "Création d'applications web avec React et Node.js.",
-    city: "Brazzaville, Congo-Brazzaville",
+    jobTitle: "POSTE OCCUPÉ",
+    companyName: "NOM ENTREPRISE",
+    startDate: "2020-01-01",
+    endDate: "2020-03-01",
+    isCurrent: false,
+    description:
+      "Décrivez ici les fonctions que vous avez occupé pour ce poste. Décrivez également vos missions et les résultats que vous avez obtenu.",
+    city: "",
   },
   {
-    jobTitle: "Développeur Front-End",
-    companyName: "WebStudio Pointe-Noire",
-    startDate: "2019-06-01",
-    endDate: "2020-12-31",
+    jobTitle: "POSTE OCCUPÉ",
+    companyName: "NOM ENTREPRISE",
+    startDate: "2020-01-01",
+    endDate: "2020-03-01",
     isCurrent: false,
-    description: "Intégration de maquettes et optimisation des performances.",
-    city: "Pointe-Noire, Congo-Brazzaville",
+    description:
+      "Décrivez ici les fonctions que vous avez occupé pour ce poste. Décrivez également vos missions et les résultats que vous avez obtenu.",
+    city: "",
   },
 ];
 
 export const educationsPreset: Education[] = [
   {
-    school: "Université Marien Ngouabi",
-    degree: "Master Informatique",
-    level: "Master",
-    description: "Spécialisation Génie Logiciel",
-    startDate: "2018-09-01",
-    endDate: "2020-06-30",
+    school: "NOM DE L'ÉCOLE",
+    degree: "NOM DU DIPLÔME",
+    level: "",
+    description: "Décrivez ici votre formation et ce que vous y avez appris.",
+    startDate: "2020-01-01",
+    endDate: "2020-03-01",
     isCurrent: false,
-    city: "Brazzaville, Congo-Brazzaville",
-  },
-  {
-    school: "Institut Guy Pasteur",
-    degree: "Brevet d'études du premier cycle (BEPC)",
-    level: "Bac+2",
-    description: "",
-    startDate: "2016-09-01",
-    endDate: "2018-06-30",
-    isCurrent: false,
-    city: "Brazzaville, Congo-Brazzaville",
+    city: "",
   },
 ];
 
 export const languagesPreset: Language[] = [
-  { language: "Français", proficiency: "Avance" },
-  { language: "Anglais", proficiency: "Intermediaire" },
+  { language: "Langue 1", proficiency: "Avance" },
+  { language: "Langue 2", proficiency: "Intermediaire" },
 ];
 
 export const skillsPreset: Skill[] = [
-  { name: "React" },
-  { name: "TypeScript" },
-  { name: "Node.js" },
-  { name: "Tailwind CSS" },
+  { name: "Compétence 1" },
+  { name: "Compétence 2" },
+  { name: "Compétence 3" },
+  { name: "Compétence 4" },
 ];
 
 export const hobbiesPreset: Hobby[] = [
-  { name: "Lecture" },
-  { name: "Running" },
+  { name: "Loisir 1" },
+  { name: "Loisir 2" },
+  { name: "Loisir 3" },
 ];

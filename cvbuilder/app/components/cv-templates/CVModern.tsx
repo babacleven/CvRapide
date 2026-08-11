@@ -6,6 +6,14 @@ import {
   PersonalDetails,
   Skill,
 } from "@/type";
+import {
+  educationsPreset,
+  experiencesPreset,
+  hobbiesPreset,
+  languagesPreset,
+  personalDetailsPreset,
+  skillsPreset,
+} from "@/presets";
 import React from "react";
 import Image from "next/image";
 import {
@@ -80,6 +88,23 @@ const CVModern: React.FC<Props> = ({
   download,
   ref,
 }) => {
+  const pd = {
+    fullName: personalDetails.fullName || personalDetailsPreset.fullName,
+    email: personalDetails.email || personalDetailsPreset.email,
+    phone: personalDetails.phone || personalDetailsPreset.phone,
+    address: personalDetails.address || personalDetailsPreset.address,
+    postSeeking:
+      personalDetails.postSeeking || personalDetailsPreset.postSeeking,
+    description:
+      personalDetails.description || personalDetailsPreset.description,
+  };
+  const display = {
+    experiences: experiences.length > 0 ? experiences : experiencesPreset,
+    educations: educations.length > 0 ? educations : educationsPreset,
+    languages: languages.length > 0 ? languages : languagesPreset,
+    skills: skills.length > 0 ? skills : skillsPreset,
+    hobbies: hobbies.length > 0 ? hobbies : hobbiesPreset,
+  };
   return (
     <div
       ref={ref}
@@ -101,25 +126,25 @@ const CVModern: React.FC<Props> = ({
         </div>
         <div className="flex-1">
           <h1 className="text-4xl font-bold mb-2">
-            {personalDetails.fullName || "Votre nom"}
+            {pd.fullName || "Votre nom"}
           </h1>
           <p className="text-xl opacity-90 mb-4">
-            {personalDetails.postSeeking || "Poste recherché"}
+            {pd.postSeeking || "Poste recherché"}
           </p>
           <div className="flex flex-wrap gap-4 text-sm opacity-80">
-            {personalDetails.email && (
+            {pd.email && (
               <span className="flex items-center gap-1">
-                <Mail className="w-4 h-4" /> {personalDetails.email}
+                <Mail className="w-4 h-4" /> {pd.email}
               </span>
             )}
-            {personalDetails.phone && (
+            {pd.phone && (
               <span className="flex items-center gap-1">
-                <Phone className="w-4 h-4" /> {personalDetails.phone}
+                <Phone className="w-4 h-4" /> {pd.phone}
               </span>
             )}
-            {personalDetails.address && (
+            {pd.address && (
               <span className="flex items-center gap-1">
-                <MapPin className="w-4 h-4" /> {personalDetails.address}
+                <MapPin className="w-4 h-4" /> {pd.address}
               </span>
             )}
           </div>
@@ -130,23 +155,23 @@ const CVModern: React.FC<Props> = ({
       <div className="flex-1 p-12 flex gap-12">
         {/* Colonne gauche */}
         <div className="w-1/3 space-y-8">
-          {personalDetails.description && (
+          {pd.description && (
             <section>
               <h2 className="text-lg font-bold uppercase tracking-wider border-b-2 border-primary pb-2 mb-4">
                 Profil
               </h2>
               <p className="break-words whitespace-pre-wrap text-sm leading-relaxed text-base-content/80">
-                {personalDetails.description}
+                {pd.description}
               </p>
             </section>
           )}
-          {skills.length > 0 && (
+          {display.skills.length > 0 && (
             <section>
               <h2 className="text-lg font-bold uppercase tracking-wider border-b-2 border-primary pb-2 mb-4">
                 Compétences
               </h2>
               <div className="flex flex-wrap gap-2">
-                {skills.map((s, i) => (
+                {display.skills.map((s, i) => (
                   <span
                     key={i}
                     className="px-3 py-1 bg-primary/10 text-primary text-sm rounded-full"
@@ -157,13 +182,13 @@ const CVModern: React.FC<Props> = ({
               </div>
             </section>
           )}
-          {languages.length > 0 && (
+          {display.languages.length > 0 && (
             <section>
               <h2 className="text-lg font-bold uppercase tracking-wider border-b-2 border-primary pb-2 mb-4">
                 Langues
               </h2>
               <div className="space-y-2">
-                {languages.map((l, i) => (
+                {display.languages.map((l, i) => (
                   <div key={i} className="flex justify-between items-center">
                     <span className="text-sm font-medium">{l.language}</span>
                     {getStarRating(l.proficiency)}
@@ -172,16 +197,16 @@ const CVModern: React.FC<Props> = ({
               </div>
             </section>
           )}
-          {hobbies.length > 0 && (
+          {display.hobbies.length > 0 && (
             <section>
               <h2 className="text-lg font-bold uppercase tracking-wider border-b-2 border-primary pb-2 mb-4">
                 Loisirs
               </h2>
               <div className="flex flex-wrap gap-2">
-                {hobbies.map((h, i) => (
+                {display.hobbies.map((h, i) => (
                   <span key={i} className="text-sm text-base-content/70">
                     {h.name}
-                    {i < hobbies.length - 1 ? " •" : ""}
+                    {i < display.hobbies.length - 1 ? " •" : ""}
                   </span>
                 ))}
               </div>
@@ -191,14 +216,14 @@ const CVModern: React.FC<Props> = ({
 
         {/* Colonne droite - timeline */}
         <div className="w-2/3 space-y-8">
-          {experiences.length > 0 && (
+          {display.experiences.length > 0 && (
             <section>
               <h2 className="text-lg font-bold uppercase tracking-wider border-b-2 border-primary pb-2 mb-6 flex items-center gap-2">
                 <BriefcaseBusiness className="w-5 h-5" /> Expériences
                 professionnelles
               </h2>
               <div className="relative border-l-2 border-primary/30 ml-3 space-y-6">
-                {experiences.map((exp, i) => (
+                {display.experiences.map((exp, i) => (
                   <div key={i} className="relative pl-8">
                     <div className="absolute -left-[9px] top-1 w-4 h-4 rounded-full bg-primary border-4 border-base-100" />
                     <div className="flex items-center gap-2 text-sm text-base-content/60 mb-1">
@@ -224,13 +249,13 @@ const CVModern: React.FC<Props> = ({
               </div>
             </section>
           )}
-          {educations.length > 0 && (
+          {display.educations.length > 0 && (
             <section>
               <h2 className="text-lg font-bold uppercase tracking-wider border-b-2 border-primary pb-2 mb-6 flex items-center gap-2">
                 <GraduationCap className="w-5 h-5" /> Formations
               </h2>
               <div className="relative border-l-2 border-primary/30 ml-3 space-y-6">
-                {educations.map((edu, i) => (
+                {display.educations.map((edu, i) => (
                   <div key={i} className="relative pl-8">
                     <div className="absolute -left-[9px] top-1 w-4 h-4 rounded-full bg-primary border-4 border-base-100" />
                     <div className="flex items-center gap-2 text-sm text-base-content/60 mb-1">
@@ -240,9 +265,11 @@ const CVModern: React.FC<Props> = ({
                     </div>
                     <h3 className="font-bold text-lg">
                       {edu.degree}{" "}
-                      <span className="text-sm font-normal text-base-content/60">
-                        ({edu.level})
-                      </span>
+                      {edu.level && (
+                        <span className="text-sm font-normal text-base-content/60">
+                          ({edu.level})
+                        </span>
+                      )}
                     </h3>
                     <p className="text-primary font-medium mb-2">
                       {edu.school}

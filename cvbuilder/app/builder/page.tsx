@@ -300,7 +300,7 @@ export default function Home() {
           </div>
           <span className="font-semibold">{title}</span>
         </button>
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-3">
           {onReset && (
             <button
               onClick={(e) => {
@@ -308,8 +308,9 @@ export default function Home() {
                 onReset();
               }}
               className="p-2 hover:bg-base-300 rounded-full transition-colors"
+              title="Réinitialiser"
             >
-              <RotateCw className="w-4 h-4 text-base-content/60" />
+              <RotateCw className="w-5 h-5 text-base-content/60" />
             </button>
           )}
           <button onClick={() => toggleSection(sectionKey)}>
@@ -547,7 +548,7 @@ export default function Home() {
                   onClick={handleResetPersonalDetails}
                   className="btn btn-primary btn-sm"
                 >
-                  <RotateCw className="w-4" />
+                  <RotateCw className="w-5 h-5" />
                 </button>
               </div>
               <PersonalDetailsForm
@@ -564,7 +565,7 @@ export default function Home() {
                   onClick={handleResetExperiences}
                   className="btn btn-primary btn-sm"
                 >
-                  <RotateCw className="w-4" />
+                  <RotateCw className="w-5 h-5" />
                 </button>
               </div>
               <ExperienceForm
@@ -580,7 +581,7 @@ export default function Home() {
                   onClick={handleResetEducations}
                   className="btn btn-primary btn-sm"
                 >
-                  <RotateCw className="w-4" />
+                  <RotateCw className="w-5 h-5" />
                 </button>
               </div>
               <EducationForm
@@ -594,14 +595,14 @@ export default function Home() {
                   onClick={handleResetLanguages}
                   className="btn btn-primary btn-sm"
                 >
-                  <RotateCw className="w-4" />
+                  <RotateCw className="w-5 h-5" />
                 </button>
               </div>
               <LanguageForm languages={languages} setLanguages={setLanguages} />
 
-              <div className="space-y-6">
+              <div className="space-y-8">
                 <div>
-                  <div className="flex justify-between items-center">
+                  <div className="flex justify-between items-center mb-4">
                     <h1 className="badge badge-primary badge-outline">
                       Competences
                     </h1>
@@ -609,13 +610,13 @@ export default function Home() {
                       onClick={handleResetSkills}
                       className="btn btn-primary btn-sm"
                     >
-                      <RotateCw className="w-4" />
+                      <RotateCw className="w-5 h-5" />
                     </button>
                   </div>
                   <SkillForm skills={skills} setSkills={setSkills} />
                 </div>
                 <div>
-                  <div className="flex justify-between items-center">
+                  <div className="flex justify-between items-center mb-4">
                     <h1 className="badge badge-primary badge-outline">
                       Loisirs
                     </h1>
@@ -623,7 +624,7 @@ export default function Home() {
                       onClick={handleResetHobbies}
                       className="btn btn-primary btn-sm"
                     >
-                      <RotateCw className="w-4" />
+                      <RotateCw className="w-5 h-5" />
                     </button>
                   </div>
                   <HobbyForm hobbies={hobbies} setHobbies={setHobbies} />

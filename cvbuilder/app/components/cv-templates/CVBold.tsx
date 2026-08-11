@@ -6,6 +6,14 @@ import {
   PersonalDetails,
   Skill,
 } from "@/type";
+import {
+  educationsPreset,
+  experiencesPreset,
+  hobbiesPreset,
+  languagesPreset,
+  personalDetailsPreset,
+  skillsPreset,
+} from "@/presets";
 import React from "react";
 import Image from "next/image";
 
@@ -39,6 +47,23 @@ const CVBold: React.FC<Props> = ({
   download,
   ref,
 }) => {
+  const pd = {
+    fullName: personalDetails.fullName || personalDetailsPreset.fullName,
+    email: personalDetails.email || personalDetailsPreset.email,
+    phone: personalDetails.phone || personalDetailsPreset.phone,
+    address: personalDetails.address || personalDetailsPreset.address,
+    postSeeking:
+      personalDetails.postSeeking || personalDetailsPreset.postSeeking,
+    description:
+      personalDetails.description || personalDetailsPreset.description,
+  };
+  const display = {
+    experiences: experiences.length > 0 ? experiences : experiencesPreset,
+    educations: educations.length > 0 ? educations : educationsPreset,
+    languages: languages.length > 0 ? languages : languagesPreset,
+    skills: skills.length > 0 ? skills : skillsPreset,
+    hobbies: hobbies.length > 0 ? hobbies : hobbiesPreset,
+  };
   return (
     <div
       ref={ref}
@@ -69,25 +94,25 @@ const CVBold: React.FC<Props> = ({
           <h3 className="font-bold text-lg border-b-2 border-primary-content/30 pb-2">
             Contact
           </h3>
-          {personalDetails.email && (
-            <p className="text-sm break-all">{personalDetails.email}</p>
+          {pd.email && (
+            <p className="text-sm break-all">{pd.email}</p>
           )}
-          {personalDetails.phone && (
-            <p className="text-sm">{personalDetails.phone}</p>
+          {pd.phone && (
+            <p className="text-sm">{pd.phone}</p>
           )}
-          {personalDetails.address && (
-            <p className="text-sm">{personalDetails.address}</p>
+          {pd.address && (
+            <p className="text-sm">{pd.address}</p>
           )}
         </div>
 
         {/* Compétences */}
-        {skills.length > 0 && (
+        {display.skills.length > 0 && (
           <div className="mb-8">
             <h3 className="font-bold text-lg border-b-2 border-primary-content/30 pb-2 mb-4">
               Compétences
             </h3>
             <div className="flex flex-wrap gap-2">
-              {skills.map((s, i) => (
+              {display.skills.map((s, i) => (
                 <span
                   key={i}
                   className="px-3 py-1 bg-primary-content/20 rounded-lg text-sm"
@@ -100,13 +125,13 @@ const CVBold: React.FC<Props> = ({
         )}
 
         {/* Langues */}
-        {languages.length > 0 && (
+        {display.languages.length > 0 && (
           <div className="mb-8">
             <h3 className="font-bold text-lg border-b-2 border-primary-content/30 pb-2 mb-4">
               Langues
             </h3>
             <div className="space-y-2">
-              {languages.map((l, i) => (
+              {display.languages.map((l, i) => (
                 <div key={i} className="flex justify-between text-sm">
                   <span>{l.language}</span>
                   <span className="opacity-80">{l.proficiency}</span>
@@ -117,13 +142,13 @@ const CVBold: React.FC<Props> = ({
         )}
 
         {/* Loisirs */}
-        {hobbies.length > 0 && (
+        {display.hobbies.length > 0 && (
           <div>
             <h3 className="font-bold text-lg border-b-2 border-primary-content/30 pb-2 mb-4">
               Loisirs
             </h3>
             <p className="text-sm leading-relaxed">
-              {hobbies.map((h) => h.name).join(" • ")}
+              {display.hobbies.map((h) => h.name).join(" • ")}
             </p>
           </div>
         )}
@@ -134,20 +159,20 @@ const CVBold: React.FC<Props> = ({
         {/* Header */}
         <div className="mb-12">
           <h1 className="text-6xl font-black text-primary mb-4 leading-none">
-            {personalDetails.fullName || "Votre nom"}
+            {pd.fullName || "Votre nom"}
           </h1>
           <p className="text-2xl text-base-content/70 font-medium">
-            {personalDetails.postSeeking}
+            {pd.postSeeking}
           </p>
-          {personalDetails.description && (
+          {pd.description && (
             <p className="break-words whitespace-pre-wrap mt-6 text-base-content/80 leading-relaxed border-l-4 border-primary pl-4">
-              {personalDetails.description}
+              {pd.description}
             </p>
           )}
         </div>
 
         {/* Expériences */}
-        {experiences.length > 0 && (
+        {display.experiences.length > 0 && (
           <section className="mb-10">
             <h2 className="text-2xl font-black text-primary mb-6 flex items-center gap-3">
               <span className="w-8 h-8 bg-primary text-primary-content rounded-lg flex items-center justify-center text-sm">
@@ -156,7 +181,7 @@ const CVBold: React.FC<Props> = ({
               Expérience
             </h2>
             <div className="space-y-6">
-              {experiences.map((exp, i) => (
+              {display.experiences.map((exp, i) => (
                 <div
                   key={i}
                   className="relative pl-6 border-l-2 border-base-300"
@@ -186,7 +211,7 @@ const CVBold: React.FC<Props> = ({
         )}
 
         {/* Formations */}
-        {educations.length > 0 && (
+        {display.educations.length > 0 && (
           <section>
             <h2 className="text-2xl font-black text-primary mb-6 flex items-center gap-3">
               <span className="w-8 h-8 bg-primary text-primary-content rounded-lg flex items-center justify-center text-sm">
@@ -195,7 +220,7 @@ const CVBold: React.FC<Props> = ({
               Formation
             </h2>
             <div className="space-y-6">
-              {educations.map((edu, i) => (
+              {display.educations.map((edu, i) => (
                 <div
                   key={i}
                   className="relative pl-6 border-l-2 border-base-300"
@@ -203,9 +228,11 @@ const CVBold: React.FC<Props> = ({
                   <div className="absolute -left-[9px] top-0 w-4 h-4 rounded-full bg-primary" />
                   <h3 className="font-bold text-lg">
                     {edu.degree}{" "}
-                    <span className="text-sm font-normal text-base-content/60">
-                      ({edu.level})
-                    </span>
+                    {edu.level && (
+                      <span className="text-sm font-normal text-base-content/60">
+                        ({edu.level})
+                      </span>
+                    )}
                   </h3>
                   <p className="text-primary font-medium mb-2">
                     {edu.school}

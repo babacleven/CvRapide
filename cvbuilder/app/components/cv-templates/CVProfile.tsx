@@ -6,6 +6,14 @@ import {
   PersonalDetails,
   Skill,
 } from "@/type";
+import {
+  educationsPreset,
+  experiencesPreset,
+  hobbiesPreset,
+  languagesPreset,
+  personalDetailsPreset,
+  skillsPreset,
+} from "@/presets";
 import React from "react";
 import Image from "next/image";
 import {
@@ -73,6 +81,23 @@ const CVProfile: React.FC<Props> = ({
   download,
   ref,
 }) => {
+  const pd = {
+    fullName: personalDetails.fullName || personalDetailsPreset.fullName,
+    email: personalDetails.email || personalDetailsPreset.email,
+    phone: personalDetails.phone || personalDetailsPreset.phone,
+    address: personalDetails.address || personalDetailsPreset.address,
+    postSeeking:
+      personalDetails.postSeeking || personalDetailsPreset.postSeeking,
+    description:
+      personalDetails.description || personalDetailsPreset.description,
+  };
+  const display = {
+    experiences: experiences.length > 0 ? experiences : experiencesPreset,
+    educations: educations.length > 0 ? educations : educationsPreset,
+    languages: languages.length > 0 ? languages : languagesPreset,
+    skills: skills.length > 0 ? skills : skillsPreset,
+    hobbies: hobbies.length > 0 ? hobbies : hobbiesPreset,
+  };
   return (
     <div
       ref={ref}
@@ -100,44 +125,44 @@ const CVProfile: React.FC<Props> = ({
             Coordonnées
           </h2>
           <div className="space-y-2 text-sm">
-            {personalDetails.phone && (
+            {pd.phone && (
               <div className="flex items-center gap-2">
-                <Phone className="w-4" /> {personalDetails.phone}
+                <Phone className="w-4" /> {pd.phone}
               </div>
             )}
-            {personalDetails.email && (
+            {pd.email && (
               <div className="flex items-center gap-2 break-all">
-                <Mail className="w-4" /> {personalDetails.email}
+                <Mail className="w-4" /> {pd.email}
               </div>
             )}
-            {personalDetails.address && (
+            {pd.address && (
               <div className="flex items-center gap-2">
-                <MapPin className="w-4" /> {personalDetails.address}
+                <MapPin className="w-4" /> {pd.address}
               </div>
             )}
           </div>
         </div>
 
         {/* Profil (description) */}
-        {personalDetails.description && (
+        {pd.description && (
           <div>
             <h2 className="text-lg font-bold uppercase tracking-wider text-primary mb-3">
               Profil
             </h2>
             <p className="text-sm leading-relaxed break-words whitespace-pre-wrap">
-              {personalDetails.description}
+              {pd.description}
             </p>
           </div>
         )}
 
         {/* Compétences */}
-        {skills.length > 0 && (
+        {display.skills.length > 0 && (
           <div>
             <h2 className="text-lg font-bold uppercase tracking-wider text-primary mb-3">
               Compétences
             </h2>
             <div className="flex flex-wrap gap-2">
-              {skills.map((s, i) => (
+              {display.skills.map((s, i) => (
                 <span key={i} className="badge badge-primary badge-outline">
                   {s.name}
                 </span>
@@ -147,13 +172,13 @@ const CVProfile: React.FC<Props> = ({
         )}
 
         {/* Langues */}
-        {languages.length > 0 && (
+        {display.languages.length > 0 && (
           <div>
             <h2 className="text-lg font-bold uppercase tracking-wider text-primary mb-3">
               Langues
             </h2>
             <div className="space-y-2">
-              {languages.map((l, i) => (
+              {display.languages.map((l, i) => (
                 <div key={i} className="flex justify-between items-center">
                   <span className="font-medium">{l.language}</span>
                   {getStarRating(l.proficiency)}
@@ -164,12 +189,12 @@ const CVProfile: React.FC<Props> = ({
         )}
 
         {/* Loisirs */}
-        {hobbies.length > 0 && (
+        {display.hobbies.length > 0 && (
           <div>
             <h2 className="text-lg font-bold uppercase tracking-wider text-primary mb-3">
               Loisirs
             </h2>
-            <p className="text-sm">{hobbies.map((h) => h.name).join(" • ")}</p>
+            <p className="text-sm">{display.hobbies.map((h) => h.name).join(" • ")}</p>
           </div>
         )}
       </div>
@@ -179,22 +204,22 @@ const CVProfile: React.FC<Props> = ({
         {/* En-tête */}
         <div>
           <h1 className="text-4xl font-bold text-primary">
-            {personalDetails.fullName || "Votre nom"}
+            {pd.fullName || "Votre nom"}
           </h1>
           <p className="text-xl font-medium text-base-content/80 mt-1">
-            {personalDetails.postSeeking || "Poste recherché"}
+            {pd.postSeeking || "Poste recherché"}
           </p>
         </div>
 
         {/* Expériences professionnelles */}
-        {experiences.length > 0 && (
+        {display.experiences.length > 0 && (
           <div>
             <h2 className="text-md font-bold uppercase tracking-wider border-b-2 border-primary pb-1 mb-4 flex items-center gap-2">
               <BriefcaseBusiness className="w-4 h-4" /> Expériences
               professionnelles
             </h2>
             <div className="space-y-4">
-              {experiences.map((exp, i) => (
+              {display.experiences.map((exp, i) => (
                 <div key={i}>
                   <div className="flex justify-between items-baseline">
                     <h3 className="font-bold text-base">{exp.jobTitle}</h3>
@@ -217,20 +242,22 @@ const CVProfile: React.FC<Props> = ({
         )}
 
         {/* Formations */}
-        {educations.length > 0 && (
+        {display.educations.length > 0 && (
           <div>
             <h2 className="text-md font-bold uppercase tracking-wider border-b-2 border-primary pb-1 mb-4 flex items-center gap-2">
               <GraduationCap className="w-4 h-4" /> Formations
             </h2>
             <div className="space-y-3">
-              {educations.map((edu, i) => (
+              {display.educations.map((edu, i) => (
                 <div key={i}>
                   <div className="flex justify-between items-baseline">
                     <h3 className="font-bold text-base">
                       {edu.degree}{" "}
-                      <span className="text-sm font-normal text-base-content/60">
-                        ({edu.level})
-                      </span>
+                      {edu.level && (
+                        <span className="text-sm font-normal text-base-content/60">
+                          ({edu.level})
+                        </span>
+                      )}
                     </h3>
                     <span className="text-xs text-base-content/60">
                       {formatDate(edu.startDate)} -{" "}

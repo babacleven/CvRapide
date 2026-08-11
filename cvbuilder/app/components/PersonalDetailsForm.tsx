@@ -24,7 +24,7 @@ const PersonalDetailsForm: React.FC<Props> = ({ personalDetails, setPersonalDeta
     <div className='flex flex-col gap-4'>
       <input
         type="text"
-        placeholder='Nom complet'
+        placeholder='PRÉNOM NOM'
         value={personalDetails.fullName}
         onChange={(e) => handleChange(e, 'fullName')}
         className='input input-bordered w-full'
@@ -32,14 +32,14 @@ const PersonalDetailsForm: React.FC<Props> = ({ personalDetails, setPersonalDeta
       <div className='flex flex-col sm:flex-row gap-4'>
         <input
           type="email"
-          placeholder='Email'
+          placeholder='exemple@email.com'
           value={personalDetails.email}
           onChange={(e) => handleChange(e, 'email')}
           className='input input-bordered w-full'
         />
         <input
           type="tel"
-          placeholder='Numéro de téléphone (+242 ...)'
+          placeholder='+242 00 00 00 00'
           value={personalDetails.phone}
           onChange={(e) => handleChange(e, 'phone')}
           className='input input-bordered w-full'
@@ -48,7 +48,7 @@ const PersonalDetailsForm: React.FC<Props> = ({ personalDetails, setPersonalDeta
 
       <input
         type="text"
-        placeholder='Addresse'
+        placeholder='Ville, Pays'
         value={personalDetails.address}
         onChange={(e) => handleChange(e, 'address')}
         className='input input-bordered w-full'
@@ -63,14 +63,14 @@ const PersonalDetailsForm: React.FC<Props> = ({ personalDetails, setPersonalDeta
 
       <input
         type="text"
-        placeholder='Post Recherché'
+        placeholder='Titre du poste'
         value={personalDetails.postSeeking}
         onChange={(e) => handleChange(e, 'postSeeking')}
         className='input input-bordered w-full'
       />
 
       <textarea
-        placeholder='Description de la personne'
+        placeholder='Décrivez en quelques lignes votre parcours professionnel, vos compétences clés pour le poste et vos objectifs de carrière.'
         value={personalDetails.description}
         onChange={(e) => handleChange(e, 'description')}
         className='input input-bordered w-full'

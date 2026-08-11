@@ -6,6 +6,14 @@ import {
   PersonalDetails,
   Skill,
 } from "@/type";
+import {
+  educationsPreset,
+  experiencesPreset,
+  hobbiesPreset,
+  languagesPreset,
+  personalDetailsPreset,
+  skillsPreset,
+} from "@/presets";
 import React from "react";
 import Image from "next/image";
 import {
@@ -79,6 +87,23 @@ const CVClassic: React.FC<Props> = ({
   download,
   ref,
 }) => {
+  const pd = {
+    fullName: personalDetails.fullName || personalDetailsPreset.fullName,
+    email: personalDetails.email || personalDetailsPreset.email,
+    phone: personalDetails.phone || personalDetailsPreset.phone,
+    address: personalDetails.address || personalDetailsPreset.address,
+    postSeeking:
+      personalDetails.postSeeking || personalDetailsPreset.postSeeking,
+    description:
+      personalDetails.description || personalDetailsPreset.description,
+  };
+  const display = {
+    experiences: experiences.length > 0 ? experiences : experiencesPreset,
+    educations: educations.length > 0 ? educations : educationsPreset,
+    languages: languages.length > 0 ? languages : languagesPreset,
+    skills: skills.length > 0 ? skills : skillsPreset,
+    hobbies: hobbies.length > 0 ? hobbies : hobbiesPreset,
+  };
   return (
     <div
       ref={ref}
@@ -107,8 +132,8 @@ const CVClassic: React.FC<Props> = ({
             <ul className="space-y-2">
               <li className="flex">
                 <div className="break-all text-sm relative">
-                  <div className="ml-8">{personalDetails.phone}</div>
-                  {personalDetails.phone && (
+                  <div className="ml-8">{pd.phone}</div>
+                  {pd.phone && (
                     <div className="absolute left-0 top-0">
                       <Phone className="w-5 text-primary" />
                     </div>
@@ -117,8 +142,8 @@ const CVClassic: React.FC<Props> = ({
               </li>
               <li className="flex">
                 <div className="break-all text-sm relative">
-                  <div className="ml-8">{personalDetails.email}</div>
-                  {personalDetails.email && (
+                  <div className="ml-8">{pd.email}</div>
+                  {pd.email && (
                     <div className="absolute left-0 top-0">
                       <Mail className="w-5 text-primary" />
                     </div>
@@ -127,8 +152,8 @@ const CVClassic: React.FC<Props> = ({
               </li>
               <li className="flex">
                 <div className="break-all text-sm relative">
-                  <div className="ml-8">{personalDetails.address}</div>
-                  {personalDetails.address && (
+                  <div className="ml-8">{pd.address}</div>
+                  {pd.address && (
                     <div className="absolute left-0 top-0">
                       <MapPinCheckInside className="w-5 text-primary" />
                     </div>
@@ -140,7 +165,7 @@ const CVClassic: React.FC<Props> = ({
           <div className="mt-6">
             <h1 className="uppercase font-bold my-2">Compétences</h1>
             <div className="flex flex-wrap gap-2">
-              {skills.map((skill, i) => (
+              {display.skills.map((skill, i) => (
                 <p key={i} className="badge badge-primary uppercase">
                   {skill.name}
                 </p>
@@ -150,7 +175,7 @@ const CVClassic: React.FC<Props> = ({
           <div className="mt-6">
             <h1 className="uppercase font-bold my-2">Langues</h1>
             <div className="flex flex-col space-y-2">
-              {languages.map((lang, i) => (
+              {display.languages.map((lang, i) => (
                 <div key={i}>
                   <span className="capitalize font-semibold">
                     {lang.language}
@@ -165,7 +190,7 @@ const CVClassic: React.FC<Props> = ({
           <div className="mt-6">
             <h1 className="uppercase font-bold my-2">Loisirs</h1>
             <div className="flex flex-col space-y-2">
-              {hobbies.map((hobby, i) => (
+              {display.hobbies.map((hobby, i) => (
                 <div key={i}>
                   <span className="capitalize">{hobby.name}</span>
                 </div>
@@ -178,12 +203,12 @@ const CVClassic: React.FC<Props> = ({
       {/* Colonne droite */}
       <div className="w-2/3 ml-8">
         <div className="w-full flex flex-col space-y-4">
-          <h1 className="uppercase text-xl">{personalDetails.fullName}</h1>
+          <h1 className="uppercase text-xl">{pd.fullName}</h1>
           <h2 className="uppercase text-5xl text-primary font-bold">
-            {personalDetails.postSeeking}
+            {pd.postSeeking}
           </h2>
           <p className="break-words whitespace-pre-wrap w-full text-sm leading-relaxed">
-            {personalDetails.description}
+            {pd.description}
           </p>
         </div>
         <section className="w-full h-fit p-5">
@@ -191,7 +216,7 @@ const CVClassic: React.FC<Props> = ({
           <div>
             <h1 className="uppercase font-bold mb-2">Expériences</h1>
             <ul className="steps steps-vertical space-y-3">
-              {experiences.map((exp, i) => (
+              {display.experiences.map((exp, i) => (
                 <li className="step step-primary" key={i}>
                   <div className="text-left">
                     <h2 className="flex text-md uppercase font-bold">
@@ -224,13 +249,14 @@ const CVClassic: React.FC<Props> = ({
           <div className="mt-6">
             <h1 className="uppercase font-bold mb-2">Formations</h1>
             <ul className="steps steps-vertical space-y-3">
-              {educations.map((edu, i) => (
+              {display.educations.map((edu, i) => (
                 <li className="step step-primary" key={i}>
                   <div className="text-left">
                     <h2 className="flex text-md uppercase font-bold">
                       <GraduationCap className="w-5" />
                       <span className="ml-2">
-                        {edu.degree} ({edu.level})
+                        {edu.degree}
+                        {edu.level && ` (${edu.level})`}
                       </span>
                     </h2>
                     <div className="text-sm my-2">

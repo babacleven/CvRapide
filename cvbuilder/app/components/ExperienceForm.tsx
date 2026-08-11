@@ -94,14 +94,14 @@ const ExperienceForm: React.FC<Props> = ({ experience, setExperiences }) => {
         <div className="flex gap-2">
           <input
             type="text"
-            placeholder="Poste occupé"
+            placeholder="POSTE OCCUPÉ"
             value={newExperience.jobTitle}
             onChange={(e) => handleChange(e, "jobTitle")}
             className="input input-bordered w-full"
           />
           <input
             type="text"
-            placeholder="Entreprise"
+            placeholder="NOM ENTREPRISE"
             value={newExperience.companyName}
             onChange={(e) => handleChange(e, "companyName")}
             className="input input-bordered w-full"
@@ -144,7 +144,7 @@ const ExperienceForm: React.FC<Props> = ({ experience, setExperiences }) => {
           </span>
         </label>
         <textarea
-          placeholder="Description des missions"
+          placeholder="Décrivez ici les fonctions que vous avez occupé pour ce poste. Décrivez également vos missions et les résultats que vous avez obtenu."
           value={newExperience.description}
           onChange={(e) => handleChange(e, "description")}
           className="textarea textarea-bordered w-full"

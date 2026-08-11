@@ -6,6 +6,14 @@ import {
   PersonalDetails,
   Skill,
 } from "@/type";
+import {
+  educationsPreset,
+  experiencesPreset,
+  hobbiesPreset,
+  languagesPreset,
+  personalDetailsPreset,
+  skillsPreset,
+} from "@/presets";
 import React from "react";
 import Image from "next/image";
 
@@ -39,6 +47,23 @@ const CVMinimal: React.FC<Props> = ({
   download,
   ref,
 }) => {
+  const pd = {
+    fullName: personalDetails.fullName || personalDetailsPreset.fullName,
+    email: personalDetails.email || personalDetailsPreset.email,
+    phone: personalDetails.phone || personalDetailsPreset.phone,
+    address: personalDetails.address || personalDetailsPreset.address,
+    postSeeking:
+      personalDetails.postSeeking || personalDetailsPreset.postSeeking,
+    description:
+      personalDetails.description || personalDetailsPreset.description,
+  };
+  const display = {
+    experiences: experiences.length > 0 ? experiences : experiencesPreset,
+    educations: educations.length > 0 ? educations : educationsPreset,
+    languages: languages.length > 0 ? languages : languagesPreset,
+    skills: skills.length > 0 ? skills : skillsPreset,
+    hobbies: hobbies.length > 0 ? hobbies : hobbiesPreset,
+  };
   return (
     <div
       ref={ref}
@@ -49,10 +74,10 @@ const CVMinimal: React.FC<Props> = ({
         <div className="flex items-start justify-between">
           <div>
             <h1 className="text-5xl font-light tracking-tight mb-2">
-              {personalDetails.fullName || "Votre nom"}
+              {pd.fullName || "Votre nom"}
             </h1>
             <p className="text-xl text-gray-600 font-light">
-              {personalDetails.postSeeking}
+              {pd.postSeeking}
             </p>
           </div>
           {file && (
@@ -69,9 +94,9 @@ const CVMinimal: React.FC<Props> = ({
           )}
         </div>
         <div className="flex gap-6 mt-6 text-sm text-gray-600">
-          {personalDetails.email && <span>{personalDetails.email}</span>}
-          {personalDetails.phone && <span>{personalDetails.phone}</span>}
-          {personalDetails.address && <span>{personalDetails.address}</span>}
+          {pd.email && <span>{pd.email}</span>}
+          {pd.phone && <span>{pd.phone}</span>}
+          {pd.address && <span>{pd.address}</span>}
         </div>
       </header>
 
@@ -79,23 +104,23 @@ const CVMinimal: React.FC<Props> = ({
       <div className="grid grid-cols-3 gap-12">
         {/* Colonne gauche */}
         <div className="space-y-10">
-          {personalDetails.description && (
+          {pd.description && (
             <section>
               <h2 className="text-xs font-bold uppercase tracking-widest text-gray-400 mb-4">
                 Profil
               </h2>
               <p className="break-words whitespace-pre-wrap text-sm leading-relaxed">
-                {personalDetails.description}
+                {pd.description}
               </p>
             </section>
           )}
-          {skills.length > 0 && (
+          {display.skills.length > 0 && (
             <section>
               <h2 className="text-xs font-bold uppercase tracking-widest text-gray-400 mb-4">
                 Compétences
               </h2>
               <div className="space-y-1">
-                {skills.map((s, i) => (
+                {display.skills.map((s, i) => (
                   <p key={i} className="text-sm">
                     {s.name}
                   </p>
@@ -103,13 +128,13 @@ const CVMinimal: React.FC<Props> = ({
               </div>
             </section>
           )}
-          {languages.length > 0 && (
+          {display.languages.length > 0 && (
             <section>
               <h2 className="text-xs font-bold uppercase tracking-widest text-gray-400 mb-4">
                 Langues
               </h2>
               <div className="space-y-1">
-                {languages.map((l, i) => (
+                {display.languages.map((l, i) => (
                   <p key={i} className="text-sm">
                     {l.language} — {l.proficiency}
                   </p>
@@ -117,25 +142,25 @@ const CVMinimal: React.FC<Props> = ({
               </div>
             </section>
           )}
-          {hobbies.length > 0 && (
+          {display.hobbies.length > 0 && (
             <section>
               <h2 className="text-xs font-bold uppercase tracking-widest text-gray-400 mb-4">
                 Loisirs
               </h2>
-              <p className="text-sm">{hobbies.map((h) => h.name).join(", ")}</p>
+              <p className="text-sm">{display.hobbies.map((h) => h.name).join(", ")}</p>
             </section>
           )}
         </div>
 
         {/* Colonne droite */}
         <div className="col-span-2 space-y-10">
-          {experiences.length > 0 && (
+          {display.experiences.length > 0 && (
             <section>
               <h2 className="text-xs font-bold uppercase tracking-widest text-gray-400 mb-6">
                 Expérience
               </h2>
               <div className="space-y-6">
-                {experiences.map((exp, i) => (
+                {display.experiences.map((exp, i) => (
                   <div key={i}>
                     <div className="flex justify-between items-baseline mb-1">
                       <h3 className="font-medium">{exp.jobTitle}</h3>
@@ -156,17 +181,18 @@ const CVMinimal: React.FC<Props> = ({
               </div>
             </section>
           )}
-          {educations.length > 0 && (
+          {display.educations.length > 0 && (
             <section>
               <h2 className="text-xs font-bold uppercase tracking-widest text-gray-400 mb-6">
                 Formation
               </h2>
               <div className="space-y-6">
-                {educations.map((edu, i) => (
+                {display.educations.map((edu, i) => (
                   <div key={i}>
                     <div className="flex justify-between items-baseline mb-1">
                       <h3 className="font-medium">
-                        {edu.degree} ({edu.level})
+                        {edu.degree}
+                        {edu.level && ` (${edu.level})`}
                       </h3>
                       <span className="text-sm text-gray-500">
                         {formatDate(edu.startDate)} —{" "}
