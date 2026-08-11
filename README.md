@@ -4,13 +4,13 @@ Générateur de CV en ligne, moderne et rapide. Créez, personnalisez et téléc
 
 ## Fonctionnalités
 
-**6 modèles de CV** — Classique, Moderne, Minimaliste, Audacieux, Profil, Compétences
-**Export PDF** — Téléchargement haute qualité en un clic
-**Aperçu en direct** — Les modifications s'affichent en temps réel
-**Thèmes multiples** — 33 thèmes de couleurs via DaisyUI
-**Interface ludique** — Animations, confettis et effets visuels
-**Données persistantes** — CV sauvegardé automatiquement dans le navigateur
-**Responsive** — Utilisable sur tous les appareils
+**6 modèles de CV** - Classique, Moderne, Minimaliste, Audacieux, Profil, Compétences
+**Export PDF** - Téléchargement haute qualité en un clic
+**Aperçu en direct** - Les modifications s'affichent en temps réel
+**Thèmes multiples** - 33 thèmes de couleurs via DaisyUI
+**Interface ludique** - Animations, confettis et effets visuels
+**Données persistantes** - CV sauvegardé automatiquement dans le navigateur
+**Responsive** - Utilisable sur tous les appareils
 
 ## Stack Technique
 
@@ -79,7 +79,7 @@ CvRapide/
 
 ## License
 
-Projet sous licence MIT — voir [LICENSE](cvbuilder/LICENSE).
+Projet sous licence MIT - voir [LICENSE](cvbuilder/LICENSE).
 
 ---
 
