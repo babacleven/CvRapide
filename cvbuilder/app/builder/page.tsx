@@ -151,6 +151,8 @@ export default function Home() {
 
   const [activeTab, setActiveTab] = useState<"edit" | "preview">("edit");
   const [openSection, setOpenSection] = useState<string | null>("personal");
+  const [dialogZoom, setDialogZoom] = useState<number>(1);
+  const pdfContainerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     document.title = "CVFast Builder - Créez votre CV";
@@ -214,6 +216,10 @@ export default function Home() {
   const handleDownloadPdf = async () => {
     const element = cvPreviewRef.current;
     if (element) {
+      const wrapper = pdfContainerRef.current
+        ?.firstElementChild as HTMLElement | null;
+      const prevZoom = wrapper?.style.zoom;
+      if (wrapper) wrapper.style.zoom = "1";
       try {
         const isMobile = window.innerWidth < 768;
         const canvas = await html2canvas(element, {
@@ -245,12 +251,34 @@ export default function Home() {
         });
       } catch (error) {
         console.error("Erreur lors de la generation du PDF :", error);
+      } finally {
+        if (wrapper && prevZoom) wrapper.style.zoom = prevZoom;
       }
     }
   };
 
   const toggleSection = (section: string) => {
     setOpenSection(openSection === section ? null : section);
+  };
+
+  const fitPdfPreview = () => {
+    const container = pdfContainerRef.current;
+    const modal = document.getElementById("pdf_modal") as HTMLDialogElement;
+    if (!container) return;
+    const availW = container.clientWidth - 40;
+    const box = modal?.querySelector(".modal-box") as HTMLElement | null;
+    const availH = box ? box.clientHeight - 120 : availW;
+    const scaleByW = availW / 950;
+    const scaleByH = availH > 0 ? availH / 1300 : scaleByW;
+    const scale = Math.max(0.3, Math.min(1, scaleByW, scaleByH));
+    setDialogZoom(Math.round(scale * 100) / 100);
+  };
+
+  const openPdfModal = () => {
+    const modal = document.getElementById("pdf_modal") as HTMLDialogElement;
+    if (!modal) return;
+    modal.showModal();
+    setTimeout(fitPdfPreview, 0);
   };
 
   const MobileHeader = () => (
@@ -354,11 +382,7 @@ export default function Home() {
           ))}
         </select>
         <button
-          onClick={() =>
-            (
-              document.getElementById("pdf_modal") as HTMLDialogElement
-            ).showModal()
-          }
+          onClick={openPdfModal}
           className="btn btn-primary btn-sm"
         >
           <Download className="w-4 h-4" />
@@ -473,11 +497,7 @@ export default function Home() {
           </div>
         </div>
         <button
-          onClick={() =>
-            (
-              document.getElementById("pdf_modal") as HTMLDialogElement
-            ).showModal()
-          }
+          onClick={openPdfModal}
           className="btn btn-primary w-full mt-3"
         >
           <Download className="w-4 h-4 mr-2" />
@@ -503,11 +523,7 @@ export default function Home() {
               </h1>
               <button
                 className="btn btn-primary"
-                onClick={() =>
-                  (
-                    document.getElementById("pdf_modal") as HTMLDialogElement
-                  ).showModal()
-                }
+                onClick={openPdfModal}
               >
                 Previsualiser
                 <Eye className="w-4" />
@@ -674,14 +690,46 @@ export default function Home() {
               </button>
             </form>
             <div className="mt-5">
-              <div className="flex justify-end mb-5">
+              <div className="flex justify-end mb-5 items-center gap-3">
+                <div className="flex items-center gap-1">
+                  <button
+                    onClick={() =>
+                      setDialogZoom(Math.max(0.3, dialogZoom - 0.1))
+                    }
+                    className="btn btn-ghost btn-sm btn-circle"
+                    title="Zoom arrière"
+                  >
+                    <ZoomOut className="w-4 h-4" />
+                  </button>
+                  <span className="text-xs font-mono w-10 text-center">
+                    {Math.round(dialogZoom * 100)}%
+                  </span>
+                  <button
+                    onClick={() =>
+                      setDialogZoom(Math.min(1.5, dialogZoom + 0.1))
+                    }
+                    className="btn btn-ghost btn-sm btn-circle"
+                    title="Zoom avant"
+                  >
+                    <ZoomIn className="w-4 h-4" />
+                  </button>
+                </div>
                 <button onClick={handleDownloadPdf} className="btn btn-primary">
                   Telecharger
                   <Save className="w-4" />
                 </button>
               </div>
-              <div className="w-full max-x-full overflow-auto">
-                <div className="w-full max-w-full flex justify-center items-center">
+              <div
+                ref={pdfContainerRef}
+                className="w-full max-w-full overflow-auto"
+              >
+                <div
+                  className="mx-auto"
+                  style={{
+                    zoom: dialogZoom,
+                    width: 950,
+                  }}
+                >
                   <CVPreview
                     personalDetails={personalDetails}
                     file={file}
