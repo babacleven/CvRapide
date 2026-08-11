@@ -101,7 +101,18 @@ export default function Home() {
     "template",
     "classic",
   );
-  const [zoom, setZoom] = useLocalStorage<number>("zoom", 50);
+  const [zoom, setZoom] = useLocalStorage<number>("zoom", 77);
+
+  useEffect(() => {
+    if (
+      zoom === 77 &&
+      typeof window !== "undefined" &&
+      window.matchMedia("(max-width: 1023px)").matches
+    ) {
+      setZoom(35);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   // Gestion de la photo (fichier) : stockage en base64
   const [file, setFile] = useState<File | null>(null);
