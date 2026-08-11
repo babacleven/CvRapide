@@ -1,0 +1,62 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    sans-serif;
+  color-scheme: dark;
+}
+
+::selection {
+  background: rgba(96, 165, 250, 0.25);
+}
+
+.scrollable {
+    overflow-y: auto;
+    max-height: 100vh;
+}
+
+
+.scrollable-preview {
+    overflow-y: auto;
+    overflow-x: hidden;
+    max-height: 100vh;
+}
+
+.no-scrollbar::-webkit-scrollbar {
+    display: none;
+}
+
+.no-scrollbar {
+    -ms-overflow-style: none; 
+    scrollbar-width: none; 
+}
+
+/* Mobile optimizations */
+@media (max-width: 1024px) {
+  .scrollable {
+    -webkit-overflow-scrolling: touch;
+  }
+  
+  /* Fix iOS zoom on inputs */
+  input, select, textarea {
+    font-size: 16px;
+  }
+}
+
+/* Smooth accordion animation */
+.animate-in {
+  animation: slideDown 0.2s ease-out;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

@@ -1,0 +1,607 @@
+/* ==================================================================
+   Responsive
+   ================================================================== */
+
+@media (max-width: 1100px) {
+  .mise-en-page-doc {
+    grid-template-columns: 220px minmax(0, 1fr);
+  }
+  .sommaire {
+    display: none !important;
+  }
+}
+
+@media (min-width: 1101px) {
+  .sommaire {
+    display: block;
+  }
+}
+
+@media (max-height: 700px) and (min-width: 901px) {
+  .page-accueil {
+    --header-height: 56px;
+  }
+
+  .page-accueil .conteneur,
+  .page-accueil .entete-contenu {
+    padding-inline: 28px;
+  }
+
+  .page-accueil .hero-titre {
+    font-size: clamp(2.8rem, 4vw, 3.25rem);
+  }
+
+  .page-accueil .hero-contenu {
+    gap: 12px;
+  }
+
+  .page-accueil .hero-texte {
+    font-size: 14.5px;
+    line-height: 1.5;
+  }
+
+  .page-accueil .liste-benefices {
+    gap: 8px;
+  }
+
+  .page-accueil .benefice {
+    align-items: center;
+  }
+
+  .page-accueil .benefice-icone {
+    width: 26px;
+    height: 26px;
+  }
+
+  .page-accueil .benefice-titre {
+    font-size: 13.5px;
+  }
+
+  .page-accueil .benefice-texte {
+    display: none;
+  }
+
+  .page-accueil .terminal {
+    border-radius: 12px;
+  }
+
+  .page-accueil .terminal-barre {
+    padding: 8px 14px;
+  }
+
+  .page-accueil .terminal-corps {
+    min-height: 0;
+    padding: 10px 18px;
+    font-size: 10.5px;
+    line-height: 1.45;
+  }
+
+  .page-accueil .terminal-ligne-vide {
+    height: 2px;
+  }
+
+  .page-accueil .terminal-progression {
+    margin-top: 3px;
+  }
+
+  .page-accueil .bouton-principal {
+    min-height: 40px;
+    padding-block: 9px;
+    font-size: 14px;
+  }
+
+  .page-accueil .pied-de-page {
+    padding-block: 10px;
+  }
+}
+
+@media (max-height: 520px) and (min-width: 901px) {
+  .page-accueil {
+    --header-height: 48px;
+  }
+
+  .page-accueil .hero-contenu {
+    gap: 8px;
+  }
+
+  .page-accueil .eyebrow {
+    font-size: 10px;
+  }
+
+  .page-accueil .hero-titre {
+    font-size: 2.45rem;
+    line-height: 1.02;
+  }
+
+  .page-accueil .hero-texte {
+    font-size: 13px;
+    line-height: 1.4;
+  }
+
+  .page-accueil .liste-benefices {
+    gap: 5px;
+  }
+
+  .page-accueil .benefice {
+    gap: 10px;
+  }
+
+  .page-accueil .benefice-icone {
+    width: 24px;
+    height: 24px;
+  }
+
+  .page-accueil .benefice-titre {
+    font-size: 12.5px;
+  }
+
+  .page-accueil .terminal-colonne {
+    gap: 8px;
+  }
+
+  .page-accueil .terminal-corps {
+    padding-block: 8px;
+    font-size: 10px;
+    line-height: 1.35;
+  }
+
+  .page-accueil .pied-de-page {
+    padding-block: 6px;
+  }
+}
+
+@media (max-width: 900px) {
+  .hero-grille {
+    grid-template-columns: 1fr;
+    max-width: 680px;
+    gap: 44px;
+  }
+  .hero {
+    padding-block: 56px;
+    min-height: unset;
+  }
+  .terminal {
+    min-width: 0;
+  }
+}
+
+@media (max-width: 800px) {
+  .mise-en-page-doc {
+    grid-template-columns: 1fr;
+    padding-inline: 20px;
+  }
+
+  .bouton-menu-mobile {
+    display: inline-flex;
+    width: 42px;
+    height: 42px;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+  }
+
+  .sidebar {
+    position: fixed;
+    inset: var(--header-height) auto 0 0;
+    width: min(320px, 86vw);
+    height: calc(100vh - var(--header-height));
+    height: calc(100dvh - var(--header-height));
+    background: var(--color-background);
+    z-index: 30;
+    padding: 24px 18px 32px;
+    transform: translateX(-100%);
+    box-shadow: 18px 0 36px rgba(0, 0, 0, 0.36);
+    transition: transform 0.25s cubic-bezier(0.2, 0, 0, 1);
+    max-height: none;
+  }
+
+  .sidebar.est-ouverte {
+    transform: translateX(0);
+  }
+
+  .contenu-doc {
+    padding-block: 32px 80px;
+    overflow: hidden;
+  }
+
+  .nav-principale {
+    display: none;
+  }
+
+  body::before {
+    content: "";
+    position: fixed;
+    inset: var(--header-height) 0 0;
+    z-index: 25;
+    background: rgba(0, 0, 0, 0.56);
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition: opacity 0.2s ease, visibility 0.2s ease;
+  }
+
+  body.menu-doc-ouvert::before {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+  }
+
+  body:not(.page-accueil) .entete-contenu {
+    display: grid;
+    grid-template-columns: 42px minmax(0, 1fr) auto;
+  }
+
+  body:not(.page-accueil) .logo {
+    justify-self: center;
+  }
+
+  body:not(.page-accueil) .entete-actions {
+    justify-self: end;
+  }
+
+  .page-accueil .entete-contenu {
+    position: relative;
+    gap: 12px;
+  }
+
+  .page-accueil .entete-actions {
+    margin-left: auto;
+    gap: 10px;
+  }
+
+  .page-accueil .bouton-navigation-mobile {
+    display: inline-flex;
+  }
+
+  .page-accueil .nav-principale {
+    position: absolute;
+    top: calc(100% + 12px);
+    right: 20px;
+    left: 20px;
+    z-index: 50;
+    display: flex;
+    align-items: stretch;
+    flex-direction: column;
+    gap: 2px;
+    padding: 8px;
+    background: #0c0c0e;
+    border-radius: 12px;
+    box-shadow:
+      0 8px 8px rgba(0, 0, 0, 0.28),
+      0 20px 40px rgba(0, 0, 0, 0.32);
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-8px);
+    pointer-events: none;
+    transition:
+      opacity 0.2s ease,
+      visibility 0.2s ease,
+      transform 0.2s cubic-bezier(0.2, 0, 0, 1);
+  }
+
+  .page-accueil .nav-principale.est-ouvert {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+    pointer-events: auto;
+  }
+
+  .page-accueil .nav-principale a {
+    min-height: 44px;
+    padding: 10px 12px;
+    border-radius: 8px;
+  }
+
+  .page-accueil .nav-principale a:hover,
+  .page-accueil .nav-principale a[aria-current="page"] {
+    background: rgba(96, 165, 250, 0.1);
+  }
+}
+
+@media (max-width: 640px) {
+  .conteneur,
+  .entete-contenu,
+  .mise-en-page-doc {
+    padding-inline: 20px;
+  }
+
+  .hero-titre {
+    font-size: clamp(2.5rem, 9vw, 3rem);
+    line-height: 1.06;
+  }
+
+  .hero {
+    padding-block: 48px;
+  }
+
+  .hero-contenu {
+    gap: 18px;
+  }
+
+  .hero-texte {
+    font-size: 15px;
+  }
+
+  .liste-benefices {
+    gap: 14px;
+  }
+
+  .terminal-barre {
+    padding: 10px 14px;
+  }
+
+  .terminal-corps {
+    padding: 16px;
+    font-size: 11px;
+    line-height: 1.7;
+  }
+
+  .fonction-nom {
+    font-size: clamp(1.25rem, 6vw, 1.5rem);
+  }
+
+  .doc-titre {
+    font-size: clamp(2.5rem, 13vw, 3.5rem);
+  }
+
+  .doc-description {
+    font-size: 15px;
+  }
+
+  .meta-liste {
+    gap: 8px;
+  }
+
+  .meta-item {
+    padding: 5px 10px;
+    font-size: 11px;
+  }
+
+  .doc-section,
+  .fonction-section {
+    padding-block: 34px;
+  }
+
+  .parametre {
+    flex-wrap: wrap;
+    gap: 2px 8px;
+  }
+
+  .bloc-code-barre {
+    padding-inline: 12px;
+  }
+
+  .bloc-code pre {
+    padding: 14px 12px;
+    font-size: 12px;
+  }
+
+  .pied-de-page .conteneur {
+    flex-direction: column;
+    gap: 10px;
+    text-align: center;
+  }
+
+  .footer-liens {
+    justify-content: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .conteneur,
+  .entete-contenu,
+  .mise-en-page-doc {
+    padding-inline: 16px;
+  }
+
+  body:not(.page-accueil) .logo {
+    font-size: 13px;
+  }
+
+  body:not(.page-accueil) .entete-actions .lien-source span {
+    display: none;
+  }
+
+  body:not(.page-accueil) .entete-actions .lien-source {
+    width: 42px;
+    height: 42px;
+    justify-content: center;
+  }
+
+  .page-accueil .entete-actions .bouton-principal {
+    padding: 0.5rem 0.85rem;
+    font-size: 0.8rem;
+    white-space: nowrap;
+  }
+
+  .review-modal-content {
+    padding: 24px 20px;
+  }
+
+  .cv-preview {
+    padding: 16px;
+  }
+}
+
+/* ==================================================================
+   Responsive — CVFast sections
+   ================================================================== */
+
+@media (max-width: 900px) {
+  .stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .process-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .reviews-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .template-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .features-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .stats-section,
+  .process,
+  .reviews,
+  .templates,
+  .features,
+  .faq {
+    padding-block: 48px;
+  }
+
+  .cta {
+    padding-block: 56px;
+  }
+
+  .section-title {
+    margin-bottom: 32px;
+  }
+}
+
+@media (max-width: 640px) {
+  .stats-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+
+  .stat-card {
+    padding: 24px 12px;
+  }
+
+  .process-grid {
+    gap: 16px;
+  }
+
+  .reviews-grid {
+    gap: 16px;
+  }
+
+  .review-card {
+    padding: 20px;
+  }
+
+  .template-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .features-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .feature-card {
+    padding: 24px 20px;
+  }
+
+  .stats-section,
+  .process,
+  .reviews,
+  .templates,
+  .features,
+  .faq {
+    padding-block: 40px;
+  }
+
+  .cta {
+    padding-block: 48px;
+  }
+
+  .section-title {
+    margin-bottom: 24px;
+  }
+
+  .section-title h2 {
+    font-size: 1.5rem;
+  }
+
+  .hero-trust {
+    gap: 12px 16px;
+  }
+
+  .hero-trust div {
+    font-size: 12px;
+  }
+
+  .hero-buttons {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .hero-buttons .bouton-principal,
+  .hero-buttons .lien-secondaire {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .cv-preview {
+    padding: 20px;
+  }
+
+  .process-card {
+    padding: 24px 20px;
+  }
+
+  .faq-list {
+    gap: 8px;
+  }
+
+  .faq-item button {
+    padding: 14px 16px;
+    font-size: 13px;
+  }
+
+  .review-modal-content {
+    padding: 24px 16px;
+  }
+
+  .star-rating button {
+    font-size: 24px;
+  }
+}
+
+@media (max-width: 480px) {
+  .stats-grid {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .stats-section,
+  .process,
+  .reviews,
+  .templates,
+  .features,
+  .faq {
+    padding-block: 32px;
+  }
+
+  .cta {
+    padding-block: 40px;
+  }
+
+  .process-card > span {
+    font-size: 22px;
+  }
+
+  .template-card {
+    padding: 16px;
+  }
+
+  .modal-actions {
+    flex-direction: column;
+  }
+
+  .modal-actions .btn-secondaire,
+  .modal-actions .bouton-principal {
+    width: 100%;
+    justify-content: center;
+  }
+}

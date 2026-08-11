@@ -1,0 +1,6 @@
+# logs
+*.log
+dev.log
+
+# fichiers de test / données personnelles
+cvbuilder/app/components/cv-templates/*.pdf

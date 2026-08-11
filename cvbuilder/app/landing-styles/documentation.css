@@ -1,0 +1,535 @@
+/* ==================================================================
+   Page documentation
+   ================================================================== */
+
+.mise-en-page-doc {
+  width: 100%;
+  max-width: var(--max-width);
+  margin-inline: auto;
+  padding-inline: 32px;
+  display: grid;
+  grid-template-columns: 220px minmax(0, 1fr) 180px;
+  gap: clamp(32px, 4vw, 52px);
+  align-items: start;
+  overflow-x: clip;
+}
+
+/* -------------------------- Sidebar gauche -------------------------- */
+
+.sidebar {
+  position: sticky;
+  top: calc(var(--header-height) + 32px);
+  max-height: calc(100vh - var(--header-height) - 48px);
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: 32px 10px 32px 0;
+  scrollbar-width: thin;
+  scrollbar-color: #3f3f46 transparent;
+  overscroll-behavior: contain;
+}
+
+.sidebar::-webkit-scrollbar {
+  width: 6px;
+}
+
+.sidebar::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.sidebar::-webkit-scrollbar-thumb {
+  background: #3f3f46;
+  border-radius: 999px;
+}
+
+.sidebar::-webkit-scrollbar-thumb:hover {
+  background: #52525b;
+}
+
+.sidebar-groupe {
+  margin-bottom: 26px;
+}
+
+.sidebar-groupe-titre {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+  margin-bottom: 10px;
+}
+
+.sidebar-nav li + li {
+  margin-top: 2px;
+}
+
+.sidebar-nav a {
+  display: block;
+  padding: 6px 10px;
+  margin-inline: 0;
+  border-radius: var(--radius-control);
+  font-size: 13.5px;
+  color: var(--color-text-muted);
+  transition: color 0.15s ease, background 0.15s ease;
+}
+
+.sidebar-nav a:hover {
+  color: var(--color-text);
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.sidebar-nav a.est-actif {
+  color: var(--color-primary);
+  background: var(--color-primary-soft);
+  font-weight: 500;
+}
+
+/* ---------------------------- Contenu -------------------------------- */
+
+.contenu-doc {
+  width: 100%;
+  min-width: 0;
+  max-width: 800px;
+  padding-block: 40px 120px;
+}
+
+.contenu-doc [hidden] {
+  display: none;
+}
+
+.doc-intro {
+  margin-bottom: 56px;
+}
+
+.doc-titre {
+  font-size: clamp(2.5rem, 5vw, 4.5rem);
+  letter-spacing: -0.03em;
+  margin-top: 14px;
+  margin-bottom: 16px;
+}
+
+.doc-description {
+  color: var(--color-text-muted);
+  font-size: 17px;
+  max-width: 60ch;
+  overflow-wrap: anywhere;
+}
+
+.meta-liste {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 24px;
+}
+
+.meta-item {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--color-text-muted);
+  background: var(--color-surface-soft);
+  border: 1px solid var(--color-border);
+  padding: 6px 12px;
+  border-radius: 999px;
+}
+
+.doc-section {
+  padding-block: 40px;
+  border-top: 1px solid var(--color-border);
+}
+
+.doc-section-titre {
+  font-size: 22px;
+  font-weight: 600;
+  margin-bottom: 14px;
+}
+
+.onglets {
+  display: flex;
+  gap: 4px;
+  background: var(--color-surface-soft);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-control);
+  padding: 4px;
+  width: fit-content;
+  margin-bottom: 16px;
+  max-width: 100%;
+  overflow-x: auto;
+}
+
+.onglet {
+  padding: 7px 14px;
+  border-radius: 6px;
+  font-size: 13px;
+  color: var(--color-text-muted);
+}
+
+.onglet.est-actif {
+  background: var(--color-surface);
+  color: var(--color-text);
+}
+
+.onglet:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+/* ------------------------ Fiches de fonction -------------------------- */
+
+.fonction-section {
+  padding-block: 48px;
+  border-top: 1px solid var(--color-border);
+  scroll-margin-top: calc(var(--header-height) + 24px);
+}
+
+.fonction-section:not([hidden]) {
+  padding-top: 8px;
+  border-top: 0;
+}
+
+.badge-categorie {
+  display: inline-block;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-primary);
+  margin-bottom: 12px;
+}
+
+.fonction-nom {
+  font-family: var(--font-mono);
+  font-size: 30px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  margin-bottom: 10px;
+  overflow-wrap: anywhere;
+}
+
+.fonction-description {
+  color: var(--color-text-muted);
+  font-size: 15.5px;
+  margin-bottom: 28px;
+  max-width: 60ch;
+}
+
+.fonction-bloc {
+  margin-bottom: 24px;
+}
+
+.fonction-bloc-titre {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+  margin-bottom: 10px;
+}
+
+.signature {
+  font-family: var(--font-mono);
+  font-size: 14px;
+  background: var(--color-surface-soft);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-control);
+  padding: 12px 16px;
+  color: var(--color-primary);
+  overflow-wrap: anywhere;
+}
+
+.parametres-liste {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.parametre {
+  display: flex;
+  gap: 10px;
+  font-size: 14px;
+}
+
+.parametre-nom {
+  font-family: var(--font-mono);
+  color: var(--color-text);
+  flex-shrink: 0;
+}
+
+.parametre-desc {
+  color: var(--color-text-muted);
+}
+
+.retour-desc {
+  font-size: 14px;
+  color: var(--color-text-muted);
+}
+
+.retour-desc code {
+  color: var(--color-primary);
+  font-size: 13px;
+}
+
+/* ---------------------------- Blocs de code ---------------------------- */
+
+.bloc-code {
+  width: 100%;
+  max-width: 100%;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-card);
+  background: #08080a;
+  overflow: hidden;
+}
+
+.bloc-code-barre {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 16px;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.bloc-code-langage {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+}
+
+.bouton-copier {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  color: var(--color-text-muted);
+  padding: 5px 10px;
+  border-radius: 6px;
+  transition: color 0.15s ease, background 0.15s ease;
+}
+
+.bouton-copier:hover {
+  color: var(--color-text);
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.bouton-copier i {
+  font-size: 14px;
+  line-height: 1;
+}
+
+.bouton-copier.est-copie {
+  color: var(--color-success);
+}
+
+.bloc-code pre {
+  margin: 0;
+  padding: 16px;
+  overflow-x: auto;
+  font-size: 13px;
+  line-height: 1.75;
+}
+
+.bloc-code code {
+  color: var(--color-text);
+}
+
+.tok-mot-cle {
+  color: #f472b6;
+}
+.tok-fonction {
+  color: var(--color-primary);
+}
+.tok-chaine {
+  color: #86efac;
+}
+.tok-nombre {
+  color: #fbbf24;
+}
+.tok-commentaire {
+  color: var(--color-text-muted);
+}
+
+.resultat-bloc {
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-control);
+  background: var(--color-surface-soft);
+  padding: 14px 16px;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  max-width: 100%;
+  overflow-x: auto;
+}
+
+.resultat-ligne::before {
+  content: "\2192 ";
+  color: var(--color-success);
+}
+
+/* ------------------------ Exécuteur JavaScript ------------------------- */
+
+.executeur-panneau {
+  overflow: hidden;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-card);
+  background: #08080a;
+}
+
+.executeur-barre {
+  min-height: 44px;
+  padding: 7px 10px 7px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.executeur-langage {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+}
+
+.bouton-executer {
+  min-height: 32px;
+  padding: 6px 12px;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  border-radius: 6px;
+  background: var(--color-primary);
+  color: #08111f;
+  font-size: 12px;
+  font-weight: 700;
+  transition: background-color 0.18s ease, transform 0.18s ease;
+}
+
+.bouton-executer:hover {
+  background: #7ab5fb;
+}
+
+.bouton-executer:active {
+  transform: scale(0.97);
+}
+
+.bouton-executer:disabled {
+  cursor: wait;
+  opacity: 0.6;
+}
+
+.bouton-executer i {
+  font-size: 14px;
+}
+
+.executeur-code {
+  display: block;
+  width: 100%;
+  min-height: 96px;
+  resize: vertical;
+  padding: 16px;
+  border: 0;
+  border-bottom: 1px solid var(--color-border);
+  outline: 0;
+  background: #08080a;
+  color: var(--color-text);
+  font: 13px/1.7 var(--font-mono);
+  tab-size: 2;
+}
+
+.executeur-code:focus {
+  background: #0c0c0f;
+}
+
+.executeur-code:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: -2px;
+  border-radius: 0;
+}
+
+.executeur-sortie {
+  min-height: 52px;
+  margin: 0;
+  padding: 14px 16px;
+  overflow-x: auto;
+  color: var(--color-success);
+  background: var(--color-surface-soft);
+  font: 13px/1.6 var(--font-mono);
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+.executeur-sortie::before {
+  content: "> ";
+  color: var(--color-primary);
+}
+
+.executeur-sortie.est-erreur {
+  color: #fca5a5;
+}
+
+.executeur-cadre[hidden] {
+  display: none;
+}
+
+/* ---------------------------- Sommaire droit ---------------------------- */
+
+.sommaire {
+  position: sticky;
+  top: calc(var(--header-height) + 32px);
+  padding-block: 40px;
+  display: none;
+}
+
+.sommaire-titre {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+  margin-bottom: 14px;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.sommaire-nav {
+  border-left: 1px solid var(--color-border);
+}
+
+.sommaire-nav li + li {
+  margin-top: 4px;
+}
+
+.sommaire-nav a {
+  display: block;
+  padding: 5px 0 5px 14px;
+  margin-left: -1px;
+  border-left: 1px solid transparent;
+  font-size: 13px;
+  color: var(--color-text-muted);
+  transition: color 0.15s ease, border-color 0.15s ease;
+}
+
+.sommaire-nav a:hover {
+  color: var(--color-text);
+}
+
+.sommaire-nav a.est-actif {
+  color: var(--color-primary);
+  border-left-color: var(--color-primary);
+}
+
+.surlignage-recherche {
+  padding: 0 2px;
+  border-radius: 3px;
+  background: var(--color-accent);
+  color: #111111;
+}
+
+.fonction-section.correspondance-recherche .fonction-nom {
+  color: #fde68a;
+}
