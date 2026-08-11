@@ -7,6 +7,7 @@ import {
   Download,
   ZoomIn,
   ZoomOut,
+  Loader2,
   User,
   Briefcase,
   GraduationCap,
@@ -153,9 +154,19 @@ export default function Home() {
   const [openSection, setOpenSection] = useState<string | null>("personal");
   const [dialogZoom, setDialogZoom] = useState<number>(1);
   const pdfContainerRef = useRef<HTMLDivElement>(null);
+  const [downloading, setDownloading] = useState(false);
 
   useEffect(() => {
     document.title = "CVFast Builder - Créez votre CV";
+  }, []);
+
+  useEffect(() => {
+    const onResize = () => {
+      const modal = document.getElementById("pdf_modal") as HTMLDialogElement;
+      if (modal?.open) fitPdfPreview();
+    };
+    window.addEventListener("resize", onResize);
+    return () => window.removeEventListener("resize", onResize);
   }, []);
 
   const themes = [
@@ -211,7 +222,7 @@ export default function Home() {
   const handleResetSkills = () => setSkills([]);
   const handleResetHobbies = () => setHobbies([]);
 
-  const cvPreviewRef = useRef(null);
+  const cvPreviewRef = useRef<HTMLDivElement>(null);
 
   const handleDownloadPdf = async () => {
     const element = cvPreviewRef.current;
@@ -220,13 +231,17 @@ export default function Home() {
         ?.firstElementChild as HTMLElement | null;
       const prevZoom = wrapper?.style.zoom;
       if (wrapper) wrapper.style.zoom = "1";
+      setDownloading(true);
       try {
-        const isMobile = window.innerWidth < 768;
+        const width = element.scrollWidth || 950;
+        const height = element.scrollHeight || 1300;
+        const maxDim = 4096;
+        const scale = Math.min(2, maxDim / Math.max(width, height));
         const canvas = await html2canvas(element, {
-          scale: isMobile ? 2 : 3,
-          useCORS: true,
+          scale,
+          backgroundColor: "#ffffff",
         });
-        const imgData = canvas.toDataURL("image/png");
+        const imgData = canvas.toDataURL("image/jpeg", 0.92);
 
         const pdf = new jsPDF({
           orientation: "portrait",
@@ -237,8 +252,18 @@ export default function Home() {
         const pdfWidth = pdf.internal.pageSize.getWidth();
         const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
 
-        pdf.addImage(imgData, "PNG", 0, 0, pdfWidth, pdfHeight);
-        pdf.save(`cv-${personalDetails.fullName || "sans-nom"}.pdf`);
+        pdf.addImage(imgData, "JPEG", 0, 0, pdfWidth, pdfHeight);
+
+        const fileName = `cv-${personalDetails.fullName || "sans-nom"}.pdf`;
+        const blob = pdf.output("blob");
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement("a");
+        link.href = url;
+        link.download = fileName;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        setTimeout(() => URL.revokeObjectURL(url), 10000);
 
         const modal = document.getElementById("pdf_modal") as HTMLDialogElement;
         if (modal) modal.close();
@@ -251,8 +276,12 @@ export default function Home() {
         });
       } catch (error) {
         console.error("Erreur lors de la generation du PDF :", error);
+        alert(
+          "Impossible de générer le PDF sur cet appareil. Essayez de réduire la longueur du CV ou de réessayer.",
+        );
       } finally {
         if (wrapper && prevZoom) wrapper.style.zoom = prevZoom;
+        setDownloading(false);
       }
     }
   };
@@ -270,7 +299,7 @@ export default function Home() {
     const availH = box ? box.clientHeight - 120 : availW;
     const scaleByW = availW / 950;
     const scaleByH = availH > 0 ? availH / 1300 : scaleByW;
-    const scale = Math.max(0.3, Math.min(1, scaleByW, scaleByH));
+    const scale = Math.max(0.2, Math.min(1, scaleByW, scaleByH));
     setDialogZoom(Math.round(scale * 100) / 100);
   };
 
@@ -278,7 +307,7 @@ export default function Home() {
     const modal = document.getElementById("pdf_modal") as HTMLDialogElement;
     if (!modal) return;
     modal.showModal();
-    setTimeout(fitPdfPreview, 0);
+    requestAnimationFrame(fitPdfPreview);
   };
 
   const MobileHeader = () => (
@@ -389,66 +418,71 @@ export default function Home() {
         </button>
       </div>
 
-      <MobileAccordionItem
-        title="Informations personnelles"
-        icon={User}
-        sectionKey="personal"
-        onReset={handleResetPersonalDetails}
-      >
-        <PersonalDetailsForm
-          personalDetails={personalDetails}
-          setPersonalDetails={setPersonalDetails}
-          setFile={handleSetFile}
-        />
-      </MobileAccordionItem>
+      {MobileAccordionItem({
+        title: "Informations personnelles",
+        icon: User,
+        sectionKey: "personal",
+        onReset: handleResetPersonalDetails,
+        children: (
+          <PersonalDetailsForm
+            personalDetails={personalDetails}
+            setPersonalDetails={setPersonalDetails}
+            setFile={handleSetFile}
+          />
+        ),
+      })}
 
-      <MobileAccordionItem
-        title="Experiences professionnelles"
-        icon={Briefcase}
-        sectionKey="experiences"
-        onReset={handleResetExperiences}
-      >
-        <ExperienceForm
-          experience={experiences}
-          setExperiences={setExperience}
-        />
-      </MobileAccordionItem>
+      {MobileAccordionItem({
+        title: "Experiences professionnelles",
+        icon: Briefcase,
+        sectionKey: "experiences",
+        onReset: handleResetExperiences,
+        children: (
+          <ExperienceForm
+            experience={experiences}
+            setExperiences={setExperience}
+          />
+        ),
+      })}
 
-      <MobileAccordionItem
-        title="Formations"
-        icon={GraduationCap}
-        sectionKey="educations"
-        onReset={handleResetEducations}
-      >
-        <EducationForm educations={educations} setEducations={setEducations} />
-      </MobileAccordionItem>
+      {MobileAccordionItem({
+        title: "Formations",
+        icon: GraduationCap,
+        sectionKey: "educations",
+        onReset: handleResetEducations,
+        children: (
+          <EducationForm
+            educations={educations}
+            setEducations={setEducations}
+          />
+        ),
+      })}
 
-      <MobileAccordionItem
-        title="Langues"
-        icon={Globe}
-        sectionKey="languages"
-        onReset={handleResetLanguages}
-      >
-        <LanguageForm languages={languages} setLanguages={setLanguages} />
-      </MobileAccordionItem>
+      {MobileAccordionItem({
+        title: "Langues",
+        icon: Globe,
+        sectionKey: "languages",
+        onReset: handleResetLanguages,
+        children: (
+          <LanguageForm languages={languages} setLanguages={setLanguages} />
+        ),
+      })}
 
       <div className="space-y-3">
-        <MobileAccordionItem
-          title="Competences"
-          icon={Star}
-          sectionKey="skills"
-          onReset={handleResetSkills}
-        >
-          <SkillForm skills={skills} setSkills={setSkills} />
-        </MobileAccordionItem>
-        <MobileAccordionItem
-          title="Loisirs"
-          icon={Target}
-          sectionKey="hobbies"
-          onReset={handleResetHobbies}
-        >
-          <HobbyForm hobbies={hobbies} setHobbies={setHobbies} />
-        </MobileAccordionItem>
+        {MobileAccordionItem({
+          title: "Competences",
+          icon: Star,
+          sectionKey: "skills",
+          onReset: handleResetSkills,
+          children: <SkillForm skills={skills} setSkills={setSkills} />,
+        })}
+        {MobileAccordionItem({
+          title: "Loisirs",
+          icon: Target,
+          sectionKey: "hobbies",
+          onReset: handleResetHobbies,
+          children: <HobbyForm hobbies={hobbies} setHobbies={setHobbies} />,
+        })}
       </div>
     </div>
   );
@@ -510,8 +544,8 @@ export default function Home() {
   return (
     <div>
       <div className="lg:hidden">
-        <MobileHeader />
-        {activeTab === "edit" ? <MobileEditView /> : <MobilePreviewView />}
+        {MobileHeader()}
+        {activeTab === "edit" ? MobileEditView() : MobilePreviewView()}
       </div>
 
       <div className="hidden lg:block">
@@ -690,11 +724,11 @@ export default function Home() {
               </button>
             </form>
             <div className="mt-5">
-              <div className="flex justify-end mb-5 items-center gap-3">
+              <div className="flex flex-wrap justify-end mb-5 items-center gap-3">
                 <div className="flex items-center gap-1">
                   <button
                     onClick={() =>
-                      setDialogZoom(Math.max(0.3, dialogZoom - 0.1))
+                      setDialogZoom(Math.max(0.2, dialogZoom - 0.1))
                     }
                     className="btn btn-ghost btn-sm btn-circle"
                     title="Zoom arrière"
@@ -714,9 +748,17 @@ export default function Home() {
                     <ZoomIn className="w-4 h-4" />
                   </button>
                 </div>
-                <button onClick={handleDownloadPdf} className="btn btn-primary">
-                  Telecharger
-                  <Save className="w-4" />
+                <button
+                  onClick={handleDownloadPdf}
+                  className="btn btn-primary"
+                  disabled={downloading}
+                >
+                  {downloading ? (
+                    <Loader2 className="w-4 h-4 animate-spin" />
+                  ) : (
+                    <Save className="w-4" />
+                  )}
+                  {downloading ? "Téléchargement..." : "Telecharger"}
                 </button>
               </div>
               <div
