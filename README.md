@@ -1,18 +1,18 @@
-# 📄 CvRapide
+# CvRapide
 
 Générateur de CV en ligne, moderne et rapide. Créez, personnalisez et téléchargez votre CV en PDF en quelques minutes.
 
-## ✨ Fonctionnalités
+## Fonctionnalités
 
-- 🎨 **6 modèles de CV** — Classique, Moderne, Minimaliste, Audacieux, Profil, Compétences
-- 📥 **Export PDF** — Téléchargement haute qualité en un clic
-- 🎭 **Aperçu en direct** — Les modifications s'affichent en temps réel
-- 🌗 **Thèmes multiples** — 33 thèmes de couleurs via DaisyUI
-- 🎉 **Interface ludique** — Animations, confettis et effets visuels
-- 💾 **Données persistantes** — CV sauvegardé automatiquement dans le navigateur
-- 📱 **Responsive** — Utilisable sur tous les appareils
+**6 modèles de CV** — Classique, Moderne, Minimaliste, Audacieux, Profil, Compétences
+**Export PDF** — Téléchargement haute qualité en un clic
+**Aperçu en direct** — Les modifications s'affichent en temps réel
+**Thèmes multiples** — 33 thèmes de couleurs via DaisyUI
+**Interface ludique** — Animations, confettis et effets visuels
+**Données persistantes** — CV sauvegardé automatiquement dans le navigateur
+**Responsive** — Utilisable sur tous les appareils
 
-## 🛠️ Stack Technique
+## Stack Technique
 
 | Technologie | Usage |
 |-------------|-------|
@@ -24,11 +24,12 @@ Générateur de CV en ligne, moderne et rapide. Créez, personnalisez et téléc
 | **jsPDF + html2canvas-pro** | Génération PDF |
 | **Lucide React** | Icônes SVG |
 
-## 🚀 Démarrage Rapide
+## Démarrage Rapide
 
 ### Prérequis
-- Node.js 18+
-- npm ou yarn
+
+Node.js 18+
+npm ou yarn
 
 ### Installation
 
@@ -46,7 +47,7 @@ npm run dev
 
 Ouvrez [http://localhost:3000](http://localhost:3000) dans votre navigateur.
 
-## 📚 Structure du Projet
+## Structure du Projet
 
 ```
 CvRapide/
@@ -61,14 +62,14 @@ CvRapide/
     └── package.json      # Dépendances
 ```
 
-## 🖥️ Utilisation
+## Utilisation
 
 1. Rendez-vous sur `/builder`
 2. Remplissez vos informations (profil, expérience, formation, compétences, langues, loisirs)
 3. Choisissez un modèle et un thème
 4. Exportez votre CV en PDF
 
-## 🤝 Contribution
+## Contribution
 
 1. Fork le repository
 2. Créez une branche (`git checkout -b feature/AmazingFeature`)
@@ -76,10 +77,10 @@ CvRapide/
 4. Poussez vers la branche
 5. Ouvrez une Pull Request
 
-## 📄 License
+## License
 
 Projet sous licence MIT — voir [LICENSE](cvbuilder/LICENSE).
 
 ---
 
-**Créé avec ❤️ par [babacleven](https://github.com/babacleven)**
+**Créé avec amour par [babacleven](https://github.com/babacleven)**
