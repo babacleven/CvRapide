@@ -535,7 +535,7 @@ export default function LandingPage() {
           <div className="conteneur">
             <h2 className="cta-titre">Votre prochain emploi commence avec un bon CV.</h2>
             <a href="/builder" className="bouton-principal">
-              <i className="fa-solid fa-star"></i>
+              <i className=""></i>
               Créer mon CV gratuitement
             </a>
             <div className="cta-avis">
@@ -543,7 +543,7 @@ export default function LandingPage() {
                 className="lien-secondaire"
                 onClick={() => setModalOpen(true)}
               >
-                <i className="fa-solid fa-star"></i>
+                <i className=""></i>
                 Donner mon avis
               </button>
             </div>
@@ -571,7 +571,7 @@ export default function LandingPage() {
                     <i
                       className={
                         value <= (hoverRating || rating)
-                          ? "fa-solid fa-star"
+                          ? ""
                           : "fa-regular fa-star"
                       }
                     ></i>
@@ -645,7 +645,7 @@ export default function LandingPage() {
               CV<span style={{ color: "var(--color-primary)" }}>Fast</span>
             </span>
           </div>
-          <p>&copy; 2026 CVFast. Tous droits réservés.</p>
+          <p>&copy; 2026 CVFast  baba aristote cleven. Tous droits réservés.</p>
           <div className="footer-liens">
             <a href="#templates">Modèles</a>
             <a href="#features">Fonctionnalités</a>
