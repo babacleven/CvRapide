@@ -252,90 +252,206 @@ export default function Home() {
   const handleResetHobbies = () => setHobbies([]);
 
   const cvPreviewRef = useRef<HTMLDivElement>(null);
-  const hiddenCaptureRef = useRef<HTMLDivElement>(null);
+  const mobilePreviewRef = useRef<HTMLDivElement>(null);
+  const mobilePreviewScaleRef = useRef<HTMLDivElement>(null);
 
-  const generateAndSavePdf = async (element: HTMLElement) => {
-    try {
-      const width = element.scrollWidth || 950;
-      const height = element.scrollHeight || 1300;
-      const maxDim = 4096;
-      const isMobile = window.matchMedia("(max-width: 1023px)").matches;
-      const scale = Math.min(
-        isMobile ? 1.5 : 2,
-        maxDim / Math.max(width, height),
-      );
-      const canvas = await html2canvas(element, {
-        scale,
-        backgroundColor: "#ffffff",
-        logging: false,
-      });
-      const imgData = canvas.toDataURL("image/jpeg", 0.92);
+  const isIOS =
+    typeof navigator !== "undefined" &&
+    (/iPad|iPhone|iPod/.test(navigator.userAgent) ||
+      (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1));
 
-      const pdf = new jsPDF({
-        orientation: "portrait",
-        unit: "mm",
-        format: "A4",
-      });
-
-      const pdfWidth = pdf.internal.pageSize.getWidth();
-      const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
-
-      pdf.addImage(imgData, "JPEG", 0, 0, pdfWidth, pdfHeight);
-
-      const fileName = `cv-${personalDetails.fullName || "sans-nom"}.pdf`;
-      const blob = pdf.output("blob");
-      const url = URL.createObjectURL(blob);
-      const link = document.createElement("a");
-      link.href = url;
-      link.download = fileName;
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-      setTimeout(() => URL.revokeObjectURL(url), 10000);
-
-      confetti({
-        particleCount: 100,
-        spread: 70,
-        origin: { y: 0.6 },
-        zIndex: 9999,
-      });
-    } catch (error) {
-      console.error("Erreur lors de la generation du PDF :", error);
-      const msg =
-        error instanceof Error ? error.message : String(error);
-      alert(
-        `Impossible de générer le PDF : ${msg}. Essayez de réduire la longueur du CV ou de réessayer.`,
-      );
+  const waitForElementReady = async (
+    element: HTMLElement,
+  ): Promise<boolean> => {
+    const deadline = Date.now() + 5000;
+    const hasValidSize = () => {
+      const rect = element.getBoundingClientRect();
+      const w = element.scrollWidth || rect.width;
+      const h = element.scrollHeight || rect.height;
+      return w > 0 && h > 0;
+    };
+    while (!hasValidSize() && Date.now() < deadline) {
+      await new Promise((r) => setTimeout(r, 30));
     }
+    if (!hasValidSize()) return false;
+
+    try {
+      if (document.fonts && typeof document.fonts.ready?.then === "function") {
+        await Promise.race([
+          document.fonts.ready,
+          new Promise((r) => setTimeout(r, 3000)),
+        ]);
+      }
+    } catch {
+      // Les erreurs de polices ne doivent pas bloquer la génération
+    }
+
+    const images = Array.from(element.querySelectorAll("img"));
+    for (const img of images) {
+      const isLoaded = () => img.complete && img.naturalWidth > 0;
+      let waited = 0;
+      while (!isLoaded() && waited < 5000) {
+        await new Promise((r) => setTimeout(r, 50));
+        waited += 50;
+      }
+    }
+
+    await new Promise((r) =>
+      requestAnimationFrame(() => requestAnimationFrame(r)),
+    );
+    return true;
+  };
+
+  const getSafeScale = (width: number, height: number): number => {
+    const isMobile = window.matchMedia("(max-width: 1023px)").matches;
+    const base = isMobile ? 1.5 : 2;
+    const maxDim = 4096;
+    const maxPixels = 16_000_000;
+    const scale = Math.min(
+      base,
+      maxDim / Math.max(width, height),
+      maxPixels / Math.max(1, width * height),
+    );
+    return Math.max(0.5, Math.min(scale, 3));
+  };
+
+  const generatePdfBlob = async (element: HTMLElement): Promise<Blob> => {
+    const width = element.scrollWidth || 950;
+    const height = element.scrollHeight || 1300;
+    const scale = getSafeScale(width, height);
+    const canvas = await html2canvas(element, {
+      scale,
+      backgroundColor: "#ffffff",
+      logging: false,
+    });
+    const imgData = canvas.toDataURL("image/jpeg", 0.92);
+
+    const pdf = new jsPDF({
+      orientation: "portrait",
+      unit: "mm",
+      format: "A4",
+      compress: true,
+    });
+
+    const pdfWidth = pdf.internal.pageSize.getWidth();
+    const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
+
+    pdf.addImage(imgData, "JPEG", 0, 0, pdfWidth, pdfHeight);
+
+    return pdf.output("blob");
+  };
+
+  const savePdfBlob = async (
+    blob: Blob,
+    fileName: string,
+  ): Promise<"saved" | "cancelled"> => {
+    if (
+      isIOS &&
+      typeof navigator.share === "function" &&
+      typeof navigator.canShare === "function"
+    ) {
+      const file = new File([blob], fileName, { type: "application/pdf" });
+      if (navigator.canShare({ files: [file] })) {
+        try {
+          await navigator.share({
+            files: [file],
+            title: "Mon CV",
+            text: "Voici mon CV",
+          });
+          return "saved";
+        } catch (error) {
+          const name = (error as DOMException)?.name;
+          if (name === "AbortError") return "cancelled";
+          console.warn(
+            "Partage iOS impossible, bascule sur le téléchargement direct :",
+            error,
+          );
+        }
+      }
+    }
+
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = fileName;
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+    setTimeout(() => URL.revokeObjectURL(url), 30000);
+    return "saved";
+  };
+
+  const fireConfetti = () => {
+    confetti({
+      particleCount: 100,
+      spread: 70,
+      origin: { y: 0.6 },
+      zIndex: 9999,
+    });
   };
 
   const handleDownloadPdf = async () => {
+    if (downloading) return;
     const element = cvPreviewRef.current;
     if (!element) return;
+    setDownloading(true);
+    await new Promise((r) => requestAnimationFrame(r));
     const wrapper = pdfContainerRef.current
       ?.firstElementChild as HTMLElement | null;
     const prevZoom = wrapper?.style.zoom;
     if (wrapper) wrapper.style.zoom = "1";
-    setDownloading(true);
     try {
-      await generateAndSavePdf(element);
+      const ready = await waitForElementReady(element);
+      if (!ready) throw new Error("L'aperçu du CV n'est pas prêt.");
+      const blob = await generatePdfBlob(element);
+      const fileName = `cv-${personalDetails.fullName || "sans-nom"}.pdf`;
+      const result = await savePdfBlob(blob, fileName);
+      if (result === "saved") {
+        fireConfetti();
+        const modal = document.getElementById("pdf_modal") as HTMLDialogElement;
+        if (modal) modal.close();
+      }
+    } catch (error) {
+      console.error("Erreur lors de la generation du PDF :", error);
+      const msg = error instanceof Error ? error.message : String(error);
+      alert(
+        `Impossible de générer le PDF : ${msg}. Essayez de réduire la longueur du CV ou de réessayer.`,
+      );
     } finally {
-      if (wrapper && prevZoom) wrapper.style.zoom = prevZoom;
+      if (wrapper) wrapper.style.zoom = prevZoom || String(dialogZoom);
       setDownloading(false);
     }
-    const modal = document.getElementById("pdf_modal") as HTMLDialogElement;
-    if (modal) modal.close();
   };
 
   const handleDirectDownload = async () => {
     if (downloading) return;
+    const element = mobilePreviewRef.current;
+    if (!element) return;
     setDownloading(true);
-    await new Promise((resolve) =>
-      requestAnimationFrame(() => requestAnimationFrame(resolve)),
-    );
-    const element = hiddenCaptureRef.current;
-    if (element) await generateAndSavePdf(element);
-    setDownloading(false);
+    await new Promise((r) => requestAnimationFrame(r));
+    const scaleDiv = mobilePreviewScaleRef.current;
+    const prevTransform = scaleDiv?.style.transform;
+    if (scaleDiv) scaleDiv.style.transform = "translateX(-50%)";
+    try {
+      const ready = await waitForElementReady(element);
+      if (!ready) throw new Error("L'aperçu du CV n'est pas prêt.");
+      const blob = await generatePdfBlob(element);
+      const fileName = `cv-${personalDetails.fullName || "sans-nom"}.pdf`;
+      const result = await savePdfBlob(blob, fileName);
+      if (result === "saved") fireConfetti();
+    } catch (error) {
+      console.error("Erreur lors de la generation du PDF :", error);
+      const msg = error instanceof Error ? error.message : String(error);
+      alert(
+        `Impossible de générer le PDF : ${msg}. Essayez de réduire la longueur du CV ou de réessayer.`,
+      );
+    } finally {
+      if (scaleDiv) {
+        scaleDiv.style.transform =
+          prevTransform || `translateX(-50%) scale(${zoom / 100})`;
+      }
+      setDownloading(false);
+    }
   };
 
   const toggleSection = (section: string) => {
@@ -563,6 +679,7 @@ export default function Home() {
         </div>
         <div className="flex-1 overflow-auto bg-base-200 rounded-lg relative">
           <div
+            ref={mobilePreviewScaleRef}
             className="absolute left-1/2 top-0"
             style={{
               transform: `translateX(-50%) scale(${zoom / 100})`,
@@ -571,6 +688,7 @@ export default function Home() {
             }}
           >
             <CVPreview
+              ref={mobilePreviewRef}
               personalDetails={personalDetails}
               file={file}
               theme={theme}
@@ -855,30 +973,14 @@ export default function Home() {
           </div>
         </dialog>
 
-      {downloading && activeTab === "preview" && (
+      {downloading && (
         <div
-          aria-hidden
-          style={{
-            position: "fixed",
-            top: 0,
-            left: -9999,
-            width: 950,
-            pointerEvents: "none",
-          }}
+          role="status"
+          aria-live="polite"
+          className="fixed inset-0 z-[9999] bg-base-100/95 backdrop-blur-sm flex flex-col items-center justify-center gap-3"
         >
-          <CVPreview
-            ref={hiddenCaptureRef}
-            personalDetails={personalDetails}
-            file={file}
-            theme={theme}
-            template={template}
-            experiences={experiences}
-            educations={educations}
-            languages={languages}
-            hobbies={hobbies}
-            skills={skills}
-            download={true}
-          />
+          <Loader2 className="w-10 h-10 animate-spin text-primary" />
+          <p className="font-semibold text-base">Génération du CV en cours...</p>
         </div>
       )}
     </div>

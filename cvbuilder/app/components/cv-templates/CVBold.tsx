@@ -16,6 +16,7 @@ import {
 } from "@/presets";
 import React from "react";
 import Image from "next/image";
+import { useFileObjectUrl } from "../useFileObjectUrl";
 
 interface Props {
   personalDetails: PersonalDetails;
@@ -64,6 +65,7 @@ const CVBold: React.FC<Props> = ({
     skills: skills.length > 0 ? skills : skillsPreset,
     hobbies: hobbies.length > 0 ? hobbies : hobbiesPreset,
   };
+  const photoUrl = useFileObjectUrl(file);
   return (
     <div
       ref={ref}
@@ -73,14 +75,13 @@ const CVBold: React.FC<Props> = ({
       <div className="w-1/3 bg-primary text-primary-content p-10 flex flex-col">
         {/* Photo grande */}
         <div className="w-48 h-48 mx-auto mb-8 rounded-2xl overflow-hidden border-4 border-primary-content/30 rotate-3">
-          {file ? (
+          {photoUrl ? (
             <Image
-              src={URL.createObjectURL(file)}
+              src={photoUrl}
               width={192}
               height={192}
               className="w-full h-full object-cover -rotate-3"
               alt="Photo"
-              onLoad={() => URL.revokeObjectURL(URL.createObjectURL(file))}
             />
           ) : (
             <div className="w-full h-full bg-primary-content/20 flex items-center justify-center -rotate-3">

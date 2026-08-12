@@ -16,6 +16,7 @@ import {
 } from "@/presets";
 import React from "react";
 import Image from "next/image";
+import { useFileObjectUrl } from "../useFileObjectUrl";
 import {
   Mail,
   Phone,
@@ -98,6 +99,7 @@ const CVProfile: React.FC<Props> = ({
     skills: skills.length > 0 ? skills : skillsPreset,
     hobbies: hobbies.length > 0 ? hobbies : hobbiesPreset,
   };
+  const photoUrl = useFileObjectUrl(file);
   return (
     <div
       ref={ref}
@@ -107,14 +109,13 @@ const CVProfile: React.FC<Props> = ({
       <div className="w-2/5 bg-base-200 p-8 flex flex-col gap-6">
         {/* Photo */}
         <div className="w-40 h-40 rounded-full overflow-hidden border-4 border-primary mx-auto">
-          {file && (
+          {photoUrl && (
             <Image
-              src={URL.createObjectURL(file)}
+              src={photoUrl}
               width={160}
               height={160}
               className="w-full h-full object-cover"
               alt="Photo"
-              onLoad={() => URL.revokeObjectURL(URL.createObjectURL(file))}
             />
           )}
         </div>

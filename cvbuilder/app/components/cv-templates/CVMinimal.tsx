@@ -16,6 +16,7 @@ import {
 } from "@/presets";
 import React from "react";
 import Image from "next/image";
+import { useFileObjectUrl } from "../useFileObjectUrl";
 
 interface Props {
   personalDetails: PersonalDetails;
@@ -64,6 +65,7 @@ const CVMinimal: React.FC<Props> = ({
     skills: skills.length > 0 ? skills : skillsPreset,
     hobbies: hobbies.length > 0 ? hobbies : hobbiesPreset,
   };
+  const photoUrl = useFileObjectUrl(file);
   return (
     <div
       ref={ref}
@@ -80,15 +82,14 @@ const CVMinimal: React.FC<Props> = ({
               {pd.postSeeking}
             </p>
           </div>
-          {file && (
+          {photoUrl && (
             <div className="w-24 h-24 grayscale">
               <Image
-                src={URL.createObjectURL(file)}
+                src={photoUrl}
                 width={96}
                 height={96}
                 className="w-full h-full object-cover"
                 alt="Photo"
-                onLoad={() => URL.revokeObjectURL(URL.createObjectURL(file))}
               />
             </div>
           )}
