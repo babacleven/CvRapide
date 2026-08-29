@@ -104,6 +104,8 @@ const CVClassic: React.FC<Props> = ({
     github: personalDetails.github || personalDetailsPreset.github,
     linkedin: personalDetails.linkedin || personalDetailsPreset.linkedin,
     portfolio: personalDetails.portfolio || personalDetailsPreset.portfolio,
+    photoUrl:
+      personalDetails.photoUrl || personalDetailsPreset.photoUrl || undefined,
     postSeeking:
       personalDetails.postSeeking || personalDetailsPreset.postSeeking,
     description:
@@ -117,7 +119,8 @@ const CVClassic: React.FC<Props> = ({
     hobbies: hobbies.length > 0 ? hobbies : hobbiesPreset,
     projects: projects.length > 0 ? projects : projectsPreset,
   };
-  const photoUrl = useFileObjectUrl(file);
+const photoUrl = useFileObjectUrl(file);
+  const photoSrc = photoUrl || pd.photoUrl || null;
   return (
     <div
       ref={ref}
@@ -126,11 +129,12 @@ const CVClassic: React.FC<Props> = ({
       {/* Colonne gauche */}
       <div className="flex flex-col w-1/3">
         <div className="h-80 rounded-full border-8 overflow-hidden border-primary">
-          {photoUrl && (
+          {photoSrc && (
             <Image
-              src={photoUrl}
+              src={photoSrc}
               width={300}
               height={300}
+              unoptimized={!!photoUrl}
               className="w-full h-full rounded-lg object-cover"
               alt="Photo de profil"
             />

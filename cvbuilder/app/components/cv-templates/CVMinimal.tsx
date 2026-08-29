@@ -60,6 +60,8 @@ const CVMinimal: React.FC<Props> = ({
     github: personalDetails.github || personalDetailsPreset.github,
     linkedin: personalDetails.linkedin || personalDetailsPreset.linkedin,
     portfolio: personalDetails.portfolio || personalDetailsPreset.portfolio,
+    photoUrl:
+      personalDetails.photoUrl || personalDetailsPreset.photoUrl || undefined,
     postSeeking:
       personalDetails.postSeeking || personalDetailsPreset.postSeeking,
     description:
@@ -74,6 +76,7 @@ const CVMinimal: React.FC<Props> = ({
     projects: projects.length > 0 ? projects : projectsPreset,
   };
   const photoUrl = useFileObjectUrl(file);
+  const photoSrc = photoUrl || pd.photoUrl || null;
   return (
     <div
       ref={ref}
@@ -90,12 +93,13 @@ const CVMinimal: React.FC<Props> = ({
               {pd.postSeeking}
             </p>
           </div>
-          {photoUrl && (
+          {photoSrc && (
             <div className="w-24 h-24 grayscale">
               <Image
-                src={photoUrl}
+                src={photoSrc}
                 width={96}
                 height={96}
+                unoptimized={!!photoUrl}
                 className="w-full h-full object-cover"
                 alt="Photo"
               />

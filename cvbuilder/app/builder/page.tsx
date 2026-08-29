@@ -104,10 +104,10 @@ export default function Home() {
     "hobbies",
     hobbiesPreset,
   );
-  const [theme, setTheme] = useLocalStorage<string>("theme", "cvfast");
+  const [theme, setTheme] = useLocalStorage<string>("theme", "cupcake");
   const [template, setTemplate] = useLocalStorage<CVTemplate>(
     "template",
-    "modern",
+    "classic",
   );
   const [zoom, setZoom] = useLocalStorage<number>("zoom", 77);
 
@@ -141,17 +141,6 @@ export default function Home() {
           setFile(fileFromStorage);
         })
         .catch(() => setFile(null));
-    } else {
-      // Photo par défaut si aucune sauvegarde
-      const defaultImageUrl = "/profile.png";
-      fetch(defaultImageUrl)
-        .then((res) => res.blob())
-        .then((blob) => {
-          const defaultFile = new File([blob], "profile.png", {
-            type: blob.type,
-          });
-          setFile(defaultFile);
-        });
     }
   }, [photoBase64]);
 

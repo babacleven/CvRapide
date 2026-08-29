@@ -116,16 +116,16 @@ const ExperienceForm: React.FC<Props> = ({ experience, setExperiences }) => {
         </div>
         <div className="flex gap-2">
           <input
-            type="date"
-            placeholder="Date de début"
+            type="month"
+            placeholder="Mois / Année de début"
             value={newExperience.startDate}
             onChange={(e) => handleChange(e, "startDate")}
             className="input input-bordered w-full"
           />
           {!newExperience.isCurrent && (
             <input
-              type="date"
-              placeholder="Date de fin"
+              type="month"
+              placeholder="Mois / Année de fin"
               value={newExperience.endDate}
               onChange={(e) => handleChange(e, "endDate")}
               className="input input-bordered w-full"

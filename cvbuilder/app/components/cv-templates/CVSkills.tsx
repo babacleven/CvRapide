@@ -98,6 +98,8 @@ const CVSkills: React.FC<Props> = ({
     github: personalDetails.github || personalDetailsPreset.github,
     linkedin: personalDetails.linkedin || personalDetailsPreset.linkedin,
     portfolio: personalDetails.portfolio || personalDetailsPreset.portfolio,
+    photoUrl:
+      personalDetails.photoUrl || personalDetailsPreset.photoUrl || undefined,
     postSeeking:
       personalDetails.postSeeking || personalDetailsPreset.postSeeking,
     description:
@@ -112,6 +114,7 @@ const CVSkills: React.FC<Props> = ({
     projects: projects.length > 0 ? projects : projectsPreset,
   };
   const photoUrl = useFileObjectUrl(file);
+  const photoSrc = photoUrl || pd.photoUrl || null;
   return (
     <div
       ref={ref}
@@ -120,11 +123,12 @@ const CVSkills: React.FC<Props> = ({
       {/* En-tête avec photo + identité */}
       <div className="flex items-center gap-6 border-b-2 border-primary pb-6 mb-6">
         <div className="w-28 h-28 rounded-full overflow-hidden border-4 border-primary flex-shrink-0">
-          {photoUrl && (
+          {photoSrc && (
             <Image
-              src={photoUrl}
+              src={photoSrc}
               width={112}
               height={112}
+              unoptimized={!!photoUrl}
               className="w-full h-full object-cover"
               alt="Photo"
             />

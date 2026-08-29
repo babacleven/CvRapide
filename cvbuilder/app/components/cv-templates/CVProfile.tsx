@@ -98,6 +98,8 @@ const CVProfile: React.FC<Props> = ({
     github: personalDetails.github || personalDetailsPreset.github,
     linkedin: personalDetails.linkedin || personalDetailsPreset.linkedin,
     portfolio: personalDetails.portfolio || personalDetailsPreset.portfolio,
+    photoUrl:
+      personalDetails.photoUrl || personalDetailsPreset.photoUrl || undefined,
     postSeeking:
       personalDetails.postSeeking || personalDetailsPreset.postSeeking,
     description:
@@ -112,6 +114,7 @@ const CVProfile: React.FC<Props> = ({
     projects: projects.length > 0 ? projects : projectsPreset,
   };
   const photoUrl = useFileObjectUrl(file);
+  const photoSrc = photoUrl || pd.photoUrl || null;
   return (
     <div
       ref={ref}
@@ -121,11 +124,12 @@ const CVProfile: React.FC<Props> = ({
       <div className="w-2/5 bg-base-200 p-8 flex flex-col gap-6">
         {/* Photo */}
         <div className="w-40 h-40 rounded-full overflow-hidden border-4 border-primary mx-auto">
-          {photoUrl && (
+          {photoSrc && (
             <Image
-              src={photoUrl}
+              src={photoSrc}
               width={160}
               height={160}
+              unoptimized={!!photoUrl}
               className="w-full h-full object-cover"
               alt="Photo"
             />

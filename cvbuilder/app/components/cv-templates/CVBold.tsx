@@ -60,6 +60,8 @@ const CVBold: React.FC<Props> = ({
     github: personalDetails.github || personalDetailsPreset.github,
     linkedin: personalDetails.linkedin || personalDetailsPreset.linkedin,
     portfolio: personalDetails.portfolio || personalDetailsPreset.portfolio,
+    photoUrl:
+      personalDetails.photoUrl || personalDetailsPreset.photoUrl || undefined,
     postSeeking:
       personalDetails.postSeeking || personalDetailsPreset.postSeeking,
     description:
@@ -74,6 +76,7 @@ const CVBold: React.FC<Props> = ({
     projects: projects.length > 0 ? projects : projectsPreset,
   };
   const photoUrl = useFileObjectUrl(file);
+  const photoSrc = photoUrl || pd.photoUrl || null;
   return (
     <div
       ref={ref}
@@ -83,11 +86,12 @@ const CVBold: React.FC<Props> = ({
       <div className="w-1/3 bg-primary text-primary-content p-10 flex flex-col">
         {/* Photo grande */}
         <div className="w-48 h-48 mx-auto mb-8 rounded-2xl overflow-hidden border-4 border-primary-content/30 rotate-3">
-          {photoUrl ? (
+          {photoSrc ? (
             <Image
-              src={photoUrl}
+              src={photoSrc}
               width={192}
               height={192}
+              unoptimized={!!photoUrl}
               className="w-full h-full object-cover -rotate-3"
               alt="Photo"
             />
