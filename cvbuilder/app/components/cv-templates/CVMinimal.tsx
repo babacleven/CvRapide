@@ -129,6 +129,7 @@ const CVMinimal: React.FC<Props> = ({
                 {pd.description}
               </p>
             </section>
+            
           )}
           {display.skills.length > 0 && (
             <section>
