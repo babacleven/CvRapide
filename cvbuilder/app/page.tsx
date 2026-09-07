@@ -383,11 +383,11 @@ export default function LandingPage() {
         <section className="stats-section" ref={statsRef}>
           <div className="conteneur stats-grid">
             <div className="stat-card">
-              <h2 data-count="50000">0</h2>
+              <h2 data-count="50">0</h2>
               <p>CV créés</p>
             </div>
             <div className="stat-card">
-              <h2 data-count="3280">0</h2>
+              <h2 data-count="10">0</h2>
               <p>Utilisateurs inscrits</p>
             </div>
             <div className="stat-card">
