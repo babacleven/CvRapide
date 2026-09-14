@@ -5,8 +5,19 @@ export type PersonalDetails = {
   phone: string;
   address: string;
   photoUrl?: string;
+  github?: string;
+  linkedin?: string;
+  portfolio?: string;
   description?: string;
   postSeeking?: string;
+};
+
+export type Project = {
+  id?: string;
+  name: string;
+  description: string;
+  technologies: string;
+  link?: string;
 };
 
 export type Education = {

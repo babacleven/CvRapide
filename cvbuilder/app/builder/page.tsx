@@ -14,8 +14,10 @@ import {
   Globe,
   Star,
   Target,
+  FolderGit2,
 } from "lucide-react";
 import PersonalDetailsForm from "@/app/components/PersonalDetailsForm";
+import ProjectForm from "@/app/components/ProjectForm";
 import { useEffect, useRef, useState } from "react";
 import "./builder.css";
 import {
@@ -24,6 +26,7 @@ import {
   Hobby,
   Language,
   PersonalDetails,
+  Project,
   Skill,
   CVTemplate,
 } from "@/type";
@@ -33,6 +36,7 @@ import {
   hobbiesPreset,
   languagesPreset,
   personalDetailsPreset,
+  projectsPreset,
   skillsPreset,
 } from "@/presets";
 import CVPreview from "@/app/components/CVPreview";
@@ -91,15 +95,19 @@ export default function Home() {
     "languages",
     languagesPreset,
   );
+  const [projects, setProjects] = useLocalStorage<Project[]>(
+    "projects",
+    projectsPreset,
+  );
   const [skills, setSkills] = useLocalStorage<Skill[]>("skills", skillsPreset);
   const [hobbies, setHobbies] = useLocalStorage<Hobby[]>(
     "hobbies",
     hobbiesPreset,
   );
-  const [theme, setTheme] = useLocalStorage<string>("theme", "cupcake");
+  const [theme, setTheme] = useLocalStorage<string>("theme", "cvfast");
   const [template, setTemplate] = useLocalStorage<CVTemplate>(
     "template",
-    "classic",
+    "modern",
   );
   const [zoom, setZoom] = useLocalStorage<number>("zoom", 77);
 
@@ -250,6 +258,7 @@ export default function Home() {
   const handleResetLanguages = () => setLanguages([]);
   const handleResetSkills = () => setSkills([]);
   const handleResetHobbies = () => setHobbies([]);
+  const handleResetProjects = () => setProjects([]);
 
   const cvPreviewRef = useRef<HTMLDivElement>(null);
   const mobilePreviewRef = useRef<HTMLDivElement>(null);
@@ -637,6 +646,16 @@ export default function Home() {
         ),
       })}
 
+      {MobileAccordionItem({
+        title: "Projets réalisés",
+        icon: FolderGit2,
+        sectionKey: "projects",
+        onReset: handleResetProjects,
+        children: (
+          <ProjectForm projects={projects} setProjects={setProjects} />
+        ),
+      })}
+
       <div className="space-y-3">
         {MobileAccordionItem({
           title: "Competences",
@@ -698,6 +717,7 @@ export default function Home() {
               languages={languages}
               hobbies={hobbies}
               skills={skills}
+              projects={projects}
             />
           </div>
         </div>
@@ -830,6 +850,19 @@ export default function Home() {
               </div>
               <LanguageForm languages={languages} setLanguages={setLanguages} />
 
+              <div className="flex justify-between items-center">
+                <h1 className="badge badge-primary badge-outline">
+                  Projets réalisés
+                </h1>
+                <button
+                  onClick={handleResetProjects}
+                  className="btn btn-primary btn-sm"
+                >
+                  <RotateCw className="w-5 h-5" />
+                </button>
+              </div>
+              <ProjectForm projects={projects} setProjects={setProjects} />
+
               <div className="space-y-8">
                 <div>
                   <div className="flex justify-between items-center mb-4">
@@ -889,6 +922,7 @@ export default function Home() {
                 languages={languages}
                 hobbies={hobbies}
                 skills={skills}
+                projects={projects}
               />
             </div>
           </div>
@@ -963,6 +997,7 @@ export default function Home() {
                     languages={languages}
                     hobbies={hobbies}
                     skills={skills}
+                    projects={projects}
                     download={true}
                     ref={cvPreviewRef}
                   />

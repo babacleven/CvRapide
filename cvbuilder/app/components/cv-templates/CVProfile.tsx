@@ -4,6 +4,7 @@ import {
   Hobby,
   Language,
   PersonalDetails,
+  Project,
   Skill,
 } from "@/type";
 import {
@@ -12,6 +13,7 @@ import {
   hobbiesPreset,
   languagesPreset,
   personalDetailsPreset,
+  projectsPreset,
   skillsPreset,
 } from "@/presets";
 import React from "react";
@@ -24,6 +26,10 @@ import {
   Star,
   BriefcaseBusiness,
   GraduationCap,
+  Github,
+  Linkedin,
+  Globe,
+  FolderGit2,
 } from "lucide-react";
 
 interface Props {
@@ -34,6 +40,7 @@ interface Props {
   languages: Language[];
   skills: Skill[];
   hobbies: Hobby[];
+  projects: Project[];
   download?: boolean;
   ref?: React.Ref<HTMLDivElement>;
 }
@@ -79,6 +86,7 @@ const CVProfile: React.FC<Props> = ({
   languages,
   skills,
   hobbies,
+  projects,
   download,
   ref,
 }) => {
@@ -87,6 +95,9 @@ const CVProfile: React.FC<Props> = ({
     email: personalDetails.email || personalDetailsPreset.email,
     phone: personalDetails.phone || personalDetailsPreset.phone,
     address: personalDetails.address || personalDetailsPreset.address,
+    github: personalDetails.github || personalDetailsPreset.github,
+    linkedin: personalDetails.linkedin || personalDetailsPreset.linkedin,
+    portfolio: personalDetails.portfolio || personalDetailsPreset.portfolio,
     postSeeking:
       personalDetails.postSeeking || personalDetailsPreset.postSeeking,
     description:
@@ -98,6 +109,7 @@ const CVProfile: React.FC<Props> = ({
     languages: languages.length > 0 ? languages : languagesPreset,
     skills: skills.length > 0 ? skills : skillsPreset,
     hobbies: hobbies.length > 0 ? hobbies : hobbiesPreset,
+    projects: projects.length > 0 ? projects : projectsPreset,
   };
   const photoUrl = useFileObjectUrl(file);
   return (
@@ -139,6 +151,21 @@ const CVProfile: React.FC<Props> = ({
             {pd.address && (
               <div className="flex items-center gap-2">
                 <MapPin className="w-4" /> {pd.address}
+              </div>
+            )}
+            {pd.github && (
+              <div className="flex items-center gap-2 break-all">
+                <Github className="w-4" /> {pd.github}
+              </div>
+            )}
+            {pd.linkedin && (
+              <div className="flex items-center gap-2 break-all">
+                <Linkedin className="w-4" /> {pd.linkedin}
+              </div>
+            )}
+            {pd.portfolio && (
+              <div className="flex items-center gap-2 break-all">
+                <Globe className="w-4" /> {pd.portfolio}
               </div>
             )}
           </div>
@@ -274,6 +301,40 @@ const CVProfile: React.FC<Props> = ({
                       {edu.description}
                     </p>
                   )}
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* Projets réalisés */}
+        {display.projects.length > 0 && (
+          <div>
+            <h2 className="text-md font-bold uppercase tracking-wider border-b-2 border-primary pb-1 mb-4 flex items-center gap-2">
+              <FolderGit2 className="w-4 h-4" /> Projets réalisés
+            </h2>
+            <div className="space-y-4">
+              {display.projects.map((p, i) => (
+                <div key={i}>
+                  <div className="flex justify-between items-baseline gap-2">
+                    <h3 className="font-bold text-base">{p.name}</h3>
+                    {p.link && (
+                      <a
+                        href={p.link}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="text-xs text-primary hover:underline flex-shrink-0"
+                      >
+                        ↗
+                      </a>
+                    )}
+                  </div>
+                  <p className="text-primary text-sm font-medium">
+                    {p.technologies}
+                  </p>
+                  <p className="text-sm leading-relaxed break-words whitespace-pre-wrap">
+                    {p.description}
+                  </p>
                 </div>
               ))}
             </div>

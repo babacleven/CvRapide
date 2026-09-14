@@ -1,7 +1,7 @@
 'use client'
 
 import React from 'react'
-import { Education, Experience, Hobby, Language, PersonalDetails, Skill, CVTemplate } from '@/type'
+import { Education, Experience, Hobby, Language, PersonalDetails, Project, Skill, CVTemplate } from '@/type'
 import { templates } from './cv-templates'
 
 interface Props {
@@ -14,6 +14,7 @@ interface Props {
   languages: Language[]
   skills: Skill[]
   hobbies: Hobby[]
+  projects: Project[]
   download?: boolean
   ref?: React.Ref<HTMLDivElement>
 }

@@ -4,6 +4,7 @@ import {
   Hobby,
   Language,
   PersonalDetails,
+  Project,
   Skill,
 } from "@/type";
 import {
@@ -12,6 +13,7 @@ import {
   hobbiesPreset,
   languagesPreset,
   personalDetailsPreset,
+  projectsPreset,
   skillsPreset,
 } from "@/presets";
 import React from "react";
@@ -19,7 +21,11 @@ import Image from "next/image";
 import { useFileObjectUrl } from "../useFileObjectUrl";
 import {
   BriefcaseBusiness,
+  FolderGit2,
+  Github,
+  Globe,
   GraduationCap,
+  Linkedin,
   Mail,
   MapPinCheckInside,
   Phone,
@@ -34,6 +40,7 @@ interface Props {
   languages: Language[];
   skills: Skill[];
   hobbies: Hobby[];
+  projects: Project[];
   download?: boolean;
   ref?: React.Ref<HTMLDivElement>;
 }
@@ -85,6 +92,7 @@ const CVClassic: React.FC<Props> = ({
   languages,
   skills,
   hobbies,
+  projects,
   download,
   ref,
 }) => {
@@ -93,6 +101,9 @@ const CVClassic: React.FC<Props> = ({
     email: personalDetails.email || personalDetailsPreset.email,
     phone: personalDetails.phone || personalDetailsPreset.phone,
     address: personalDetails.address || personalDetailsPreset.address,
+    github: personalDetails.github || personalDetailsPreset.github,
+    linkedin: personalDetails.linkedin || personalDetailsPreset.linkedin,
+    portfolio: personalDetails.portfolio || personalDetailsPreset.portfolio,
     postSeeking:
       personalDetails.postSeeking || personalDetailsPreset.postSeeking,
     description:
@@ -104,6 +115,7 @@ const CVClassic: React.FC<Props> = ({
     languages: languages.length > 0 ? languages : languagesPreset,
     skills: skills.length > 0 ? skills : skillsPreset,
     hobbies: hobbies.length > 0 ? hobbies : hobbiesPreset,
+    projects: projects.length > 0 ? projects : projectsPreset,
   };
   const photoUrl = useFileObjectUrl(file);
   return (
@@ -154,6 +166,36 @@ const CVClassic: React.FC<Props> = ({
                   {pd.address && (
                     <div className="absolute left-0 top-0">
                       <MapPinCheckInside className="w-5 text-primary" />
+                    </div>
+                  )}
+                </div>
+              </li>
+              <li className="flex">
+                <div className="break-all text-sm relative">
+                  <div className="ml-8">{pd.github}</div>
+                  {pd.github && (
+                    <div className="absolute left-0 top-0">
+                      <Github className="w-5 text-primary" />
+                    </div>
+                  )}
+                </div>
+              </li>
+              <li className="flex">
+                <div className="break-all text-sm relative">
+                  <div className="ml-8">{pd.linkedin}</div>
+                  {pd.linkedin && (
+                    <div className="absolute left-0 top-0">
+                      <Linkedin className="w-5 text-primary" />
+                    </div>
+                  )}
+                </div>
+              </li>
+              <li className="flex">
+                <div className="break-all text-sm relative">
+                  <div className="ml-8">{pd.portfolio}</div>
+                  {pd.portfolio && (
+                    <div className="absolute left-0 top-0">
+                      <Globe className="w-5 text-primary" />
                     </div>
                   )}
                 </div>
@@ -277,6 +319,45 @@ const CVClassic: React.FC<Props> = ({
               ))}
             </ul>
           </div>
+          {/* Projets */}
+          {display.projects.length > 0 && (
+            <div className="mt-6">
+              <h1 className="uppercase font-bold mb-2 flex items-center">
+                <FolderGit2 className="w-5 mr-2" />
+                Projets
+              </h1>
+              <div className="space-y-3">
+                {display.projects.map((proj, i) => (
+                  <div key={i}>
+                    <div className="flex items-center justify-between gap-2">
+                      <h2 className="flex text-sm uppercase font-bold items-center gap-2">
+                        <span className="w-2 h-2 rounded-full bg-primary flex-shrink-0"></span>
+                        {proj.name}
+                      </h2>
+                      {proj.link && (
+                        <a
+                          href={proj.link}
+                          target="_blank"
+                          rel="noreferrer"
+                          className="text-primary text-xs hover:underline flex-shrink-0"
+                        >
+                          ↗
+                        </a>
+                      )}
+                    </div>
+                    <p className="text-xs break-words whitespace-pre-wrap leading-relaxed mt-1">
+                      {proj.description}
+                    </p>
+                    {proj.technologies && (
+                      <p className="text-[11px] text-primary mt-1 break-words">
+                        {proj.technologies}
+                      </p>
+                    )}
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
         </section>
       </div>
     </div>

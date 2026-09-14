@@ -4,6 +4,7 @@ import {
   Hobby,
   Language,
   PersonalDetails,
+  Project,
   Skill,
 } from "@/type";
 import {
@@ -12,6 +13,7 @@ import {
   hobbiesPreset,
   languagesPreset,
   personalDetailsPreset,
+  projectsPreset,
   skillsPreset,
 } from "@/presets";
 import React from "react";
@@ -19,7 +21,11 @@ import Image from "next/image";
 import { useFileObjectUrl } from "../useFileObjectUrl";
 import {
   BriefcaseBusiness,
+  FolderGit2,
+  Github,
+  Globe,
   GraduationCap,
+  Linkedin,
   Mail,
   MapPin,
   Phone,
@@ -35,6 +41,7 @@ interface Props {
   languages: Language[];
   skills: Skill[];
   hobbies: Hobby[];
+  projects: Project[];
   download?: boolean;
   ref?: React.Ref<HTMLDivElement>;
 }
@@ -86,6 +93,7 @@ const CVModern: React.FC<Props> = ({
   languages,
   skills,
   hobbies,
+  projects,
   download,
   ref,
 }) => {
@@ -94,6 +102,9 @@ const CVModern: React.FC<Props> = ({
     email: personalDetails.email || personalDetailsPreset.email,
     phone: personalDetails.phone || personalDetailsPreset.phone,
     address: personalDetails.address || personalDetailsPreset.address,
+    github: personalDetails.github || personalDetailsPreset.github,
+    linkedin: personalDetails.linkedin || personalDetailsPreset.linkedin,
+    portfolio: personalDetails.portfolio || personalDetailsPreset.portfolio,
     postSeeking:
       personalDetails.postSeeking || personalDetailsPreset.postSeeking,
     description:
@@ -105,6 +116,7 @@ const CVModern: React.FC<Props> = ({
     languages: languages.length > 0 ? languages : languagesPreset,
     skills: skills.length > 0 ? skills : skillsPreset,
     hobbies: hobbies.length > 0 ? hobbies : hobbiesPreset,
+    projects: projects.length > 0 ? projects : projectsPreset,
   };
   const photoUrl = useFileObjectUrl(file);
   return (
@@ -146,6 +158,21 @@ const CVModern: React.FC<Props> = ({
             {pd.address && (
               <span className="flex items-center gap-1">
                 <MapPin className="w-4 h-4" /> {pd.address}
+              </span>
+            )}
+            {pd.github && (
+              <span className="flex items-center gap-1">
+                <Github className="w-4 h-4" /> {pd.github}
+              </span>
+            )}
+            {pd.linkedin && (
+              <span className="flex items-center gap-1">
+                <Linkedin className="w-4 h-4" /> {pd.linkedin}
+              </span>
+            )}
+            {pd.portfolio && (
+              <span className="flex items-center gap-1">
+                <Globe className="w-4 h-4" /> {pd.portfolio}
               </span>
             )}
           </div>
@@ -283,6 +310,42 @@ const CVModern: React.FC<Props> = ({
                     </p>
                     <p className="break-words whitespace-pre-wrap text-sm text-base-content/80">
                       {edu.description}
+                    </p>
+                  </div>
+                ))}
+              </div>
+            </section>
+          )}
+          {display.projects.length > 0 && (
+            <section>
+              <h2 className="text-lg font-bold uppercase tracking-wider border-b-2 border-primary pb-2 mb-6 flex items-center gap-2">
+                <FolderGit2 className="w-5 h-5" /> Projets réalisés
+              </h2>
+              <div className="space-y-4">
+                {display.projects.map((p, i) => (
+                  <div key={i}>
+                    <div className="flex items-center justify-between gap-2">
+                      <h3 className="font-bold text-base break-words">
+                        {p.name}
+                      </h3>
+                      {p.link && (
+                        <a
+                          href={p.link}
+                          target="_blank"
+                          rel="noreferrer"
+                          className="text-primary text-xs hover:underline flex-shrink-0"
+                        >
+                          ↗
+                        </a>
+                      )}
+                    </div>
+                    {p.technologies && (
+                      <p className="text-primary font-medium text-sm">
+                        {p.technologies}
+                      </p>
+                    )}
+                    <p className="break-words whitespace-pre-wrap text-sm text-base-content/80 leading-relaxed">
+                      {p.description}
                     </p>
                   </div>
                 ))}

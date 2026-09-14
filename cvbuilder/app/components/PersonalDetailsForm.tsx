@@ -54,6 +54,30 @@ const PersonalDetailsForm: React.FC<Props> = ({ personalDetails, setPersonalDeta
         className='input input-bordered w-full'
       />
 
+      <div className='flex flex-col sm:flex-row gap-4'>
+        <input
+          type="text"
+          placeholder='github.com/votre-pseudo'
+          value={personalDetails.github ?? ''}
+          onChange={(e) => handleChange(e, 'github')}
+          className='input input-bordered w-full'
+        />
+        <input
+          type="text"
+          placeholder='linkedin.com/in/votre-profil'
+          value={personalDetails.linkedin ?? ''}
+          onChange={(e) => handleChange(e, 'linkedin')}
+          className='input input-bordered w-full'
+        />
+        <input
+          type="text"
+          placeholder='votre-portfolio.com'
+          value={personalDetails.portfolio ?? ''}
+          onChange={(e) => handleChange(e, 'portfolio')}
+          className='input input-bordered w-full'
+        />
+      </div>
+
       <input
         type="file"
         accept='image/*'

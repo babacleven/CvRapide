@@ -4,6 +4,7 @@ import {
   Hobby,
   Language,
   PersonalDetails,
+  Project,
   Skill,
 } from "@/type";
 import {
@@ -12,6 +13,7 @@ import {
   hobbiesPreset,
   languagesPreset,
   personalDetailsPreset,
+  projectsPreset,
   skillsPreset,
 } from "@/presets";
 import React from "react";
@@ -26,6 +28,7 @@ interface Props {
   languages: Language[];
   skills: Skill[];
   hobbies: Hobby[];
+  projects: Project[];
   download?: boolean;
   ref?: React.Ref<HTMLDivElement>;
 }
@@ -45,6 +48,7 @@ const CVBold: React.FC<Props> = ({
   languages,
   skills,
   hobbies,
+  projects,
   download,
   ref,
 }) => {
@@ -53,6 +57,9 @@ const CVBold: React.FC<Props> = ({
     email: personalDetails.email || personalDetailsPreset.email,
     phone: personalDetails.phone || personalDetailsPreset.phone,
     address: personalDetails.address || personalDetailsPreset.address,
+    github: personalDetails.github || personalDetailsPreset.github,
+    linkedin: personalDetails.linkedin || personalDetailsPreset.linkedin,
+    portfolio: personalDetails.portfolio || personalDetailsPreset.portfolio,
     postSeeking:
       personalDetails.postSeeking || personalDetailsPreset.postSeeking,
     description:
@@ -64,6 +71,7 @@ const CVBold: React.FC<Props> = ({
     languages: languages.length > 0 ? languages : languagesPreset,
     skills: skills.length > 0 ? skills : skillsPreset,
     hobbies: hobbies.length > 0 ? hobbies : hobbiesPreset,
+    projects: projects.length > 0 ? projects : projectsPreset,
   };
   const photoUrl = useFileObjectUrl(file);
   return (
@@ -103,6 +111,15 @@ const CVBold: React.FC<Props> = ({
           )}
           {pd.address && (
             <p className="text-sm">{pd.address}</p>
+          )}
+          {pd.github && (
+            <p className="text-sm break-all">{pd.github}</p>
+          )}
+          {pd.linkedin && (
+            <p className="text-sm break-all">{pd.linkedin}</p>
+          )}
+          {pd.portfolio && (
+            <p className="text-sm break-all">{pd.portfolio}</p>
           )}
         </div>
 
@@ -253,6 +270,49 @@ const CVBold: React.FC<Props> = ({
                       {edu.description}
                     </p>
                   )}
+                </div>
+              ))}
+            </div>
+          </section>
+        )}
+
+        {/* Projets */}
+        {display.projects.length > 0 && (
+          <section>
+            <h2 className="text-2xl font-black text-primary mb-6 flex items-center gap-3">
+              <span className="w-8 h-8 bg-primary text-primary-content rounded-lg flex items-center justify-center text-sm">
+                03
+              </span>
+              Projets
+            </h2>
+            <div className="space-y-6">
+              {display.projects.map((p, i) => (
+                <div
+                  key={i}
+                  className="relative pl-6 border-l-2 border-base-300"
+                >
+                  <div className="absolute -left-[9px] top-0 w-4 h-4 rounded-full bg-primary" />
+                  <div className="flex justify-between items-baseline gap-2">
+                    <h3 className="font-bold text-lg">{p.name}</h3>
+                    {p.link && (
+                      <a
+                        href={p.link}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="text-primary text-xs hover:underline flex-shrink-0"
+                      >
+                        ↗
+                      </a>
+                    )}
+                  </div>
+                  {p.technologies && (
+                    <p className="text-primary font-medium mb-2">
+                      {p.technologies}
+                    </p>
+                  )}
+                  <p className="break-words whitespace-pre-wrap text-sm text-base-content/80 leading-relaxed">
+                    {p.description}
+                  </p>
                 </div>
               ))}
             </div>

@@ -4,6 +4,7 @@ import {
   Hobby,
   Language,
   PersonalDetails,
+  Project,
   Skill,
 } from "@/type";
 import {
@@ -12,6 +13,7 @@ import {
   hobbiesPreset,
   languagesPreset,
   personalDetailsPreset,
+  projectsPreset,
   skillsPreset,
 } from "@/presets";
 import React from "react";
@@ -26,6 +28,7 @@ interface Props {
   languages: Language[];
   skills: Skill[];
   hobbies: Hobby[];
+  projects: Project[];
   download?: boolean;
   ref?: React.Ref<HTMLDivElement>;
 }
@@ -45,6 +48,7 @@ const CVMinimal: React.FC<Props> = ({
   languages,
   skills,
   hobbies,
+  projects,
   download,
   ref,
 }) => {
@@ -53,6 +57,9 @@ const CVMinimal: React.FC<Props> = ({
     email: personalDetails.email || personalDetailsPreset.email,
     phone: personalDetails.phone || personalDetailsPreset.phone,
     address: personalDetails.address || personalDetailsPreset.address,
+    github: personalDetails.github || personalDetailsPreset.github,
+    linkedin: personalDetails.linkedin || personalDetailsPreset.linkedin,
+    portfolio: personalDetails.portfolio || personalDetailsPreset.portfolio,
     postSeeking:
       personalDetails.postSeeking || personalDetailsPreset.postSeeking,
     description:
@@ -64,6 +71,7 @@ const CVMinimal: React.FC<Props> = ({
     languages: languages.length > 0 ? languages : languagesPreset,
     skills: skills.length > 0 ? skills : skillsPreset,
     hobbies: hobbies.length > 0 ? hobbies : hobbiesPreset,
+    projects: projects.length > 0 ? projects : projectsPreset,
   };
   const photoUrl = useFileObjectUrl(file);
   return (
@@ -94,10 +102,13 @@ const CVMinimal: React.FC<Props> = ({
             </div>
           )}
         </div>
-        <div className="flex gap-6 mt-6 text-sm text-gray-600">
+        <div className="flex gap-6 mt-6 text-sm text-gray-600 flex-wrap">
           {pd.email && <span>{pd.email}</span>}
           {pd.phone && <span>{pd.phone}</span>}
           {pd.address && <span>{pd.address}</span>}
+          {pd.github && <span>{pd.github}</span>}
+          {pd.linkedin && <span>{pd.linkedin}</span>}
+          {pd.portfolio && <span>{pd.portfolio}</span>}
         </div>
       </header>
 
@@ -209,6 +220,40 @@ const CVMinimal: React.FC<Props> = ({
                         {edu.description}
                       </p>
                     )}
+                  </div>
+                ))}
+              </div>
+            </section>
+          )}
+          {display.projects.length > 0 && (
+            <section>
+              <h2 className="text-xs font-bold uppercase tracking-widest text-gray-400 mb-6">
+                Projets
+              </h2>
+              <div className="space-y-6">
+                {display.projects.map((p, i) => (
+                  <div key={i}>
+                    <div className="flex justify-between items-baseline gap-2 mb-1">
+                      <h3 className="font-medium">{p.name}</h3>
+                      {p.link && (
+                        <a
+                          href={p.link}
+                          target="_blank"
+                          rel="noreferrer"
+                          className="text-xs text-gray-500 hover:underline flex-shrink-0"
+                        >
+                          ↗
+                        </a>
+                      )}
+                    </div>
+                    {p.technologies && (
+                      <p className="text-sm text-gray-600 mb-2">
+                        {p.technologies}
+                      </p>
+                    )}
+                    <p className="break-words whitespace-pre-wrap text-sm leading-relaxed">
+                      {p.description}
+                    </p>
                   </div>
                 ))}
               </div>
