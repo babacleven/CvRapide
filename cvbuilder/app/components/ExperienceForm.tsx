@@ -7,6 +7,9 @@ type Props = {
   setExperiences: (experience: Experience[]) => void;
 };
 
+const labelClass =
+  "text-[11px] font-semibold uppercase tracking-wide text-base-content/50";
+
 const ExperienceForm: React.FC<Props> = ({ experience, setExperiences }) => {
   const [newExperience, setNewExperience] = useState<Experience>({
     jobTitle: "",
@@ -90,65 +93,82 @@ const ExperienceForm: React.FC<Props> = ({ experience, setExperiences }) => {
   return (
     <div className="space-y-4">
       {/* Formulaire d'ajout / modification */}
-      <div className="space-y-3 p-4 border border-base-300 rounded-lg">
-        <div className="flex gap-2">
+      <div className="space-y-3">
+        <label className="flex flex-col gap-1.5">
+          <span className={labelClass}>Poste occupé</span>
           <input
             type="text"
-            placeholder="POSTE OCCUPÉ"
+            placeholder="ex : Chargé de communication"
             value={newExperience.jobTitle}
             onChange={(e) => handleChange(e, "jobTitle")}
             className="input input-bordered w-full"
           />
-          <input
-            type="text"
-            placeholder="NOM ENTREPRISE"
-            value={newExperience.companyName}
-            onChange={(e) => handleChange(e, "companyName")}
-            className="input input-bordered w-full"
-          />
-          <input
-            type="text"
-            placeholder="Ville / Lieu"
-            value={newExperience.city}
-            onChange={(e) => handleChange(e, "city")}
-            className="input input-bordered w-full"
-          />
-        </div>
-        <div className="flex gap-2">
-          <input
-            type="month"
-            placeholder="Mois / Année de début"
-            value={newExperience.startDate}
-            onChange={(e) => handleChange(e, "startDate")}
-            className="input input-bordered w-full"
-          />
-          {!newExperience.isCurrent && (
+        </label>
+        <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+          <label className="flex flex-col gap-1.5">
+            <span className={labelClass}>Entreprise</span>
             <input
-              type="month"
-              placeholder="Mois / Année de fin"
-              value={newExperience.endDate}
-              onChange={(e) => handleChange(e, "endDate")}
+              type="text"
+              placeholder="ex : Akieni"
+              value={newExperience.companyName}
+              onChange={(e) => handleChange(e, "companyName")}
               className="input input-bordered w-full"
             />
+          </label>
+          <label className="flex flex-col gap-1.5">
+            <span className={labelClass}>Ville / Lieu</span>
+            <input
+              type="text"
+              placeholder="ex : Brazzaville"
+              value={newExperience.city}
+              onChange={(e) => handleChange(e, "city")}
+              className="input input-bordered w-full"
+            />
+          </label>
+        </div>
+        <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+          <label className="flex flex-col gap-1.5">
+            <span className={labelClass}>Début</span>
+            <input
+              type="month"
+              value={newExperience.startDate}
+              onChange={(e) => handleChange(e, "startDate")}
+              className="input input-bordered w-full"
+            />
+          </label>
+          {!newExperience.isCurrent && (
+            <label className="flex flex-col gap-1.5">
+              <span className={labelClass}>Fin</span>
+              <input
+                type="month"
+                value={newExperience.endDate}
+                onChange={(e) => handleChange(e, "endDate")}
+                className="input input-bordered w-full"
+              />
+            </label>
           )}
         </div>
-        <label className="flex items-center gap-2 cursor-pointer">
+        <label className="flex items-center gap-2.5 cursor-pointer rounded-lg border border-base-300 px-3 py-2.5 transition-colors hover:bg-base-200">
           <input
             type="checkbox"
             checked={newExperience.isCurrent}
             onChange={(e) => handleChange(e, "isCurrent")}
-            className="checkbox checkbox-primary"
+            className="checkbox checkbox-primary checkbox-sm"
           />
           <span className="text-sm">
-            En poste actuellement (jusqu'à présent)
+            En poste actuellement (jusqu&apos;à présent)
           </span>
         </label>
-        <textarea
-          placeholder="Décrivez ici les fonctions que vous avez occupé pour ce poste. Décrivez également vos missions et les résultats que vous avez obtenu."
-          value={newExperience.description}
-          onChange={(e) => handleChange(e, "description")}
-          className="textarea textarea-bordered w-full"
-        />
+        <label className="flex flex-col gap-1.5">
+          <span className={labelClass}>Missions & résultats</span>
+          <textarea
+            rows={4}
+            placeholder="Décrivez vos missions et les résultats obtenus pour ce poste."
+            value={newExperience.description}
+            onChange={(e) => handleChange(e, "description")}
+            className="textarea textarea-bordered w-full"
+          />
+        </label>
         <div className="flex gap-2 justify-end">
           {editingIndex !== null && (
             <button onClick={handleCancelEdit} className="btn btn-ghost btn-sm">

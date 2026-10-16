@@ -7,6 +7,9 @@ type Props = {
   setProjects: (projects: Project[]) => void;
 };
 
+const labelClass =
+  "text-[11px] font-semibold uppercase tracking-wide text-base-content/50";
+
 const ProjectForm: React.FC<Props> = ({ projects, setProjects }) => {
   const [newProject, setNewProject] = useState<Project>({
     name: "",
@@ -57,36 +60,49 @@ const ProjectForm: React.FC<Props> = ({ projects, setProjects }) => {
   return (
     <div className="space-y-4">
       {/* Formulaire d'ajout / modification */}
-      <div className="space-y-3 p-4 border border-base-300 rounded-lg">
-        <div className="flex gap-2">
-          <input
-            type="text"
-            placeholder="Nom du projet"
-            value={newProject.name}
-            onChange={(e) => handleChange(e, "name")}
-            className="input input-bordered w-full"
-          />
-          <input
-            type="text"
-            placeholder="Lien (optionnel)"
-            value={newProject.link ?? ""}
-            onChange={(e) => handleChange(e, "link")}
-            className="input input-bordered w-full"
-          />
+      <div className="space-y-3">
+        <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+          <label className="flex flex-col gap-1.5">
+            <span className={labelClass}>Nom du projet</span>
+            <input
+              type="text"
+              placeholder="ex : Refonte du site vitrine"
+              value={newProject.name}
+              onChange={(e) => handleChange(e, "name")}
+              className="input input-bordered w-full"
+            />
+          </label>
+          <label className="flex flex-col gap-1.5">
+            <span className={labelClass}>Lien (optionnel)</span>
+            <input
+              type="text"
+              placeholder="ex : github.com/vous/projet"
+              value={newProject.link ?? ""}
+              onChange={(e) => handleChange(e, "link")}
+              className="input input-bordered w-full"
+            />
+          </label>
         </div>
-        <textarea
-          placeholder="Décrivez le projet et sa valeur ajoutée."
-          value={newProject.description}
-          onChange={(e) => handleChange(e, "description")}
-          className="textarea textarea-bordered w-full"
-        />
-        <input
-          type="text"
-          placeholder="Technologies (ex: React, Node.js...)"
-          value={newProject.technologies}
-          onChange={(e) => handleChange(e, "technologies")}
-          className="input input-bordered w-full"
-        />
+        <label className="flex flex-col gap-1.5">
+          <span className={labelClass}>Description</span>
+          <textarea
+            rows={3}
+            placeholder="Décrivez le projet et sa valeur ajoutée."
+            value={newProject.description}
+            onChange={(e) => handleChange(e, "description")}
+            className="textarea textarea-bordered w-full"
+          />
+        </label>
+        <label className="flex flex-col gap-1.5">
+          <span className={labelClass}>Technologies</span>
+          <input
+            type="text"
+            placeholder="ex : React, Node.js, Figma"
+            value={newProject.technologies}
+            onChange={(e) => handleChange(e, "technologies")}
+            className="input input-bordered w-full"
+          />
+        </label>
         <div className="flex gap-2 justify-end">
           {editingIndex !== null && (
             <button onClick={handleCancelEdit} className="btn btn-ghost btn-sm">

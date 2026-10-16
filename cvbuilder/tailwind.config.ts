@@ -55,6 +55,35 @@ export default {
   daisyui: {
     themes: [
       {
+        cvfastlight: {
+          primary: "#60a5fa",
+          "primary-content": "#0a1120",
+          secondary: "#18181b",
+          "secondary-content": "#ffffff",
+          accent: "#22d3ee",
+          "accent-content": "#0a1120",
+          neutral: "#18181b",
+          "neutral-content": "#ffffff",
+          "base-100": "#ffffff",
+          "base-200": "#fff8f1",
+          "base-300": "#efe3d5",
+          "base-content": "#09090b",
+          info: "#60a5fa",
+          "info-content": "#0a1120",
+          success: "#22c55e",
+          "success-content": "#ffffff",
+          warning: "#eab308",
+          "warning-content": "#0a1120",
+          error: "#ef4444",
+          "error-content": "#ffffff",
+          "--rounded-box": "18px",
+          "--rounded-btn": "8px",
+          "--rounded-badge": "9999px",
+          "--animation-btn": "0.15s",
+          "--animation-input": "0.2s",
+        },
+      },
+      {
         cvfast: {
           primary: "#60a5fa",
           "primary-content": "#0a1120",

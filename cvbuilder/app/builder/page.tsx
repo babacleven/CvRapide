@@ -79,6 +79,97 @@ function useLocalStorage<T>(
   return [storedValue, setValue];
 }
 
+type SectionCardProps = {
+  title: string;
+  icon: React.ElementType;
+  onReset: () => void;
+  children: React.ReactNode;
+};
+
+const SectionCard: React.FC<SectionCardProps> = ({
+  title,
+  icon: Icon,
+  onReset,
+  children,
+}) => (
+  <div className="rounded-2xl border border-base-300 bg-base-100 p-4 shadow-sm sm:p-5">
+    <div className="mb-4 flex items-center justify-between">
+      <div className="flex items-center gap-2.5">
+        <span className="grid size-8 place-items-center rounded-lg bg-primary/10 text-primary">
+          <Icon className="size-4" />
+        </span>
+        <h2 className="text-sm font-semibold">{title}</h2>
+      </div>
+      <button
+        type="button"
+        onClick={onReset}
+        title="Réinitialiser"
+        aria-label={`Réinitialiser : ${title}`}
+        className="btn btn-ghost btn-xs btn-circle"
+      >
+        <RotateCw className="size-4 text-base-content/50" />
+      </button>
+    </div>
+    {children}
+  </div>
+);
+
+type MobileAccordionItemProps = {
+  title: string;
+  icon: React.ElementType;
+  open: boolean;
+  onToggle: () => void;
+  children: React.ReactNode;
+  onReset?: () => void;
+};
+
+const MobileAccordionItem: React.FC<MobileAccordionItemProps> = ({
+  title,
+  icon: Icon,
+  open,
+  onToggle,
+  children,
+  onReset,
+}) => (
+  <div className="overflow-hidden rounded-2xl border border-base-300 bg-base-100 shadow-sm">
+    <div className="flex items-center justify-between px-4 py-3.5">
+      <button
+        onClick={onToggle}
+        className="flex flex-1 items-center gap-3 text-left"
+      >
+        <span className="grid size-9 place-items-center rounded-xl bg-primary/10 text-primary">
+          <Icon className="size-4" />
+        </span>
+        <span className="text-sm font-semibold">{title}</span>
+      </button>
+      <div className="flex items-center gap-1">
+        {onReset && (
+          <button
+            onClick={(e) => {
+              e.stopPropagation();
+              onReset();
+            }}
+            className="btn btn-ghost btn-xs btn-circle"
+            title="Réinitialiser"
+          >
+            <RotateCw className="size-4 text-base-content/50" />
+          </button>
+        )}
+        <button
+          onClick={onToggle}
+          aria-label={open ? "Fermer la section" : "Ouvrir la section"}
+          className="btn btn-ghost btn-xs btn-circle"
+        >
+          <ChevronDown
+            className={`size-4 transition-transform ${open ? "rotate-180" : ""}`}
+          />
+        </button>
+      </div>
+    </div>
+    {open && <div className="border-t border-base-300 p-4">{children}</div>}
+  </div>
+);
+
 export default function Home() {
   // Tous les states sont maintenant persistant dans localStorage
   const [personalDetails, setPersonalDetails] =
@@ -477,99 +568,67 @@ export default function Home() {
     requestAnimationFrame(fitPdfPreview);
   };
 
+  const TEMPLATE_OPTIONS: { value: CVTemplate; label: string }[] = [
+    { value: "classic", label: "Classique" },
+    { value: "modern", label: "Moderne" },
+    { value: "minimal", label: "Minimaliste" },
+    { value: "bold", label: "Audacieux" },
+    { value: "profile", label: "Profil" },
+    { value: "skills", label: "Compétences" },
+  ];
+
+  // Carte de section (desktop) — présentation uniquement
   const MobileHeader = () => (
-    <div className="lg:hidden fixed top-0 left-0 right-0 z-50 bg-base-200 border-b border-base-300 px-4 py-3">
-      <div className="flex justify-between items-center">
-        <h1 className="text-xl font-bold italic">
+    <div className="lg:hidden fixed inset-x-0 top-0 z-50 border-b border-base-300 bg-base-100/90 backdrop-blur-xl">
+      <div className="flex items-center justify-between px-4 py-3">
+        <h1 className="text-lg font-bold italic tracking-tight">
           CVFast<span className="text-primary"> Builder</span>
         </h1>
-        <div className="flex gap-2">
+        <div className="flex items-center gap-1 rounded-full bg-base-200 p-1">
           <button
             onClick={() => setActiveTab("edit")}
-            className={`btn btn-sm ${activeTab === "edit" ? "btn-primary" : "btn-ghost"}`}
+            className={`rounded-full px-3.5 py-1.5 text-xs font-semibold transition-colors ${
+              activeTab === "edit"
+                ? "bg-primary text-primary-content shadow-sm"
+                : "text-base-content/60"
+            }`}
           >
-            Editer
+            Éditer
           </button>
           <button
             onClick={() => setActiveTab("preview")}
-            className={`btn btn-sm ${activeTab === "preview" ? "btn-primary" : "btn-ghost"}`}
+            className={`inline-flex items-center gap-1.5 rounded-full px-3.5 py-1.5 text-xs font-semibold transition-colors ${
+              activeTab === "preview"
+                ? "bg-primary text-primary-content shadow-sm"
+                : "text-base-content/60"
+            }`}
           >
-            <Eye className="w-4 h-4" />
+            <Eye className="size-3.5" />
+            Aperçu
           </button>
         </div>
       </div>
-    </div>
-  );
-
-  const MobileAccordionItem = ({
-    title,
-    icon: Icon,
-    sectionKey,
-    children,
-    onReset,
-  }: {
-    title: string;
-    icon: React.ElementType;
-    sectionKey: string;
-    children: React.ReactNode;
-    onReset?: () => void;
-  }) => (
-    <div className="bg-base-100 rounded-xl overflow-hidden shadow-sm border border-base-300 mb-3">
-      <div className="w-full px-4 py-4 flex items-center justify-between bg-gradient-to-r from-base-100 to-base-200">
-        <button
-          onClick={() => toggleSection(sectionKey)}
-          className="flex items-center gap-3 flex-1 text-left"
-        >
-          <div className="p-2 bg-primary/10 rounded-lg">
-            <Icon className="w-5 h-5 text-primary" />
-          </div>
-          <span className="font-semibold">{title}</span>
-        </button>
-        <div className="flex items-center gap-3">
-          {onReset && (
-            <button
-              onClick={(e) => {
-                e.stopPropagation();
-                onReset();
-              }}
-              className="p-2 hover:bg-base-300 rounded-full transition-colors"
-              title="Réinitialiser"
-            >
-              <RotateCw className="w-5 h-5 text-base-content/60" />
-            </button>
-          )}
-          <button onClick={() => toggleSection(sectionKey)}>
-            <ChevronDown
-              className={`w-5 h-5 transition-transform ${openSection === sectionKey ? "rotate-180" : ""}`}
-            />
-          </button>
-        </div>
-      </div>
-      {openSection === sectionKey && (
-        <div className="p-4 border-t border-base-300">{children}</div>
-      )}
     </div>
   );
 
   const MobileEditView = () => (
-    <div className="lg:hidden pt-20 pb-6 px-4 space-y-4 h-[calc(100vh-80px)] overflow-y-auto">
-      <div className="flex gap-2 mb-4 flex-wrap">
+    <div className="lg:hidden h-[100dvh] space-y-3 overflow-y-auto px-4 pb-24 pt-[76px]">
+      <div className="flex gap-2">
         <select
           value={template}
           onChange={(e) => setTemplate(e.target.value as CVTemplate)}
-          className="select select-bordered select-sm flex-1 min-w-[120px]"
+          className="select select-bordered select-sm min-w-0 flex-1"
         >
-          <option value="classic">Classique</option>
-          <option value="modern">Moderne</option>
-          <option value="minimal">Minimaliste</option>
-          <option value="bold">Audacieux</option>
-          <option value="profile">Profil</option>
-          <option value="skills">Compétences</option>
+          {TEMPLATE_OPTIONS.map((o) => (
+            <option key={o.value} value={o.value}>
+              {o.label}
+            </option>
+          ))}
         </select>
         <select
           value={theme}
           onChange={(e) => setTheme(e.target.value)}
-          className="select select-bordered select-sm flex-1 min-w-[120px]"
+          className="select select-bordered select-sm min-w-0 flex-1"
         >
           {themes.map((themeName) => (
             <option key={themeName} value={themeName}>
@@ -577,115 +636,116 @@ export default function Home() {
             </option>
           ))}
         </select>
-        <button
-          onClick={openPdfModal}
-          className="btn btn-primary btn-sm"
-        >
-          <Download className="w-4 h-4" />
+        <button onClick={openPdfModal} className="btn btn-primary btn-sm">
+          <Download className="size-4" />
         </button>
       </div>
 
-      {MobileAccordionItem({
-        title: "Informations personnelles",
-        icon: User,
-        sectionKey: "personal",
-        onReset: handleResetPersonalDetails,
-        children: (
-          <PersonalDetailsForm
-            personalDetails={personalDetails}
-            setPersonalDetails={setPersonalDetails}
-            setFile={handleSetFile}
-          />
-        ),
-      })}
+      <MobileAccordionItem
+        title="Informations personnelles"
+        icon={User}
+        open={openSection === "personal"}
+        onToggle={() => toggleSection("personal")}
+        onReset={handleResetPersonalDetails}
+      >
+        <PersonalDetailsForm
+          personalDetails={personalDetails}
+          setPersonalDetails={setPersonalDetails}
+          setFile={handleSetFile}
+        />
+      </MobileAccordionItem>
 
-      {MobileAccordionItem({
-        title: "Experiences professionnelles",
-        icon: Briefcase,
-        sectionKey: "experiences",
-        onReset: handleResetExperiences,
-        children: (
-          <ExperienceForm
-            experience={experiences}
-            setExperiences={setExperience}
-          />
-        ),
-      })}
+      <MobileAccordionItem
+        title="Expériences professionnelles"
+        icon={Briefcase}
+        open={openSection === "experiences"}
+        onToggle={() => toggleSection("experiences")}
+        onReset={handleResetExperiences}
+      >
+        <ExperienceForm
+          experience={experiences}
+          setExperiences={setExperience}
+        />
+      </MobileAccordionItem>
 
-      {MobileAccordionItem({
-        title: "Formations",
-        icon: GraduationCap,
-        sectionKey: "educations",
-        onReset: handleResetEducations,
-        children: (
-          <EducationForm
-            educations={educations}
-            setEducations={setEducations}
-          />
-        ),
-      })}
+      <MobileAccordionItem
+        title="Formations"
+        icon={GraduationCap}
+        open={openSection === "educations"}
+        onToggle={() => toggleSection("educations")}
+        onReset={handleResetEducations}
+      >
+        <EducationForm educations={educations} setEducations={setEducations} />
+      </MobileAccordionItem>
 
-      {MobileAccordionItem({
-        title: "Langues",
-        icon: Globe,
-        sectionKey: "languages",
-        onReset: handleResetLanguages,
-        children: (
-          <LanguageForm languages={languages} setLanguages={setLanguages} />
-        ),
-      })}
+      <MobileAccordionItem
+        title="Langues"
+        icon={Globe}
+        open={openSection === "languages"}
+        onToggle={() => toggleSection("languages")}
+        onReset={handleResetLanguages}
+      >
+        <LanguageForm languages={languages} setLanguages={setLanguages} />
+      </MobileAccordionItem>
 
-      {MobileAccordionItem({
-        title: "Projets réalisés",
-        icon: FolderGit2,
-        sectionKey: "projects",
-        onReset: handleResetProjects,
-        children: (
-          <ProjectForm projects={projects} setProjects={setProjects} />
-        ),
-      })}
+      <MobileAccordionItem
+        title="Projets réalisés"
+        icon={FolderGit2}
+        open={openSection === "projects"}
+        onToggle={() => toggleSection("projects")}
+        onReset={handleResetProjects}
+      >
+        <ProjectForm projects={projects} setProjects={setProjects} />
+      </MobileAccordionItem>
 
-      <div className="space-y-3">
-        {MobileAccordionItem({
-          title: "Competences",
-          icon: Star,
-          sectionKey: "skills",
-          onReset: handleResetSkills,
-          children: <SkillForm skills={skills} setSkills={setSkills} />,
-        })}
-        {MobileAccordionItem({
-          title: "Loisirs",
-          icon: Target,
-          sectionKey: "hobbies",
-          onReset: handleResetHobbies,
-          children: <HobbyForm hobbies={hobbies} setHobbies={setHobbies} />,
-        })}
-      </div>
+      <MobileAccordionItem
+        title="Compétences"
+        icon={Star}
+        open={openSection === "skills"}
+        onToggle={() => toggleSection("skills")}
+        onReset={handleResetSkills}
+      >
+        <SkillForm skills={skills} setSkills={setSkills} />
+      </MobileAccordionItem>
+
+      <MobileAccordionItem
+        title="Loisirs"
+        icon={Target}
+        open={openSection === "hobbies"}
+        onToggle={() => toggleSection("hobbies")}
+        onReset={handleResetHobbies}
+      >
+        <HobbyForm hobbies={hobbies} setHobbies={setHobbies} />
+      </MobileAccordionItem>
     </div>
   );
 
   const MobilePreviewView = () => (
-    <div className="lg:hidden pt-20 pb-6 px-2 h-[calc(100vh-80px)] flex flex-col">
-      <div className="bg-base-100 rounded-xl p-3 shadow-lg flex-1 flex flex-col">
-        <div className="flex justify-between items-center mb-3">
-          <h2 className="font-bold text-base">Previsualisation</h2>
-          <div className="flex items-center gap-1">
+    <div className="lg:hidden flex h-[100dvh] flex-col px-3 pb-4 pt-[76px]">
+      <div className="flex flex-1 flex-col overflow-hidden rounded-2xl border border-base-300 bg-base-100 shadow-sm">
+        <div className="flex items-center justify-between border-b border-base-300 px-4 py-3">
+          <h2 className="text-sm font-semibold">Prévisualisation</h2>
+          <div className="flex items-center gap-1 rounded-full bg-base-200 p-1">
             <button
               onClick={() => setZoom(Math.max(25, zoom - 10))}
-              className="btn btn-ghost btn-xs btn-circle"
+              aria-label="Zoom arrière"
+              className="grid size-7 place-items-center rounded-full transition-colors hover:bg-base-300"
             >
-              <ZoomOut className="w-3 h-3" />
+              <ZoomOut className="size-3.5" />
             </button>
-            <span className="text-xs font-mono w-10 text-center">{zoom}%</span>
+            <span className="w-10 text-center text-xs font-mono tabular-nums">
+              {zoom}%
+            </span>
             <button
               onClick={() => setZoom(Math.min(100, zoom + 10))}
-              className="btn btn-ghost btn-xs btn-circle"
+              aria-label="Zoom avant"
+              className="grid size-7 place-items-center rounded-full transition-colors hover:bg-base-300"
             >
-              <ZoomIn className="w-3 h-3" />
+              <ZoomIn className="size-3.5" />
             </button>
           </div>
         </div>
-        <div className="flex-1 overflow-auto bg-base-200 rounded-lg relative">
+        <div className="cv-preview-bg relative flex-1 overflow-auto bg-base-200">
           <div
             ref={mobilePreviewScaleRef}
             className="absolute left-1/2 top-0"
@@ -710,24 +770,29 @@ export default function Home() {
             />
           </div>
         </div>
-        <button
-          onClick={handleDirectDownload}
-          className="btn btn-primary w-full mt-3"
-          disabled={downloading}
-        >
-          {downloading ? (
-            <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-          ) : (
-            <Download className="w-4 h-4 mr-2" />
-          )}
-          {downloading ? "Téléchargement..." : "Telecharger mon CV"}
-        </button>
+        <div className="border-t border-base-300 p-3">
+          <button
+            onClick={handleDirectDownload}
+            className="btn btn-primary w-full"
+            disabled={downloading}
+          >
+            {downloading ? (
+              <Loader2 className="size-4 animate-spin" />
+            ) : (
+              <Download className="size-4" />
+            )}
+            {downloading ? "Téléchargement..." : "Télécharger mon CV"}
+          </button>
+        </div>
       </div>
     </div>
   );
 
   return (
-    <div>
+    <div
+      className="cv-builder min-h-screen bg-base-200 text-base-content"
+      data-theme="cvfastlight"
+    >
       {!isDesktop && (
         <div>
           {MobileHeader()}
@@ -736,157 +801,133 @@ export default function Home() {
       )}
 
       {isDesktop && (
-        <div>
-          <section className="flex items-center h-screen">
-          <div className="lg:w-2/5 xl:w-1/3 h-full p-6 lg:p-10 bg-base-200 scrollable no-scrollbar overflow-y-auto">
-            <div className="mb-4 flex justify-between items-center">
-              <h1 className="text-2xl font-bold italic">
+        <section className="flex h-screen overflow-hidden">
+          {/* Panneau formulaire */}
+          <aside className="flex h-full w-2/5 flex-col border-r border-base-300 bg-base-200 xl:w-1/3">
+            <header className="flex items-center justify-between border-b border-base-300 bg-base-100/70 px-6 py-4 backdrop-blur">
+              <h1 className="text-xl font-bold italic tracking-tight">
                 CVFast<span className="text-primary"> Builder</span>
               </h1>
-              <button
-                className="btn btn-primary"
-                onClick={openPdfModal}
-              >
-                Previsualiser
-                <Eye className="w-4" />
+              <button className="btn btn-primary btn-sm" onClick={openPdfModal}>
+                Prévisualiser
+                <Eye className="size-4" />
               </button>
-            </div>
+            </header>
 
-            <div className="flex flex-col gap-6 rounded-lg">
-              <div className="flex gap-2 mb-2">
-                <select
-                  value={template}
-                  onChange={(e) => setTemplate(e.target.value as CVTemplate)}
-                  className="select select-bordered select-sm flex-1"
-                >
-                  <option value="classic">Classique</option>
-                  <option value="modern">Moderne</option>
-                  <option value="minimal">Minimaliste</option>
-                  <option value="bold">Audacieux</option>
-                  <option value="profile">Profil</option>
-                  <option value="skills">Compétences</option>
-                </select>
-                <select
-                  value={theme}
-                  onChange={(e) => setTheme(e.target.value)}
-                  className="select select-bordered select-sm flex-1"
-                >
-                  {themes.map((themeName) => (
-                    <option key={themeName} value={themeName}>
-                      {themeName}
-                    </option>
-                  ))}
-                </select>
-              </div>
-
-              <div className="flex justify-between items-center">
-                <h1 className="badge badge-primary badge-outline">
-                  Qui etes-vous ?
-                </h1>
-                <button
-                  onClick={handleResetPersonalDetails}
-                  className="btn btn-primary btn-sm"
-                >
-                  <RotateCw className="w-5 h-5" />
-                </button>
-              </div>
-              <PersonalDetailsForm
-                personalDetails={personalDetails}
-                setPersonalDetails={setPersonalDetails}
-                setFile={handleSetFile}
-              />
-
-              <div className="flex justify-between items-center">
-                <h1 className="badge badge-primary badge-outline">
-                  Experiences
-                </h1>
-                <button
-                  onClick={handleResetExperiences}
-                  className="btn btn-primary btn-sm"
-                >
-                  <RotateCw className="w-5 h-5" />
-                </button>
-              </div>
-              <ExperienceForm
-                experience={experiences}
-                setExperiences={setExperience}
-              />
-
-              <div className="flex justify-between items-center">
-                <h1 className="badge badge-primary badge-outline">
-                  Educations
-                </h1>
-                <button
-                  onClick={handleResetEducations}
-                  className="btn btn-primary btn-sm"
-                >
-                  <RotateCw className="w-5 h-5" />
-                </button>
-              </div>
-              <EducationForm
-                educations={educations}
-                setEducations={setEducations}
-              />
-
-              <div className="flex justify-between items-center">
-                <h1 className="badge badge-primary badge-outline">Langues</h1>
-                <button
-                  onClick={handleResetLanguages}
-                  className="btn btn-primary btn-sm"
-                >
-                  <RotateCw className="w-5 h-5" />
-                </button>
-              </div>
-              <LanguageForm languages={languages} setLanguages={setLanguages} />
-
-              <div className="flex justify-between items-center">
-                <h1 className="badge badge-primary badge-outline">
-                  Projets réalisés
-                </h1>
-                <button
-                  onClick={handleResetProjects}
-                  className="btn btn-primary btn-sm"
-                >
-                  <RotateCw className="w-5 h-5" />
-                </button>
-              </div>
-              <ProjectForm projects={projects} setProjects={setProjects} />
-
-              <div className="space-y-8">
-                <div>
-                  <div className="flex justify-between items-center mb-4">
-                    <h1 className="badge badge-primary badge-outline">
-                      Competences
-                    </h1>
-                    <button
-                      onClick={handleResetSkills}
-                      className="btn btn-primary btn-sm"
+            <div className="scrollable no-scrollbar flex-1 overflow-y-auto px-6 py-6">
+              <div className="space-y-6">
+                <div className="grid grid-cols-2 gap-3">
+                  <label className="flex flex-col gap-1.5">
+                    <span className="text-[11px] font-semibold uppercase tracking-wide text-base-content/50">
+                      Modèle
+                    </span>
+                    <select
+                      value={template}
+                      onChange={(e) =>
+                        setTemplate(e.target.value as CVTemplate)
+                      }
+                      className="select select-bordered select-sm w-full"
                     >
-                      <RotateCw className="w-5 h-5" />
-                    </button>
-                  </div>
+                      {TEMPLATE_OPTIONS.map((o) => (
+                        <option key={o.value} value={o.value}>
+                          {o.label}
+                        </option>
+                      ))}
+                    </select>
+                  </label>
+                  <label className="flex flex-col gap-1.5">
+                    <span className="text-[11px] font-semibold uppercase tracking-wide text-base-content/50">
+                      Thème
+                    </span>
+                    <select
+                      value={theme}
+                      onChange={(e) => setTheme(e.target.value)}
+                      className="select select-bordered select-sm w-full"
+                    >
+                      {themes.map((themeName) => (
+                        <option key={themeName} value={themeName}>
+                          {themeName}
+                        </option>
+                      ))}
+                    </select>
+                  </label>
+                </div>
+
+                <SectionCard
+                  title="Qui êtes-vous ?"
+                  icon={User}
+                  onReset={handleResetPersonalDetails}
+                >
+                  <PersonalDetailsForm
+                    personalDetails={personalDetails}
+                    setPersonalDetails={setPersonalDetails}
+                    setFile={handleSetFile}
+                  />
+                </SectionCard>
+
+                <SectionCard
+                  title="Expériences"
+                  icon={Briefcase}
+                  onReset={handleResetExperiences}
+                >
+                  <ExperienceForm
+                    experience={experiences}
+                    setExperiences={setExperience}
+                  />
+                </SectionCard>
+
+                <SectionCard
+                  title="Formations"
+                  icon={GraduationCap}
+                  onReset={handleResetEducations}
+                >
+                  <EducationForm
+                    educations={educations}
+                    setEducations={setEducations}
+                  />
+                </SectionCard>
+
+                <SectionCard
+                  title="Langues"
+                  icon={Globe}
+                  onReset={handleResetLanguages}
+                >
+                  <LanguageForm
+                    languages={languages}
+                    setLanguages={setLanguages}
+                  />
+                </SectionCard>
+
+                <SectionCard
+                  title="Projets réalisés"
+                  icon={FolderGit2}
+                  onReset={handleResetProjects}
+                >
+                  <ProjectForm projects={projects} setProjects={setProjects} />
+                </SectionCard>
+
+                <SectionCard
+                  title="Compétences"
+                  icon={Star}
+                  onReset={handleResetSkills}
+                >
                   <SkillForm skills={skills} setSkills={setSkills} />
-                </div>
-                <div>
-                  <div className="flex justify-between items-center mb-4">
-                    <h1 className="badge badge-primary badge-outline">
-                      Loisirs
-                    </h1>
-                    <button
-                      onClick={handleResetHobbies}
-                      className="btn btn-primary btn-sm"
-                    >
-                      <RotateCw className="w-5 h-5" />
-                    </button>
-                  </div>
+                </SectionCard>
+
+                <SectionCard
+                  title="Loisirs"
+                  icon={Target}
+                  onReset={handleResetHobbies}
+                >
                   <HobbyForm hobbies={hobbies} setHobbies={setHobbies} />
-                </div>
+                </SectionCard>
               </div>
             </div>
-          </div>
+          </aside>
 
-          <div className="lg:w-3/5 xl:w-2/3 h-full bg-base-100 bg-[url('/file.svg')] bg-cover bg-center scrollable-preview relative">
-            <div className="flex items-center justify-center fixed z-[9999] top-5 right-5">
+          {/* Panneau aperçu */}
+          <div className="scrollable-preview cv-preview-bg relative h-full w-3/5 bg-[#fff8f1] xl:w-2/3">
+            <div className="fixed right-5 top-5 z-40 flex items-center gap-3 rounded-full border border-base-300 bg-base-100/90 px-4 py-2 shadow-sm backdrop-blur">
               <input
                 type="range"
                 min={50}
@@ -895,10 +936,12 @@ export default function Home() {
                 onChange={(e) => setZoom(Number(e.target.value))}
                 className="range range-xs range-primary"
               />
-              <p className="ml-4 text-sm text-primary">{zoom}%</p>
+              <p className="w-10 text-right text-sm font-semibold tabular-nums text-primary">
+                {zoom}%
+              </p>
             </div>
             <div
-              className="flex justify-center items-center"
+              className="flex items-center justify-center p-10"
               style={{ transform: `scale(${zoom / 200})` }}
             >
               <CVPreview
@@ -916,66 +959,58 @@ export default function Home() {
             </div>
           </div>
         </section>
-        </div>
       )}
 
       <dialog id="pdf_modal" className="modal">
-          <div className="modal-box w-full max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-            <form method="dialog">
-              <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">
-                X
-              </button>
-            </form>
-            <div className="mt-5">
-              <div className="flex flex-wrap justify-end mb-5 items-center gap-3">
-                <div className="flex items-center gap-1">
-                  <button
-                    onClick={() =>
-                      setDialogZoom(Math.max(0.2, dialogZoom - 0.1))
-                    }
-                    className="btn btn-ghost btn-sm btn-circle"
-                    title="Zoom arrière"
-                  >
-                    <ZoomOut className="w-4 h-4" />
-                  </button>
-                  <span className="text-xs font-mono w-10 text-center">
-                    {Math.round(dialogZoom * 100)}%
-                  </span>
-                  <button
-                    onClick={() =>
-                      setDialogZoom(Math.min(1.5, dialogZoom + 0.1))
-                    }
-                    className="btn btn-ghost btn-sm btn-circle"
-                    title="Zoom avant"
-                  >
-                    <ZoomIn className="w-4 h-4" />
-                  </button>
-                </div>
+        <div className="modal-box w-full max-w-6xl px-4 sm:px-6 lg:px-8">
+          <form method="dialog">
+            <button
+              aria-label="Fermer"
+              className="btn btn-sm btn-circle btn-ghost absolute right-3 top-3"
+            >
+              ✕
+            </button>
+          </form>
+          <div className="mt-4">
+            <div className="mb-5 flex flex-wrap items-center justify-end gap-3">
+              <div className="flex items-center gap-1">
                 <button
-                  onClick={handleDownloadPdf}
-                  className="btn btn-primary"
-                  disabled={downloading}
+                  onClick={() => setDialogZoom(Math.max(0.2, dialogZoom - 0.1))}
+                  className="btn btn-ghost btn-sm btn-circle"
+                  title="Zoom arrière"
                 >
-                  {downloading ? (
-                    <Loader2 className="w-4 h-4 animate-spin" />
-                  ) : (
-                    <Save className="w-4" />
-                  )}
-                  {downloading ? "Téléchargement..." : "Telecharger"}
+                  <ZoomOut className="size-4" />
+                </button>
+                <span className="w-10 text-center text-xs font-mono tabular-nums">
+                  {Math.round(dialogZoom * 100)}%
+                </span>
+                <button
+                  onClick={() => setDialogZoom(Math.min(1.5, dialogZoom + 0.1))}
+                  className="btn btn-ghost btn-sm btn-circle"
+                  title="Zoom avant"
+                >
+                  <ZoomIn className="size-4" />
                 </button>
               </div>
-              {pdfModalOpened && (
-                <div
-                  ref={pdfContainerRef}
-                  className="w-full max-w-full overflow-auto"
-                >
-                <div
-                  className="mx-auto"
-                  style={{
-                    zoom: dialogZoom,
-                    width: 950,
-                  }}
-                >
+              <button
+                onClick={handleDownloadPdf}
+                className="btn btn-primary"
+                disabled={downloading}
+              >
+                {downloading ? (
+                  <Loader2 className="size-4 animate-spin" />
+                ) : (
+                  <Save className="size-4" />
+                )}
+                {downloading ? "Téléchargement..." : "Télécharger"}
+              </button>
+            </div>
+            {pdfModalOpened && (
+              <div
+                ref={pdfContainerRef}
+                className="w-full max-w-full overflow-auto"
+              >
+                <div className="mx-auto" style={{ zoom: dialogZoom, width: 950 }}>
                   <CVPreview
                     personalDetails={personalDetails}
                     file={file}
@@ -990,21 +1025,21 @@ export default function Home() {
                     download={true}
                     ref={cvPreviewRef}
                   />
-                  </div>
                 </div>
-              )}
-            </div>
+              </div>
+            )}
           </div>
-        </dialog>
+        </div>
+      </dialog>
 
       {downloading && (
         <div
           role="status"
           aria-live="polite"
-          className="fixed inset-0 z-[9999] bg-base-100/95 backdrop-blur-sm flex flex-col items-center justify-center gap-3"
+          className="fixed inset-0 z-[9999] flex flex-col items-center justify-center gap-3 bg-base-100/95 backdrop-blur-sm"
         >
-          <Loader2 className="w-10 h-10 animate-spin text-primary" />
-          <p className="font-semibold text-base">Génération du CV en cours...</p>
+          <Loader2 className="size-10 animate-spin text-primary" />
+          <p className="text-base font-semibold">Génération du CV en cours...</p>
         </div>
       )}
     </div>

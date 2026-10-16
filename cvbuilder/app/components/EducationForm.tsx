@@ -7,6 +7,9 @@ type Props = {
   setEducations: (educations: Education[]) => void;
 };
 
+const labelClass =
+  "text-[11px] font-semibold uppercase tracking-wide text-base-content/50";
+
 const EducationForm: React.FC<Props> = ({ educations, setEducations }) => {
   const [newEducation, setNewEducation] = useState<Education>({
     school: "",
@@ -92,74 +95,96 @@ const EducationForm: React.FC<Props> = ({ educations, setEducations }) => {
 
   return (
     <div className="space-y-4">
-      <div className="space-y-3 p-4 border border-base-300 rounded-lg">
-        <input
-          type="text"
-          placeholder="NOM DE L'ÉCOLE"
-          value={newEducation.school}
-          onChange={(e) => handleChange(e, "school")}
-          className="input input-bordered w-full"
-        />
-        <input
-          type="text"
-          placeholder="NOM DU DIPLÔME"
-          value={newEducation.degree}
-          onChange={(e) => handleChange(e, "degree")}
-          className="input input-bordered w-full"
-        />
-        <input
-          type="text"
-          placeholder="Ville / Lieu"
-          value={newEducation.city}
-          onChange={(e) => handleChange(e, "city")}
-          className="input input-bordered w-full"
-        />
-        <select
-          value={newEducation.level}
-          onChange={(e) => handleChange(e, "level")}
-          className="select select-bordered w-full"
-        >
-          <option value="">Niveau (laisser vide)</option>
-          <option value="Bac">Bac</option>
-          <option value="Bac+2">Bac+2 (BTS, DUT)</option>
-          <option value="Bac+3">Bac+3 (Licence)</option>
-          <option value="Master">Master (Bac+5)</option>
-          <option value="Doctorat">Doctorat</option>
-          <option value="Autre">Autre</option>
-        </select>
-        <div className="flex gap-2">
+      <div className="space-y-3">
+        <label className="flex flex-col gap-1.5">
+          <span className={labelClass}>Établissement</span>
           <input
-            type="month"
-            placeholder="Mois / Année de début"
-            value={newEducation.startDate}
-            onChange={(e) => handleChange(e, "startDate")}
+            type="text"
+            placeholder="ex : Université Marien Ngouabi"
+            value={newEducation.school}
+            onChange={(e) => handleChange(e, "school")}
             className="input input-bordered w-full"
           />
-          {!newEducation.isCurrent && (
+        </label>
+        <label className="flex flex-col gap-1.5">
+          <span className={labelClass}>Diplôme</span>
+          <input
+            type="text"
+            placeholder="ex : Licence en informatique"
+            value={newEducation.degree}
+            onChange={(e) => handleChange(e, "degree")}
+            className="input input-bordered w-full"
+          />
+        </label>
+        <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+          <label className="flex flex-col gap-1.5">
+            <span className={labelClass}>Ville / Lieu</span>
             <input
-              type="month"
-              placeholder="Mois / Année de fin"
-              value={newEducation.endDate}
-              onChange={(e) => handleChange(e, "endDate")}
+              type="text"
+              placeholder="ex : Brazzaville"
+              value={newEducation.city}
+              onChange={(e) => handleChange(e, "city")}
               className="input input-bordered w-full"
             />
+          </label>
+          <label className="flex flex-col gap-1.5">
+            <span className={labelClass}>Niveau d&apos;études</span>
+            <select
+              value={newEducation.level}
+              onChange={(e) => handleChange(e, "level")}
+              className="select select-bordered w-full"
+            >
+              <option value="">Sélectionner…</option>
+              <option value="Bac">Bac</option>
+              <option value="Bac+2">Bac+2 (BTS, DUT)</option>
+              <option value="Bac+3">Bac+3 (Licence)</option>
+              <option value="Master">Master (Bac+5)</option>
+              <option value="Doctorat">Doctorat</option>
+              <option value="Autre">Autre</option>
+            </select>
+          </label>
+        </div>
+        <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+          <label className="flex flex-col gap-1.5">
+            <span className={labelClass}>Début</span>
+            <input
+              type="month"
+              value={newEducation.startDate}
+              onChange={(e) => handleChange(e, "startDate")}
+              className="input input-bordered w-full"
+            />
+          </label>
+          {!newEducation.isCurrent && (
+            <label className="flex flex-col gap-1.5">
+              <span className={labelClass}>Fin</span>
+              <input
+                type="month"
+                value={newEducation.endDate}
+                onChange={(e) => handleChange(e, "endDate")}
+                className="input input-bordered w-full"
+              />
+            </label>
           )}
         </div>
-        <label className="flex items-center gap-2 cursor-pointer">
+        <label className="flex items-center gap-2.5 cursor-pointer rounded-lg border border-base-300 px-3 py-2.5 transition-colors hover:bg-base-200">
           <input
             type="checkbox"
             checked={newEducation.isCurrent}
             onChange={(e) => handleChange(e, "isCurrent")}
-            className="checkbox checkbox-primary"
+            className="checkbox checkbox-primary checkbox-sm"
           />
-          <span className="text-sm">En cours (jusqu'à présent)</span>
+          <span className="text-sm">En cours (jusqu&apos;à présent)</span>
         </label>
-        <textarea
-          placeholder="Décrivez ici votre formation et ce que vous y avez appris."
-          value={newEducation.description}
-          onChange={(e) => handleChange(e, "description")}
-          className="textarea textarea-bordered w-full"
-        />
+        <label className="flex flex-col gap-1.5">
+          <span className={labelClass}>Description</span>
+          <textarea
+            rows={3}
+            placeholder="Décrivez votre formation et les compétences acquises."
+            value={newEducation.description}
+            onChange={(e) => handleChange(e, "description")}
+            className="textarea textarea-bordered w-full"
+          />
+        </label>
         <div className="flex gap-2 justify-end">
           {editingIndex !== null && (
             <button onClick={handleCancelEdit} className="btn btn-ghost btn-sm">

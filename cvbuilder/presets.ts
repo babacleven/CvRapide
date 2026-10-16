@@ -9,17 +9,16 @@ import {
 } from "./type";
 
 export const personalDetailsPreset: PersonalDetails = {
-  fullName: "PRÉNOM NOM",
-  email: "exemple@email.com",
-  phone: "+242 00 00 00 00",
-  address: "Ville, Pays",
+  fullName: "",
+  email: "",
+  phone: "",
+  address: "",
   photoUrl: "/profile.png",
   github: "",
   linkedin: "",
   portfolio: "",
-  postSeeking: "Titre du poste",
-  description:
-    "Décrivez en quelques lignes votre parcours professionnel, vos compétences clés pour le poste et vos objectifs de carrière. Ceci est bien fait une introduction à votre lettre de motivation. Décrivez en quelques lignes votre parcours professionnel, vos compétences clés pour le poste et vos objectifs de carrière.",
+  postSeeking: "",
+  description: "",
 };
 
 export const experiencesPreset: Experience[] = [
