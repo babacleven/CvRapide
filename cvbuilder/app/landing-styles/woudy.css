@@ -1,0 +1,120 @@
+/* ==========================================================================
+   Woudy-inspired layout, CVFast "velora" palette.
+   Dark (velora) is the DEFAULT. Light variant activated by html.theme-clair.
+   ========================================================================== */
+
+:root {
+  --wy-brand: 96 165 250; /* #60a5fa */
+  --wy-brand-600: 59 130 246; /* #3b82f6 */
+  --wy-brand-100: 51 65 85;
+  --wy-brand-50: 30 41 59;
+
+  --wy-fg: 255 255 255;
+  --wy-page: 5 5 5; /* #050505 */
+  --wy-card: 24 24 27; /* #18181b */
+  --wy-sand: 17 17 19; /* #111113 */
+
+  --wy-panel: 8 8 10; /* #08080a */
+  --wy-panel-fg: 255 255 255;
+
+  --wy-leaf: 34 197 94; /* #22c55e */
+
+  --wy-ease-expo: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+html.theme-clair {
+  --wy-brand: 96 165 250;
+  --wy-brand-600: 59 130 246;
+  --wy-brand-100: 219 234 254;
+  --wy-brand-50: 239 246 255;
+
+  --wy-fg: 9 9 11;
+  --wy-page: 250 250 250;
+  --wy-card: 255 255 255;
+  --wy-sand: 244 244 245;
+
+  --wy-panel: 9 9 11;
+  --wy-panel-fg: 255 255 255;
+
+  --wy-leaf: 22 163 74;
+}
+
+html:has(.wy-root) {
+  background-color: rgb(var(--wy-page));
+  color-scheme: dark;
+  scroll-behavior: smooth;
+}
+
+html.theme-clair:has(.wy-root) {
+  color-scheme: light;
+}
+
+body:has(.wy-root) {
+  overflow-x: clip;
+}
+
+.wy-root {
+  position: relative;
+  background-color: rgb(var(--wy-page));
+  color: rgb(var(--wy-fg));
+  font-family: "Instrument Sans", ui-sans-serif, system-ui, -apple-system,
+    "Segoe UI", sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: clip;
+}
+
+.wy-root ::selection {
+  background: rgb(var(--wy-brand-100));
+  color: rgb(var(--wy-fg));
+}
+
+/* Noise / grain overlay */
+.wy-grain:after {
+  content: "";
+  z-index: 60;
+  pointer-events: none;
+  opacity: 0.04;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  position: fixed;
+  inset: -100px;
+}
+
+/* Animations */
+@keyframes wy-shimmer {
+  0% {
+    transform: translate(-120%);
+  }
+  to {
+    transform: translate(220%);
+  }
+}
+
+@keyframes wy-ping-soft {
+  0% {
+    opacity: 0.6;
+    transform: scale(1);
+  }
+  80%,
+  to {
+    opacity: 0;
+    transform: scale(2.6);
+  }
+}
+
+.wy-shimmer {
+  animation: wy-shimmer 2.4s var(--wy-ease-expo) infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html:has(.wy-root) {
+    scroll-behavior: auto;
+  }
+  .wy-root *,
+  .wy-root *::before,
+  .wy-root *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}

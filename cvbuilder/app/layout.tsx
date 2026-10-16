@@ -13,9 +13,9 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: 'CVFast Builder',
-  description: 'Generateur de CV professionnel',
-}
+  title: "CVFast Builder",
+  description: "Generateur de CV professionnel",
+};
 
 export default function RootLayout({
   children,
@@ -23,17 +23,21 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="fr" data-theme="cvfast">
+    <html lang="fr" data-theme="cvfast" suppressHydrationWarning>
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link
+          rel="preconnect"
+          href="https://fonts.gstatic.com"
+          crossOrigin="anonymous"
+        />
         <link
           href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
           rel="stylesheet"
         />
         <link
+          href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,700;12..96,800&family=Instrument+Sans:wght@400;500;600;700&display=swap"
           rel="stylesheet"
-          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
         />
       </head>
       <body
@@ -42,7 +46,7 @@ export default function RootLayout({
       >
         <script
           dangerouslySetInnerHTML={{
-            __html: `(function(){try{if(localStorage.getItem('theme-cvfast')==='light'){document.body.classList.add('theme-clair');}}catch(e){}})();`,
+            __html: `(function(){try{var t=localStorage.getItem('theme-cvfast');if(t==='light'){document.documentElement.classList.add('theme-clair');}}catch(e){}})();`,
           }}
         />
         {children}
