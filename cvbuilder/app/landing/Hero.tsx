@@ -70,8 +70,13 @@ export const Hero: React.FC = () => {
       id="top"
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
-      className="relative min-h-[95vh] overflow-hidden pt-28 pb-16 sm:pt-36 sm:pb-24 lg:pt-40 lg:pb-28"
+      className="relative isolate min-h-[95vh] overflow-hidden pt-28 pb-16 sm:pt-36 sm:pb-24 lg:pt-40 lg:pb-28"
     >
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-0 -z-20 wy-grid-bg [mask-image:radial-gradient(ellipse_90%_75%_at_50%_35%,black,transparent)]"
+      />
+
       <div
         aria-hidden="true"
         className="pointer-events-none absolute -top-40 left-1/2 -z-10 h-[600px] w-[900px] -translate-x-1/2 rounded-full bg-[radial-gradient(ellipse_at_center,rgba(96,165,250,0.16),transparent_65%)]"

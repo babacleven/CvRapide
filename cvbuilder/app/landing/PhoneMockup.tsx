@@ -11,8 +11,8 @@ interface PhoneMockupProps {
 export const PhoneMockup: React.FC<PhoneMockupProps> = ({
   children,
   className = "w-[290px]",
-  statusTone = "light",
-  screenClassName = "bg-[#0d0d0f]",
+  statusTone = "dark",
+  screenClassName = "bg-[#fff8f1]",
 }) => {
   return (
     <div
@@ -31,7 +31,7 @@ export const PhoneMockup: React.FC<PhoneMockupProps> = ({
         className="absolute -right-[3px] top-[140px] h-20 w-[3px] rounded-r bg-panel/60"
       />
       <div
-        className={`relative isolate h-full w-full overflow-hidden rounded-[40px] text-left text-white select-none ${screenClassName}`}
+        className={`relative isolate h-full w-full overflow-hidden rounded-[40px] text-left text-[#09090b] select-none ${screenClassName}`}
       >
         <div
           className={`absolute inset-x-0 top-0 z-20 flex h-11 items-center justify-between px-7 pt-1 text-[12px] font-semibold ${
@@ -72,7 +72,7 @@ export const PhoneMockup: React.FC<PhoneMockupProps> = ({
         {children}
         <div
           aria-hidden="true"
-          className="absolute bottom-1.5 left-1/2 z-30 h-1 w-24 -translate-x-1/2 rounded-full bg-white/70"
+          className="absolute bottom-1.5 left-1/2 z-30 h-1 w-24 -translate-x-1/2 rounded-full bg-fg/20"
         />
       </div>
     </div>

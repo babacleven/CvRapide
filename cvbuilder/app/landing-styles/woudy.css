@@ -43,6 +43,15 @@ body:has(.wy-root) {
   overflow-x: clip;
 }
 
+/* Quadrillage de petits carrés (fond) */
+.wy-grid-bg {
+  background-image:
+    linear-gradient(to right, rgba(9, 9, 11, 0.06) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(9, 9, 11, 0.06) 1px, transparent 1px);
+  background-size: 26px 26px;
+  background-position: center;
+}
+
 .wy-root ::selection {
   background: rgb(var(--wy-brand-100));
   color: rgb(var(--wy-fg));

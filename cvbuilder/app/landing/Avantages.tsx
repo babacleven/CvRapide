@@ -266,11 +266,9 @@ export const Avantages: React.FC = () => {
               Pourquoi CVFast
             </span>
             <h2 className="font-display mt-5 text-[clamp(2.2rem,5.4vw,4.4rem)] font-extrabold leading-[0.95] text-fg">
-              Un générateur de CV
+              Un CV professionnel,
               <br />
-              du formulaire
-              <br />
-              à l'export.
+              en quelques étapes.
             </h2>
           </div>
           <p className="max-w-md text-base leading-relaxed text-fg/70 sm:text-lg lg:justify-self-end">

@@ -19,14 +19,14 @@ import {
   Loader2,
 } from "lucide-react";
 
-/* Palette identique au builder CVFast (thème daisyUI "cvfast") */
+/* Palette identique au builder CVFast clair (thème daisyUI "cvfastlight") */
 const C = {
-  bg: "#0d0d0f", // base-200
-  panel: "#18181b", // base-300 / neutral
-  border: "#27272a",
-  input: "#050505", // base-100
-  text: "#ffffff",
-  muted: "#a1a1aa",
+  bg: "#fff8f1", // base-200
+  panel: "#ffffff", // base-100
+  border: "#efe3d5", // base-300
+  input: "#fff8f1", // champs crème
+  text: "#09090b",
+  muted: "#71717a",
   primary: "#60a5fa",
   primaryContent: "#0a1120",
   accent: "#22d3ee",
@@ -200,7 +200,7 @@ export const ScreenFill: React.FC = () => {
   );
 };
 
-/* Mini CV (aperçu du builder, thème clair "cupcake") */
+/* Mini CV (aperçu du builder, thème clair "cvfastlight") */
 const MiniCvDoc: React.FC = () => (
   <div className="rounded-lg bg-white p-3 shadow-lg">
     <div className="flex items-center gap-2.5">
@@ -284,7 +284,7 @@ export const ScreenCustomize: React.FC = () => (
         initial={{ opacity: 0, scale: 0.96 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ duration: 0.55, ease: [0.16, 1, 0.3, 1] }}
-        className="mt-3 flex-1 overflow-hidden rounded-lg p-3"
+        className="wy-grid-bg mt-3 flex-1 overflow-hidden rounded-lg p-3"
         style={{ background: C.input }}
       >
         <MiniCvDoc />
