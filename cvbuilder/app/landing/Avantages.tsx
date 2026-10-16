@@ -71,29 +71,61 @@ const StopwatchVisual: React.FC = () => {
   );
 };
 
-const AtsScanVisual: React.FC = () => (
-  <div>
-    <div className="relative space-y-1.5 overflow-hidden py-2">
-      {[60, 88, 74, 92, 52, 84, 66].map((w, i) => (
-        <div key={i} className="space-y-1">
-          <div className="h-2 rounded-full bg-fg/15" style={{ width: `${w * 0.35}%` }} />
-          <div className="h-1.5 rounded-full bg-fg/[0.08]" style={{ width: `${w}%` }} />
-        </div>
-      ))}
-      <motion.div
-        aria-hidden="true"
-        className="absolute inset-x-0 top-0 h-16 bg-gradient-to-b from-brand/40 to-transparent"
-        initial={{ y: -70 }}
-        whileInView={{ y: 240 }}
-        viewport={{ once: true, amount: 0.6 }}
-        transition={{ duration: 2.2, ease: "easeInOut" }}
-      />
+const AtsScanVisual: React.FC = () => {
+  const keywords = ["Structure", "Mots-clés", "Lisibilité", "PDF texte"];
+
+  return (
+    <div className="mt-6 w-full max-w-xs rounded-2xl bg-white p-5 shadow-[0_20px_40px_-24px_rgba(0,0,0,0.35)] ring-1 ring-fg/10">
+      <div className="flex items-center justify-between">
+        <span className="inline-flex items-center gap-2 text-[11px] font-bold uppercase tracking-wider text-fg/50">
+          <ScanLine className="size-3.5 text-leaf" />
+          Score ATS
+        </span>
+        <span className="font-display text-2xl font-extrabold leading-none text-leaf">
+          100%
+        </span>
+      </div>
+
+      <div className="mt-3 h-2 overflow-hidden rounded-full bg-fg/10">
+        <motion.div
+          className="h-full rounded-full bg-leaf"
+          initial={{ width: 0 }}
+          whileInView={{ width: "100%" }}
+          viewport={{ once: true, amount: 0.6 }}
+          transition={{ duration: 1.4, ease: [0.16, 1, 0.3, 1], delay: 0.2 }}
+        />
+      </div>
+
+      <div className="mt-4 flex flex-wrap gap-1.5">
+        {keywords.map((k, i) => (
+          <motion.span
+            key={k}
+            initial={{ opacity: 0, y: 8 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.6 }}
+            transition={{ delay: 0.5 + i * 0.1, duration: 0.4 }}
+            className="inline-flex items-center gap-1 rounded-full bg-leaf/10 px-2.5 py-1 text-[10px] font-semibold text-leaf ring-1 ring-leaf/15"
+          >
+            <svg
+              viewBox="0 0 24 24"
+              className="size-2.5"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="4"
+            >
+              <path
+                d="M5 12.5l4.5 4.5L19 7.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+            </svg>
+            {k}
+          </motion.span>
+        ))}
+      </div>
     </div>
-    <span className="mt-4 inline-flex rounded-full bg-leaf px-3 py-1.5 text-[10px] font-bold text-white shadow-sm">
-      100% ATS-ready
-    </span>
-  </div>
-);
+  );
+};
 
 const FormatChipsVisual: React.FC = () => {
   const chips = [

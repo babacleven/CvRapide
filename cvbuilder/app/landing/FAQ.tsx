@@ -2,11 +2,13 @@
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { Plus, Mail } from "lucide-react";
-import { FAQ_LIST } from "./data";
+import { FAQ_LIST, SOCIAL } from "./data";
 
 const MailIcon = ({ className }: { className?: string }) => (
   <Mail className={className} />
 );
+
+const WHATSAPP = SOCIAL.find((s) => s.label === "WhatsApp");
 
 export const FAQ: React.FC = () => {
   const [openIdx, setOpenIdx] = useState<number | null>(0);
@@ -42,10 +44,19 @@ export const FAQ: React.FC = () => {
                 <span>contact@cvfast.app</span>
               </a>
               <a
-                href="#top"
-                className="inline-flex h-12 items-center justify-center gap-2.5 rounded-full bg-panel-fg/10 px-5 text-sm font-semibold text-panel-fg transition-colors hover:bg-panel-fg/15"
+                href={WHATSAPP?.link ?? "#"}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex h-12 items-center justify-center gap-2.5 rounded-full bg-[#25D366] px-5 text-sm font-semibold text-white shadow-md transition-transform hover:-translate-y-0.5"
               >
-                <span>Retour en haut de page</span>
+                <svg
+                  viewBox="0 0 24 24"
+                  className="size-4 fill-current"
+                  aria-hidden="true"
+                >
+                  <path d={WHATSAPP?.path ?? ""} />
+                </svg>
+                <span>Discuter sur WhatsApp</span>
               </a>
             </div>
           </div>
