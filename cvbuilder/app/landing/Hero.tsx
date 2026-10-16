@@ -233,7 +233,7 @@ export const Hero: React.FC = () => {
               </motion.div>
             </div>
 
-            <FloatingBadge delay={0.9} floatY={6} className="-left-2 top-12 sm:left-0 lg:-left-8">
+            <FloatingBadge delay={0.9} floatY={6} className="left-1 top-10 sm:left-0 sm:top-12 lg:-left-8">
               <span className="grid size-8 place-items-center rounded-full bg-leaf text-white shadow-sm">
                 <Check className="size-4" strokeWidth={3} />
               </span>
@@ -243,7 +243,7 @@ export const Hero: React.FC = () => {
               </div>
             </FloatingBadge>
 
-            <FloatingBadge delay={1.1} floatY={-8} className="-right-2 top-[48%] sm:right-0 lg:-right-8">
+            <FloatingBadge delay={1.1} floatY={-8} className="right-1 top-[46%] sm:right-0 sm:top-[48%] lg:-right-8">
               <span className="grid h-8 min-w-8 place-items-center rounded-lg bg-brand-50 px-1 text-[11px] font-bold text-brand shadow-sm">
                 ATS
               </span>

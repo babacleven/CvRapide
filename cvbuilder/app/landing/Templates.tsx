@@ -24,9 +24,9 @@ export const Templates: React.FC = () => {
           </p>
         </div>
 
-        <div className="mt-14 grid gap-8 lg:grid-cols-[minmax(0,0.72fr)_minmax(0,1.28fr)] lg:items-start lg:gap-12">
+        <div className="mt-14 grid gap-8 md:grid-cols-[minmax(0,0.72fr)_minmax(0,1.28fr)] md:items-start md:gap-12">
           {/* Sélecteur */}
-          <div className="order-2 flex gap-3 overflow-x-auto pb-1 lg:order-1 lg:flex-col lg:gap-3 lg:overflow-visible lg:pb-0">
+          <div className="order-2 flex gap-3 overflow-x-auto pb-1 md:order-1 md:flex-col md:gap-3 md:overflow-visible md:pb-0">
             {TEMPLATES.map((t, idx) => {
               const on = idx === active;
               return (
@@ -36,7 +36,7 @@ export const Templates: React.FC = () => {
                   onClick={() => setActive(idx)}
                   onMouseEnter={() => setActive(idx)}
                   aria-pressed={on}
-                  className={`group flex min-w-[220px] flex-1 items-center gap-3 rounded-2xl border p-3 text-left transition-all duration-300 lg:min-w-0 lg:p-4 ${
+                  className={`group flex min-w-[220px] flex-1 items-center gap-3 rounded-2xl border p-3 text-left transition-all duration-300 md:min-w-0 md:p-4 ${
                     on
                       ? "border-brand/60 bg-brand-50 shadow-md"
                       : "border-fg/10 bg-card hover:border-fg/25"
@@ -71,7 +71,7 @@ export const Templates: React.FC = () => {
           </div>
 
           {/* Grand aperçu */}
-          <div className="order-1 lg:order-2 lg:sticky lg:top-24">
+          <div className="order-1 md:order-2 md:sticky md:top-24">
             <div className="relative overflow-hidden rounded-[28px] bg-panel p-4 ring-1 ring-fg/10 shadow-2xl sm:p-6">
               <div className="flex items-center gap-1.5">
                 <span className="size-2.5 rounded-full bg-fg/15" />

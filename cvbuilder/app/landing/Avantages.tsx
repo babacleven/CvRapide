@@ -17,7 +17,7 @@ const StopwatchVisual: React.FC = () => {
   const circumference = 2 * Math.PI * radius;
 
   return (
-    <div className="relative aspect-square w-full">
+    <div className="relative mx-auto aspect-square w-full max-w-[26rem]">
       <svg viewBox="0 0 200 200" className="absolute inset-0 size-full -rotate-90">
         <circle
           cx="100"

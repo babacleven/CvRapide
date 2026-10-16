@@ -23,7 +23,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="fr" data-theme="cvfast" suppressHydrationWarning>
+    <html lang="fr" data-theme="cvfast">
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link
@@ -42,13 +42,7 @@ export default function RootLayout({
       </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-        suppressHydrationWarning
       >
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `(function(){try{var t=localStorage.getItem('theme-cvfast');if(t==='light'){document.documentElement.classList.add('theme-clair');}}catch(e){}})();`,
-          }}
-        />
         {children}
       </body>
     </html>

@@ -78,7 +78,7 @@ export const DownloadBanner: React.FC = () => {
               whileHover={{ y: -2 }}
               whileTap={{ scale: 0.96 }}
               transition={{ type: "spring", stiffness: 400, damping: 22 }}
-              className="group inline-flex h-15 items-center gap-3 rounded-2xl bg-panel px-7 font-semibold text-panel-fg shadow-md transition-colors hover:bg-panel/90"
+              className="group inline-flex h-15 w-full items-center justify-center gap-3 rounded-2xl bg-panel px-6 font-semibold text-panel-fg shadow-md transition-colors hover:bg-panel/90 sm:w-auto sm:px-7"
             >
               <span>Créer mon CV gratuitement</span>
               <ArrowUpRight className="size-5 transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />

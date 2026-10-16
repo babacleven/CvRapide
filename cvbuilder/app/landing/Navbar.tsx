@@ -1,26 +1,18 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence, useScroll, useMotionValueEvent } from "motion/react";
-import { ArrowRight, Moon, Sun } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import { CVFastLogo } from "./Logo";
 import { NAV_LINKS } from "./data";
 
-interface NavbarProps {
-  isDark: boolean;
-  onToggleTheme: () => void;
-}
-
-export const Navbar: React.FC<NavbarProps> = ({ isDark, onToggleTheme }) => {
+export const Navbar: React.FC = () => {
   const { scrollY } = useScroll();
   const [isScrolled, setIsScrolled] = useState(false);
-  const [isHidden, setIsHidden] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [hoveredHref, setHoveredHref] = useState<string | null>(null);
 
   useMotionValueEvent(scrollY, "change", (current) => {
-    const prev = scrollY.getPrevious() ?? 0;
     setIsScrolled(current > 24);
-    setIsHidden(current > prev && current > 520);
   });
 
   useEffect(() => {
@@ -44,8 +36,6 @@ export const Navbar: React.FC<NavbarProps> = ({ isDark, onToggleTheme }) => {
     <>
       <motion.header
         className="fixed inset-x-0 top-0 z-50 px-3 pt-3 sm:px-4 sm:pt-4"
-        animate={{ y: isHidden && !mobileMenuOpen ? -110 : 0 }}
-        transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
       >
         <nav
           aria-label="Navigation principale"
@@ -89,15 +79,6 @@ export const Navbar: React.FC<NavbarProps> = ({ isDark, onToggleTheme }) => {
           </ul>
 
           <div className="flex items-center gap-2">
-            <button
-              type="button"
-              onClick={onToggleTheme}
-              aria-label={isDark ? "Activer le mode clair" : "Activer le mode sombre"}
-              className="hidden sm:grid size-11 place-items-center rounded-full bg-fg/[0.06] text-fg transition-colors hover:bg-fg/[0.12]"
-            >
-              {isDark ? <Sun className="size-4" /> : <Moon className="size-4" />}
-            </button>
-
             <div className="hidden sm:block">
               <motion.a
                 href="/builder"
@@ -148,7 +129,7 @@ export const Navbar: React.FC<NavbarProps> = ({ isDark, onToggleTheme }) => {
             animate={{ opacity: 1, clipPath: "circle(150% at top right)" }}
             exit={{ opacity: 0, clipPath: "circle(0% at top right)" }}
             transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-            className="fixed inset-0 z-40 flex flex-col justify-between bg-panel px-6 pb-10 pt-28 text-panel-fg lg:hidden"
+            className="fixed inset-0 z-40 flex flex-col justify-between overflow-y-auto bg-panel px-6 pb-10 pt-24 text-panel-fg sm:pt-28 lg:hidden"
           >
             <div className="space-y-4">
               <p className="text-xs font-semibold uppercase tracking-widest text-panel-fg/40">
@@ -191,16 +172,6 @@ export const Navbar: React.FC<NavbarProps> = ({ isDark, onToggleTheme }) => {
                   <ArrowRight className="size-3.5 transition-transform duration-300 group-hover:translate-x-0.5" />
                 </span>
               </a>
-              <button
-                type="button"
-                onClick={() => {
-                  onToggleTheme();
-                }}
-                className="inline-flex h-12 items-center gap-2 rounded-full bg-panel-fg/10 px-5 text-sm font-semibold text-panel-fg transition-colors hover:bg-panel-fg/15"
-              >
-                {isDark ? <Sun className="size-4" /> : <Moon className="size-4" />}
-                <span>{isDark ? "Mode clair" : "Mode sombre"}</span>
-              </button>
             </motion.div>
           </motion.div>
         )}

@@ -2,9 +2,7 @@
 
 import "./landing-styles/woudy.css";
 import { useEffect, useState } from "react";
-import { AnimatePresence } from "motion/react";
 
-import { IntroSplash } from "./landing/IntroSplash";
 import { ScrollProgress } from "./landing/ScrollProgress";
 import { Navbar } from "./landing/Navbar";
 import { Hero } from "./landing/Hero";
@@ -20,38 +18,9 @@ import { LegalModal } from "./landing/LegalModal";
 import { ReviewModal } from "./landing/ReviewModal";
 import type { Review } from "./landing/ReviewModal";
 
-const INTRO_KEY = "cvfast:intro-seen";
-const THEME_KEY = "theme-cvfast";
-
 export default function LandingPage() {
-  const [intro, setIntro] = useState(true);
-  const [isDark, setIsDark] = useState(true);
   const [legalDoc, setLegalDoc] = useState<LegalDocType | null>(null);
   const [reviewOpen, setReviewOpen] = useState(false);
-
-  useEffect(() => {
-    const prefersReduced = window.matchMedia(
-      "(prefers-reduced-motion: reduce)",
-    ).matches;
-    const seen = sessionStorage.getItem(INTRO_KEY);
-
-    if (seen || prefersReduced) {
-      setIntro(false);
-      return;
-    }
-
-    sessionStorage.setItem(INTRO_KEY, "1");
-    const t = setTimeout(() => setIntro(false), 1900);
-    return () => clearTimeout(t);
-  }, []);
-
-  useEffect(() => {
-    try {
-      setIsDark(!document.documentElement.classList.contains("theme-clair"));
-    } catch {
-      setIsDark(true);
-    }
-  }, []);
 
   useEffect(() => {
     document.title = "CVFast - Créez un CV professionnel en quelques minutes";
@@ -64,19 +33,6 @@ export default function LandingPage() {
     }
   }, []);
 
-  const toggleTheme = () => {
-    setIsDark((prev) => {
-      const next = !prev;
-      document.documentElement.classList.toggle("theme-clair", !next);
-      try {
-        localStorage.setItem(THEME_KEY, next ? "dark" : "light");
-      } catch {
-        /* ignore */
-      }
-      return next;
-    });
-  };
-
   const handleSubmitReview = (review: Review) => {
     setReviewOpen(false);
     void review;
@@ -84,12 +40,8 @@ export default function LandingPage() {
 
   return (
     <div className="wy-root wy-grain min-h-screen">
-      <AnimatePresence>
-        {intro && <IntroSplash key="intro" />}
-      </AnimatePresence>
-
       <ScrollProgress />
-      <Navbar isDark={isDark} onToggleTheme={toggleTheme} />
+      <Navbar />
 
       <main>
         <Hero />

@@ -1,30 +1,11 @@
 /* ==========================================================================
    Woudy-inspired layout, CVFast "velora" palette.
-   Dark (velora) is the DEFAULT. Light variant activated by html.theme-clair.
+   Light theme only.
    ========================================================================== */
 
 :root {
   --wy-brand: 96 165 250; /* #60a5fa */
   --wy-brand-600: 59 130 246; /* #3b82f6 */
-  --wy-brand-100: 51 65 85;
-  --wy-brand-50: 30 41 59;
-
-  --wy-fg: 255 255 255;
-  --wy-page: 5 5 5; /* #050505 */
-  --wy-card: 24 24 27; /* #18181b */
-  --wy-sand: 17 17 19; /* #111113 */
-
-  --wy-panel: 8 8 10; /* #08080a */
-  --wy-panel-fg: 255 255 255;
-
-  --wy-leaf: 34 197 94; /* #22c55e */
-
-  --wy-ease-expo: cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-html.theme-clair {
-  --wy-brand: 96 165 250;
-  --wy-brand-600: 59 130 246;
   --wy-brand-100: 219 234 254;
   --wy-brand-50: 239 246 255;
 
@@ -37,16 +18,14 @@ html.theme-clair {
   --wy-panel-fg: 255 255 255;
 
   --wy-leaf: 22 163 74;
+
+  --wy-ease-expo: cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 html:has(.wy-root) {
   background-color: rgb(var(--wy-page));
-  color-scheme: dark;
-  scroll-behavior: smooth;
-}
-
-html.theme-clair:has(.wy-root) {
   color-scheme: light;
+  scroll-behavior: smooth;
 }
 
 body:has(.wy-root) {
