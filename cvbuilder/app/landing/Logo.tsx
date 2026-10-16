@@ -70,14 +70,14 @@ export const CVFastLogo: React.FC<CVFastLogoProps> = ({
         />
       </motion.svg>
       <motion.span
-        className="font-display text-xl sm:text-2xl font-extrabold tracking-tight"
+        className="text-xl sm:text-2xl font-bold italic tracking-tight"
         initial={draw ? { opacity: 0, y: 6 } : {}}
         animate={draw === "mount" ? { opacity: 1, y: 0 } : undefined}
         whileInView={draw === "inView" ? { opacity: 1, y: 0 } : undefined}
         viewport={draw === "inView" ? { once: true, amount: 0.6 } : undefined}
         transition={{ delay: delay + 0.2, duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
       >
-        CVFast
+        CVFast<span className="text-brand"> Builder</span>
       </motion.span>
     </div>
   );
