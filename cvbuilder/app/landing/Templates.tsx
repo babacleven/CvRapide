@@ -1,209 +1,134 @@
 "use client";
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "motion/react";
-import { ArrowUpRight, Check, FileText, Layout, Briefcase } from "lucide-react";
+import { ArrowUpRight, Check } from "lucide-react";
 import { TEMPLATES } from "./data";
-
-const ICONS = [Layout, FileText, Briefcase];
 
 export const Templates: React.FC = () => {
   const [active, setActive] = useState(0);
+  const tpl = TEMPLATES[active];
 
   return (
     <section id="templates" className="relative py-24 sm:py-32">
       <div className="mx-auto max-w-6xl px-5">
-        <div className="grid gap-8 lg:grid-cols-[1.3fr_1fr] lg:items-end">
-          <div>
-            <span className="inline-flex items-center gap-1.5 rounded-full bg-brand-50 px-3.5 py-1 text-xs font-semibold text-brand ring-1 ring-brand/10">
-              3 modèles professionnels
-            </span>
-            <h2 className="font-display mt-5 text-[clamp(2.2rem,5.4vw,4.4rem)] font-extrabold leading-[0.95] text-fg">
-              Choisissez
-              <br />
-              votre style{" "}
-              <span className="text-brand">de CV.</span>
-            </h2>
-          </div>
-          <p className="max-w-md text-base leading-relaxed text-fg/70 sm:text-lg lg:justify-self-end">
+        <div className="mx-auto max-w-2xl text-center">
+          <span className="inline-flex items-center gap-1.5 rounded-full bg-brand-50 px-3.5 py-1 text-xs font-semibold text-brand ring-1 ring-brand/10">
+            3 modèles professionnels
+          </span>
+          <h2 className="font-display mt-5 text-[clamp(2.2rem,5.4vw,4.4rem)] font-extrabold leading-[0.95] text-fg">
+            Choisissez votre <span className="text-brand">style de CV.</span>
+          </h2>
+          <p className="mx-auto mt-5 max-w-xl text-base leading-relaxed text-fg/70 sm:text-lg">
             Moderne, Classique ou Expérience : trois mises en page pensées pour
             convaincre les recruteurs. Personnalisez-les à votre guise.
           </p>
         </div>
 
-        <div className="mt-14 hidden h-[560px] gap-3 lg:flex">
-          {TEMPLATES.map((tpl, idx) => {
-            const isExpanded = active === idx;
-            const Icon = ICONS[idx];
-
-            return (
-              <motion.div
-                key={tpl.title}
-                role="group"
-                tabIndex={0}
-                aria-label={tpl.title}
-                onMouseEnter={() => setActive(idx)}
-                onClick={() => setActive(idx)}
-                animate={{ flexGrow: isExpanded ? 3.2 : 1 }}
-                transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-                className={`relative min-w-0 basis-0 cursor-pointer overflow-hidden rounded-[32px] p-8 shadow-xl ${tpl.color}`}
-              >
-                <motion.div
-                  aria-hidden="true"
-                  className="pointer-events-none absolute -bottom-10 -right-10 opacity-[0.14]"
-                  animate={{
-                    rotate: isExpanded ? -10 : 0,
-                    scale: isExpanded ? 1 : 0.75,
-                  }}
-                  transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
+        <div className="mt-14 grid gap-8 lg:grid-cols-[minmax(0,0.72fr)_minmax(0,1.28fr)] lg:items-start lg:gap-12">
+          {/* Sélecteur */}
+          <div className="order-2 flex gap-3 overflow-x-auto pb-1 lg:order-1 lg:flex-col lg:gap-3 lg:overflow-visible lg:pb-0">
+            {TEMPLATES.map((t, idx) => {
+              const on = idx === active;
+              return (
+                <button
+                  key={t.title}
+                  type="button"
+                  onClick={() => setActive(idx)}
+                  onMouseEnter={() => setActive(idx)}
+                  aria-pressed={on}
+                  className={`group flex min-w-[220px] flex-1 items-center gap-3 rounded-2xl border p-3 text-left transition-all duration-300 lg:min-w-0 lg:p-4 ${
+                    on
+                      ? "border-brand/60 bg-brand-50 shadow-md"
+                      : "border-fg/10 bg-card hover:border-fg/25"
+                  }`}
                 >
-                  <Icon className="size-72" strokeWidth={1.2} />
-                </motion.div>
-
-                <motion.div
-                  className="absolute inset-0 flex select-none flex-col justify-between p-7"
-                  animate={{ opacity: isExpanded ? 0 : 1 }}
-                  transition={{ duration: 0.3 }}
-                  aria-hidden={isExpanded}
-                >
-                  <span className="font-display text-xl font-bold">0{idx + 1}</span>
-                  <span className="font-display rotate-180 self-start text-3xl font-bold tracking-wide [writing-mode:vertical-rl]">
-                    {tpl.kicker}
-                  </span>
-                </motion.div>
-
-                <AnimatePresence>
-                  {isExpanded && (
-                    <motion.div
-                      className="absolute inset-y-0 left-0 flex w-[520px] select-none flex-col justify-between p-10"
-                      initial={{ opacity: 0, x: 25 }}
-                      animate={{
-                        opacity: 1,
-                        x: 0,
-                        transition: {
-                          delay: 0.2,
-                          duration: 0.6,
-                          ease: [0.16, 1, 0.3, 1],
-                        },
-                      }}
-                      exit={{ opacity: 0, transition: { duration: 0.15 } }}
-                    >
-                      <div>
-                        <span className="text-sm font-semibold uppercase tracking-widest opacity-80">
-                          Modèle {tpl.kicker}
-                        </span>
-                        <h3 className="font-display mt-2 text-4xl font-extrabold tracking-tight">
-                          {tpl.title}
-                        </h3>
-                        <p className={`mt-4 text-lg leading-relaxed ${tpl.muted}`}>
-                          Une mise en page {tpl.title.toLowerCase()} qui met vos
-                          expériences en valeur, sans détour pour les recruteurs.
-                        </p>
-                        <ul className="mt-6 space-y-3">
-                          {tpl.points.map((pt) => (
-                            <li
-                              key={pt}
-                              className="flex items-center gap-2.5 text-sm font-medium"
-                            >
-                              <span className="grid size-5 place-items-center rounded-full bg-white/20">
-                                <Check className="size-3" strokeWidth={3} />
-                              </span>
-                              <span>{pt}</span>
-                            </li>
-                          ))}
-                        </ul>
-                      </div>
-
-                      <div className="pt-8">
-                        <div className="flex flex-wrap items-center gap-4">
-                          <motion.a
-                            href={tpl.href}
-                            whileHover={{ y: -2 }}
-                            whileTap={{ scale: 0.96 }}
-                            className="group inline-flex h-14 items-center gap-2 rounded-2xl bg-cream px-6 font-semibold text-ink shadow-md transition-colors hover:bg-white"
-                          >
-                            <span>Utiliser ce modèle</span>
-                            <ArrowUpRight className="size-5 transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
-                          </motion.a>
-                          <div className="h-28 w-24 shrink-0 overflow-hidden rounded-xl ring-1 ring-white/40">
-                            <img
-                              src={tpl.image}
-                              alt={`Aperçu du modèle ${tpl.title}`}
-                              loading="lazy"
-                              className="h-full w-full object-cover object-top"
-                            />
-                          </div>
-                        </div>
-                      </div>
-                    </motion.div>
-                  )}
-                </AnimatePresence>
-              </motion.div>
-            );
-          })}
-        </div>
-
-        <div className="mt-12 space-y-4 lg:hidden">
-          {TEMPLATES.map((tpl, idx) => {
-            const Icon = ICONS[idx];
-            return (
-              <motion.div
-                key={tpl.title}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, amount: 0.2 }}
-                transition={{ duration: 0.8, delay: idx * 0.1 }}
-                className={`relative overflow-hidden rounded-[28px] p-7 shadow-lg sm:p-9 ${tpl.color}`}
-              >
-                <div
-                  aria-hidden="true"
-                  className="pointer-events-none absolute -bottom-6 -right-6 opacity-10"
-                >
-                  <Icon className="size-48" strokeWidth={1} />
-                </div>
-
-                <span className="text-xs font-semibold uppercase tracking-widest opacity-80">
-                  Modèle {tpl.kicker}
-                </span>
-                <h3 className="font-display mt-2 text-3xl font-bold">{tpl.title}</h3>
-                <p className={`mt-3 text-base leading-relaxed ${tpl.muted}`}>
-                  Une mise en page {tpl.title.toLowerCase()} qui met vos expériences
-                  en valeur.
-                </p>
-
-                <ul className="mt-5 space-y-2.5">
-                  {tpl.points.map((pt) => (
-                    <li
-                      key={pt}
-                      className="flex items-center gap-2.5 text-sm font-medium"
-                    >
-                      <span className="grid size-5 place-items-center rounded-full bg-white/20">
-                        <Check className="size-3" strokeWidth={3} />
-                      </span>
-                      <span>{pt}</span>
-                    </li>
-                  ))}
-                </ul>
-
-                <div className="mt-8 flex flex-wrap items-center gap-4">
-                  <a
-                    href={tpl.href}
-                    className="group inline-flex h-14 items-center gap-2 rounded-2xl bg-cream px-6 font-semibold text-ink shadow-md transition-colors hover:bg-white"
-                  >
-                    <span>Utiliser ce modèle</span>
-                    <ArrowUpRight className="size-5 transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
-                  </a>
-                  <div className="h-28 w-24 shrink-0 overflow-hidden rounded-xl ring-1 ring-white/40">
+                  <span className="h-12 w-10 shrink-0 overflow-hidden rounded-lg ring-1 ring-fg/10">
                     <img
-                      src={tpl.image}
-                      alt={`Aperçu du modèle ${tpl.title}`}
+                      src={t.image}
+                      alt=""
                       loading="lazy"
                       className="h-full w-full object-cover object-top"
                     />
-                  </div>
-                </div>
-              </motion.div>
-            );
-          })}
+                  </span>
+                  <span className="min-w-0 flex-1">
+                    <span className="font-display block truncate text-sm font-bold text-fg">
+                      0{idx + 1}. {t.title}
+                    </span>
+                    <span className="block truncate text-xs text-fg/60">
+                      {t.points[0]}
+                    </span>
+                  </span>
+                  <span
+                    className={`grid size-6 shrink-0 place-items-center rounded-full transition-colors ${
+                      on ? "bg-brand text-white" : "border border-fg/20"
+                    }`}
+                  >
+                    {on && <Check className="size-3.5" strokeWidth={3} />}
+                  </span>
+                </button>
+              );
+            })}
+          </div>
+
+          {/* Grand aperçu */}
+          <div className="order-1 lg:order-2 lg:sticky lg:top-24">
+            <div className="relative overflow-hidden rounded-[28px] bg-panel p-4 ring-1 ring-fg/10 shadow-2xl sm:p-6">
+              <div className="flex items-center gap-1.5">
+                <span className="size-2.5 rounded-full bg-fg/15" />
+                <span className="size-2.5 rounded-full bg-fg/15" />
+                <span className="size-2.5 rounded-full bg-fg/15" />
+                <span className="ml-2 text-xs font-medium text-panel-fg/50">
+                  cvfast.app — {tpl.title}
+                </span>
+              </div>
+
+              <div className="relative mt-4 aspect-[4/5] overflow-hidden rounded-2xl bg-white ring-1 ring-black/5">
+                <AnimatePresence mode="wait">
+                  <motion.img
+                    key={tpl.image}
+                    src={tpl.image}
+                    alt={`Aperçu du modèle ${tpl.title}`}
+                    initial={{ opacity: 0, scale: 1.03 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    exit={{ opacity: 0 }}
+                    transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
+                    className="absolute inset-0 h-full w-full object-cover object-top"
+                  />
+                </AnimatePresence>
+                <span className="absolute left-3 top-3 rounded-full bg-brand px-2.5 py-1 text-[10px] font-bold text-white shadow-sm">
+                  Aperçu live
+                </span>
+              </div>
+            </div>
+
+            <div className="mt-6 flex flex-col gap-5 sm:flex-row sm:items-end sm:justify-between">
+              <div className="min-w-0">
+                <p className="font-display text-2xl font-extrabold text-fg">
+                  {tpl.title}
+                </p>
+                <ul className="mt-3 flex flex-wrap gap-x-4 gap-y-2">
+                  {tpl.points.map((pt) => (
+                    <li
+                      key={pt}
+                      className="flex items-center gap-1.5 text-xs text-fg/70"
+                    >
+                      <Check className="size-3.5 text-leaf" strokeWidth={3} />
+                      {pt}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+              <motion.a
+                href={tpl.href}
+                whileHover={{ y: -2 }}
+                whileTap={{ scale: 0.96 }}
+                className="group inline-flex h-12 shrink-0 items-center justify-center gap-2 rounded-2xl bg-brand px-6 text-sm font-semibold text-[#0a1120] shadow-md"
+              >
+                Utiliser ce modèle
+                <ArrowUpRight className="size-4 transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
+              </motion.a>
+            </div>
+          </div>
         </div>
       </div>
     </section>

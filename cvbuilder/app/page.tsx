@@ -8,7 +8,6 @@ import { IntroSplash } from "./landing/IntroSplash";
 import { ScrollProgress } from "./landing/ScrollProgress";
 import { Navbar } from "./landing/Navbar";
 import { Hero } from "./landing/Hero";
-import { MarqueeTicker } from "./landing/MarqueeTicker";
 import { Avantages } from "./landing/Avantages";
 import { HowItWorks } from "./landing/HowItWorks";
 import { Templates } from "./landing/Templates";
@@ -94,7 +93,6 @@ export default function LandingPage() {
 
       <main>
         <Hero />
-        <MarqueeTicker />
         <Avantages />
         <HowItWorks />
         <Templates />

@@ -10,15 +10,15 @@ import {
   ListChecks,
   ArrowUpRight,
 } from "lucide-react";
-import { TARGET_CREATION_MINUTES } from "./data";
+import { TARGET_CREATION_MINUTES, TEMPLATES } from "./data";
 
 const StopwatchVisual: React.FC = () => {
   const radius = 88;
   const circumference = 2 * Math.PI * radius;
 
   return (
-    <div className="relative mx-auto mt-10 aspect-square w-full max-w-[280px]">
-      <svg viewBox="0 0 200 200" className="absolute inset-0 -rotate-90">
+    <div className="relative aspect-square w-full">
+      <svg viewBox="0 0 200 200" className="absolute inset-0 size-full -rotate-90">
         <circle
           cx="100"
           cy="100"
@@ -58,12 +58,12 @@ const StopwatchVisual: React.FC = () => {
           />
         ))}
       </svg>
-      <div className="absolute inset-0 flex flex-col items-center justify-center text-center">
-        <span className="font-display flex items-baseline text-[clamp(3.8rem,9vw,5.6rem)] font-bold leading-none text-panel-fg">
+      <div className="absolute inset-0 grid place-content-center text-center">
+        <span className="font-display flex items-baseline text-[clamp(3.8rem,9vw,5.6rem)] font-bold leading-none text-fg">
           {TARGET_CREATION_MINUTES}
           <span className="ml-1 text-2xl font-semibold text-brand">min</span>
         </span>
-        <span className="mt-2 text-xs font-semibold uppercase tracking-widest text-panel-fg/50">
+        <span className="mt-2 text-xs font-semibold uppercase tracking-widest text-fg/50">
           Chrono moyen
         </span>
       </div>
@@ -72,24 +72,24 @@ const StopwatchVisual: React.FC = () => {
 };
 
 const AtsScanVisual: React.FC = () => (
-  <div className="relative mt-6 h-52 overflow-hidden rounded-2xl bg-card ring-1 ring-fg/5 sm:h-56">
-    <div className="absolute inset-0 flex flex-col gap-1.5 p-5">
+  <div>
+    <div className="relative space-y-1.5 overflow-hidden py-2">
       {[60, 88, 74, 92, 52, 84, 66].map((w, i) => (
         <div key={i} className="space-y-1">
           <div className="h-2 rounded-full bg-fg/15" style={{ width: `${w * 0.35}%` }} />
           <div className="h-1.5 rounded-full bg-fg/[0.08]" style={{ width: `${w}%` }} />
         </div>
       ))}
+      <motion.div
+        aria-hidden="true"
+        className="absolute inset-x-0 top-0 h-16 bg-gradient-to-b from-brand/40 to-transparent"
+        initial={{ y: -70 }}
+        whileInView={{ y: 240 }}
+        viewport={{ once: true, amount: 0.6 }}
+        transition={{ duration: 2.2, ease: "easeInOut" }}
+      />
     </div>
-    <motion.div
-      aria-hidden="true"
-      className="absolute inset-x-0 top-0 h-16 bg-gradient-to-b from-brand/40 to-transparent"
-      initial={{ y: -70 }}
-      whileInView={{ y: 200 }}
-      viewport={{ once: true, amount: 0.6 }}
-      transition={{ duration: 2.2, ease: "easeInOut" }}
-    />
-    <span className="absolute bottom-3 left-1/2 -translate-x-1/2 rounded-full bg-leaf px-3 py-1.5 text-[10px] font-bold text-white shadow-sm">
+    <span className="mt-4 inline-flex rounded-full bg-leaf px-3 py-1.5 text-[10px] font-bold text-white shadow-sm">
       100% ATS-ready
     </span>
   </div>
@@ -105,7 +105,7 @@ const FormatChipsVisual: React.FC = () => {
   ];
 
   return (
-    <div className="mt-8 flex flex-wrap gap-2.5">
+    <div>
       {chips.map((chip, idx) => (
         <motion.span
           key={chip.label}
@@ -129,49 +129,32 @@ const FormatChipsVisual: React.FC = () => {
   );
 };
 
-const TemplateFannedVisual: React.FC = () => {
-  const items = [
-    { e: "📄", bg: "#60a5fa" },
-    { e: "🧾", bg: "#18181b" },
-    { e: "🗂️", bg: "#22c55e" },
-    { e: "✅", bg: "#eab308" },
-    { e: "🎨", bg: "#22d3ee" },
-  ];
-
-  return (
-    <div className="relative mx-auto mt-8 h-32 w-full max-w-[260px]">
-      {items.map((item, idx) => {
-        const offset = idx - 2;
-        return (
-          <motion.div
-            key={item.e}
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.1 + idx * 0.06, duration: 0.7 }}
-            className="absolute left-1/2 top-1/2 -ml-10 -mt-10"
-            style={{ zIndex: 5 - Math.abs(offset) }}
-          >
-            <span
-              className="grid size-20 place-items-center rounded-3xl text-4xl shadow-[0_16px_30px_-14px_rgba(0,0,0,0.3)] ring-4 ring-card transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] select-none group-hover:scale-105"
-              style={{
-                background: item.bg,
-                transform: `translateX(${offset * 28}px) rotate(${offset * 6}deg)`,
-              }}
-            >
-              {item.e}
-            </span>
-          </motion.div>
-        );
-      })}
-    </div>
-  );
-};
+const TemplateFannedVisual: React.FC = () => (
+  <div className="mt-8 flex flex-wrap gap-3">
+    {TEMPLATES.map((t, idx) => (
+      <motion.div
+        key={t.title}
+        initial={{ opacity: 0, y: 24 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ delay: 0.1 + idx * 0.08, duration: 0.6 }}
+        className="h-28 w-20 shrink-0 overflow-hidden rounded-xl shadow-md ring-1 ring-fg/10"
+      >
+        <img
+          src={t.image}
+          alt=""
+          loading="lazy"
+          className="h-full w-full object-cover object-top"
+        />
+      </motion.div>
+    ))}
+  </div>
+);
 
 const SectionsChatVisual: React.FC = () => {
   const messages = [
     { from: "me", text: "J'ajoute mes compétences ?" },
-    { from: "cv", text: "Prêt ! 6 sections intelligentes à remplir 🚀" },
+    { from: "cv", text: "Prêt ! 6 sections intelligentes à remplir" },
   ];
 
   return (
@@ -235,6 +218,45 @@ const SectionListVisual: React.FC = () => {
 };
 
 export const Avantages: React.FC = () => {
+  const features = [
+    {
+      icon: Timer,
+      title: "Rapide. Vraiment.",
+      desc: "CVFast génère la mise en page au fil de la saisie. Comptez environ 10 minutes pour un CV complet, du formulaire à l'export.",
+      Visual: StopwatchVisual,
+    },
+    {
+      icon: ScanLine,
+      title: "Optimisé ATS",
+      desc: "Les modèles de CVFast gardent une structure sobre et lisible, pensée pour passer les filtres des logiciels de recrutement (ATS).",
+      Visual: AtsScanVisual,
+    },
+    {
+      icon: FileDown,
+      title: "Exportez comme vous voulez",
+      desc: "CVFast exporte votre CV en PDF ou DOCX, sans filigrane, prêt à envoyer ou à imprimer en A4.",
+      Visual: FormatChipsVisual,
+    },
+    {
+      icon: FileText,
+      title: "3 modèles pro",
+      desc: "Le builder CVFast propose trois modèles — Moderne, Classique et Expérience — avec leurs couleurs et leur mise en page.",
+      Visual: TemplateFannedVisual,
+    },
+    {
+      icon: Sparkles,
+      title: "Sans inscription",
+      desc: "Pas de compte : CVFast enregistre automatiquement votre CV dans votre navigateur. Commencez tout de suite.",
+      Visual: SectionsChatVisual,
+    },
+    {
+      icon: ListChecks,
+      title: "Sections intelligentes",
+      desc: "Ajoutez expériences, formations, compétences, langues, projets et loisirs : CVFast les organise et les met en forme pour vous.",
+      Visual: SectionListVisual,
+    },
+  ];
+
   return (
     <section id="avantages" className="relative py-24 sm:py-32">
       <div className="mx-auto max-w-6xl px-5">
@@ -244,147 +266,58 @@ export const Avantages: React.FC = () => {
               Pourquoi CVFast
             </span>
             <h2 className="font-display mt-5 text-[clamp(2.2rem,5.4vw,4.4rem)] font-extrabold leading-[0.95] text-fg">
-              Pensé pour convaincre,
+              Un générateur de CV
               <br />
-              de la première
+              du formulaire
               <br />
-              ligne à l'export.
+              à l'export.
             </h2>
           </div>
-          <p className="max-w-md text-base sm:text-lg leading-relaxed text-fg/70 lg:justify-self-end">
-            Des modèles propres, un assistant clair et un export PDF impeccable :
-            tout ce qu'il faut pour décrocher un entretien, sans prise de tête.
+          <p className="max-w-md text-base leading-relaxed text-fg/70 sm:text-lg lg:justify-self-end">
+            CVFast réunit un éditeur guidé et un aperçu en direct : vous
+            remplissez, il met en forme, vous exportez en PDF ou DOCX. Le tout
+            dans le navigateur, sans compte.
           </p>
         </div>
 
-        <div className="mt-14 grid gap-4 md:grid-cols-2 lg:grid-cols-6">
-          <motion.article
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.25 }}
-            transition={{ duration: 0.8 }}
-            className="group relative isolate flex flex-col overflow-hidden rounded-[28px] bg-panel p-6 text-panel-fg shadow-xl sm:p-8 md:col-span-2 lg:col-span-3 lg:row-span-2"
-          >
-            <div className="flex items-center gap-2 font-display text-lg font-bold text-panel-fg">
-              <span className="grid size-8 place-items-center rounded-xl bg-white/10 text-brand">
-                <Timer className="size-5" />
-              </span>
-              <span>Rapide. Vraiment.</span>
-            </div>
-            <p className="mt-3 max-w-sm text-sm sm:text-base text-panel-fg/70">
-              En moyenne 10 minutes suffisent pour passer de zéro à un CV prêt à
-              être envoyé. Le temps que ça prend de boire un café.
-            </p>
-            <div className="flex flex-1 items-center">
-              <StopwatchVisual />
-            </div>
-          </motion.article>
-
-          <motion.article
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.25 }}
-            transition={{ duration: 0.8, delay: 0.1 }}
-            className="group relative isolate overflow-hidden rounded-[28px] bg-card p-6 text-fg shadow-md ring-1 ring-fg/5 sm:p-8 lg:col-span-3"
-          >
-            <div className="flex items-center gap-2 font-display text-lg font-bold text-fg">
-              <span className="grid size-8 place-items-center rounded-xl bg-brand-50 text-brand">
-                <ScanLine className="size-5" />
-              </span>
-              <span>Optimisé ATS</span>
-            </div>
-            <p className="mt-3 text-sm sm:text-base text-fg/70">
-              Nos modèles sont lisibles par les logiciels de recrutement. Votre CV
-              n'est jamais filtré avant d'être vu.
-            </p>
-            <AtsScanVisual />
-          </motion.article>
-
-          <motion.article
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.25 }}
-            transition={{ duration: 0.8, delay: 0.15 }}
-            className="group relative isolate overflow-hidden rounded-[28px] bg-sand p-6 text-fg shadow-md sm:p-8 lg:col-span-3"
-          >
-            <div className="flex items-center gap-2 font-display text-lg font-bold text-fg">
-              <span className="grid size-8 place-items-center rounded-xl bg-fg/5 text-brand">
-                <FileDown className="size-5" />
-              </span>
-              <span>Exportez comme vous voulez</span>
-            </div>
-            <p className="mt-3 text-sm sm:text-base text-fg/70">
-              PDF ou DOCX, sans filigrane, en un clic. Votre CV à vous, prêt à
-              envoyer.
-            </p>
-            <FormatChipsVisual />
-          </motion.article>
-
-          <motion.article
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.25 }}
-            transition={{ duration: 0.8, delay: 0.2 }}
-            className="group relative isolate overflow-hidden rounded-[28px] bg-card p-6 text-fg shadow-md ring-1 ring-fg/5 sm:p-8 lg:col-span-2"
-          >
-            <div className="flex items-center gap-2 font-display text-lg font-bold text-fg">
-              <span className="grid size-8 place-items-center rounded-xl bg-brand-50 text-brand">
-                <FileText className="size-5" />
-              </span>
-              <span>3 modèles pro</span>
-            </div>
-            <p className="mt-3 text-sm text-fg/70">
-              Moderne, Classique et Expérience, pensés pour tous les secteurs.
-            </p>
-            <TemplateFannedVisual />
-          </motion.article>
-
-          <motion.article
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.25 }}
-            transition={{ duration: 0.8, delay: 0.25 }}
-            className="group relative isolate overflow-hidden rounded-[28px] bg-panel p-6 text-panel-fg shadow-xl sm:p-8 lg:col-span-2"
-          >
-            <div className="flex items-center gap-2 font-display text-lg font-bold text-panel-fg">
-              <span className="grid size-8 place-items-center rounded-xl bg-white/10 text-brand">
-                <Sparkles className="size-5" />
-              </span>
-              <span>Sans inscription</span>
-            </div>
-            <p className="mt-3 text-sm text-panel-fg/70">
-              On vous guide, sans compte obligatoire. Commencez tout de suite.
-            </p>
-            <SectionsChatVisual />
-          </motion.article>
-
-          <motion.article
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.25 }}
-            transition={{ duration: 0.8, delay: 0.3 }}
-            className="group relative isolate overflow-hidden rounded-[28px] bg-sand p-6 text-fg shadow-md sm:p-8 md:col-span-2 lg:col-span-2"
-          >
-            <div className="flex items-center gap-2 font-display text-lg font-bold text-fg">
-              <span className="grid size-8 place-items-center rounded-xl bg-fg/5 text-brand">
-                <ListChecks className="size-5" />
-              </span>
-              <span>Sections intelligentes</span>
-            </div>
-            <p className="mt-3 text-sm text-fg/70">
-              Expérience, formation, compétences, langues, projets… remplissez, on
-              met en forme.
-            </p>
-            <SectionListVisual />
-          </motion.article>
+        <div className="mt-14 border-t border-fg/10">
+          {features.map((f, idx) => (
+            <motion.div
+              key={f.title}
+              initial={{ opacity: 0, y: 24 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.3 }}
+              transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+              className="grid items-center gap-8 border-b border-fg/10 py-10 lg:grid-cols-2 lg:gap-16 lg:py-14"
+            >
+              <div className={idx % 2 === 1 ? "lg:order-2" : ""}>
+                <div className="flex items-center gap-4">
+                  <span className="font-display text-4xl font-extrabold leading-none text-fg/15 sm:text-5xl">
+                    0{idx + 1}
+                  </span>
+                  <span className="grid size-11 place-items-center rounded-2xl bg-brand-50 text-brand ring-1 ring-brand/10">
+                    <f.icon className="size-5" />
+                  </span>
+                </div>
+                <h3 className="font-display mt-5 text-2xl font-bold text-fg sm:text-3xl">
+                  {f.title}
+                </h3>
+                <p className="mt-3 max-w-md text-base leading-relaxed text-fg/70">
+                  {f.desc}
+                </p>
+              </div>
+              <f.Visual />
+            </motion.div>
+          ))}
         </div>
 
-        <div className="mt-8 flex justify-end">
+        <div className="mt-10 flex justify-center">
           <a
             href="#comment"
-            className="group inline-flex items-center gap-1 text-sm font-semibold text-brand hover:underline underline-offset-4"
+            className="group inline-flex items-center gap-1.5 rounded-full border border-fg/15 px-5 py-2.5 text-sm font-semibold text-fg transition-colors hover:border-brand/50 hover:text-brand"
           >
-            Voir comment ça marche <ArrowUpRight className="size-4" />
+            Voir comment ça marche
+            <ArrowUpRight className="size-4 transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
           </a>
         </div>
       </div>
