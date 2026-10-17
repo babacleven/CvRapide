@@ -4,12 +4,13 @@ import {
   AsYouType,
   getCountries,
   getCountryCallingCode,
+  isPossiblePhoneNumber,
   isValidPhoneNumber,
   parsePhoneNumberFromString,
   type CountryCode,
 } from "libphonenumber-js";
 import "flag-icons/css/flag-icons.min.css";
-import { Check, ChevronDown, Search } from "lucide-react";
+import { AlertCircle, Check, ChevronDown, Search } from "lucide-react";
 
 const DEFAULT_COUNTRY: CountryCode = "CG";
 
@@ -46,6 +47,12 @@ const PhoneField: React.FC<Props> = ({ value, onChange, inputId }) => {
   const [touched, setTouched] = useState(false);
   const [highlight, setHighlight] = useState(0);
 
+  // Les noms de pays via Intl.DisplayNames diffèrent entre Node (SSR) et le
+  // navigateur : on ne les rend qu'après le montage pour éviter les écarts
+  // d'hydratation. Avant montage, on affiche le code ISO (identique partout).
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => setMounted(true), []);
+
   const lastEmitted = useRef<string>("");
   const rootRef = useRef<HTMLDivElement>(null);
   const searchRef = useRef<HTMLInputElement>(null);
@@ -71,9 +78,13 @@ const PhoneField: React.FC<Props> = ({ value, onChange, inputId }) => {
   }, [value]);
 
   const selected = COUNTRY_BY_CODE.get(country);
+  const countryLabel = (c?: Country) => (c ? (mounted ? c.name : c.code) : "");
+
   const digits = display.replace(/\D/g, "");
   const e164 = digits ? `+${getCountryCallingCode(country)}${digits}` : "";
-  const isValid = digits.length === 0 || isValidPhoneNumber(e164);
+  const valid = digits.length > 0 && isValidPhoneNumber(e164);
+  const plausible = digits.length > 0 && isPossiblePhoneNumber(e164);
+  const invalid = digits.length > 0 && !valid && (touched || plausible);
 
   const emit = (nextCountry: CountryCode, nextDigits: string) => {
     const next = nextDigits
@@ -144,6 +155,8 @@ const PhoneField: React.FC<Props> = ({ value, onChange, inputId }) => {
     }
   };
 
+  const statusId = inputId ? `${inputId}-status` : undefined;
+
   return (
     <div className="flex flex-col gap-1.5" ref={rootRef}>
       <div className="join w-full">
@@ -152,7 +165,7 @@ const PhoneField: React.FC<Props> = ({ value, onChange, inputId }) => {
           className="btn join-item h-12 min-h-0 gap-1.5 border-base-300 bg-base-100 px-3 font-normal normal-case text-base-content"
           aria-haspopup="listbox"
           aria-expanded={open}
-          aria-label={`Pays sélectionné : ${selected?.name ?? ""} (+${selected?.dial ?? ""})`}
+          aria-label={`Changer de pays — ${countryLabel(selected)} (+${selected?.dial ?? ""})`}
           onClick={() => setOpen((o) => !o)}
         >
           <span
@@ -172,9 +185,11 @@ const PhoneField: React.FC<Props> = ({ value, onChange, inputId }) => {
           value={display}
           onChange={(e) => handleNumberChange(e.target.value)}
           onBlur={() => setTouched(true)}
-          aria-invalid={!isValid}
-          aria-describedby={inputId ? `${inputId}-error` : undefined}
-          className="input input-bordered join-item h-12 w-full min-w-0 border-l-0 border-base-300 cv-cream-field"
+          aria-invalid={invalid}
+          aria-describedby={statusId}
+          className={`input input-bordered join-item h-12 w-full min-w-0 border-base-300 cv-cream-field ${
+            valid ? "border-success" : invalid ? "border-error" : ""
+          }`}
         />
       </div>
 
@@ -235,12 +250,23 @@ const PhoneField: React.FC<Props> = ({ value, onChange, inputId }) => {
         </div>
       )}
 
-      {touched && !isValid && (
+      {valid && (
         <span
-          id={inputId ? `${inputId}-error` : undefined}
+          id={statusId}
+          className="flex items-center gap-1 text-xs text-success"
+        >
+          <Check className="size-3.5" aria-hidden="true" />
+          Numéro valide
+        </span>
+      )}
+
+      {invalid && (
+        <span
+          id={statusId}
           className="flex items-center gap-1 text-xs text-error"
         >
-          Numéro invalide pour {selected?.name} (+{selected?.dial}).
+          <AlertCircle className="size-3.5" aria-hidden="true" />
+          Numéro invalide pour {countryLabel(selected)} (+{selected?.dial}).
         </span>
       )}
     </div>

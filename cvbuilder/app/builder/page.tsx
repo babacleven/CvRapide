@@ -584,9 +584,13 @@ export default function Home() {
   const MobileHeader = () => (
     <div className="lg:hidden fixed inset-x-0 top-0 z-50 border-b border-base-300 bg-base-100/90 backdrop-blur-xl">
       <div className="flex items-center justify-between px-4 py-3">
-        <h1 className="text-lg font-bold italic tracking-tight">
+        <a
+          href="/"
+          aria-label="CVFast Builder, retour à l'accueil"
+          className="text-lg font-bold italic tracking-tight"
+        >
           CVFast<span className="text-primary"> Builder</span>
-        </h1>
+        </a>
         <div className="flex items-center gap-1 rounded-full bg-base-200 p-1">
           <button
             onClick={() => setActiveTab("edit")}
@@ -808,9 +812,13 @@ export default function Home() {
           {/* Panneau formulaire */}
           <aside className="flex h-full w-2/5 flex-col border-r border-base-300 bg-base-200 xl:w-1/3">
             <header className="flex items-center justify-between border-b border-base-300 bg-base-100/70 px-6 py-4 backdrop-blur">
-              <h1 className="text-xl font-bold italic tracking-tight">
+              <a
+                href="/"
+                aria-label="CVFast Builder, retour à l'accueil"
+                className="text-xl font-bold italic tracking-tight"
+              >
                 CVFast<span className="text-primary"> Builder</span>
-              </h1>
+              </a>
               <button className="btn btn-primary btn-sm" onClick={openPdfModal}>
                 Prévisualiser
                 <Eye className="size-4" />

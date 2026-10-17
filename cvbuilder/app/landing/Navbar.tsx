@@ -46,9 +46,14 @@ export const Navbar: React.FC = () => {
           }`}
         >
           <a
-            href="#top"
+            href="/"
             aria-label="CVFast, retour en haut de page"
-            onClick={() => setMobileMenuOpen(false)}
+            onClick={(e) => {
+              e.preventDefault();
+              setMobileMenuOpen(false);
+              window.scrollTo({ top: 0, left: 0, behavior: "auto" });
+              window.location.reload();
+            }}
             className="flex items-center"
           >
             <CVFastLogo className="text-fg transition-transform hover:scale-105" />
