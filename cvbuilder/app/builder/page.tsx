@@ -331,6 +331,9 @@ export default function Home() {
       photoUrl: "",
       postSeeking: "",
       description: "",
+      github: "",
+      linkedin: "",
+      portfolio: "",
     });
 
   const handleResetExperiences = () => setExperience([]);
