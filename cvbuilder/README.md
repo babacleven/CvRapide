@@ -2,7 +2,7 @@
 
 Un générateur de CV moderne et élégant pour créer et télécharger votre CV en PDF en quelques minutes.
 
-**[Visiter l'application →](https://cvbuilder-alpha.vercel.app)**
+**[Visiter l'application →](https://cvrapide.vercel.app)**
 
 ## ✨ Fonctionnalités
 

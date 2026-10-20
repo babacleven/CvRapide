@@ -12,9 +12,29 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
+const SITE_URL = "https://cvrapide.vercel.app";
+const OG_TITLE = "CVFast — Créez un CV professionnel en quelques minutes";
+const OG_DESCRIPTION =
+  "Remplissez le formulaire, choisissez un modèle et exportez votre CV en PDF ou DOCX. Gratuit, sans compte et optimisé ATS.";
+
 export const metadata: Metadata = {
+  metadataBase: new URL(SITE_URL),
   title: "CVFast Builder",
   description: "Generateur de CV professionnel",
+  applicationName: "CVFast",
+  openGraph: {
+    type: "website",
+    locale: "fr_FR",
+    url: SITE_URL,
+    siteName: "CVFast",
+    title: OG_TITLE,
+    description: OG_DESCRIPTION,
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: OG_TITLE,
+    description: OG_DESCRIPTION,
+  },
 };
 
 export default function RootLayout({
