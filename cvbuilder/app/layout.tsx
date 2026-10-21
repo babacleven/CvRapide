@@ -23,8 +23,15 @@ export const metadata: Metadata = {
   description: "Generateur de CV professionnel",
   applicationName: "CVFast",
   icons: {
-    icon: [{ url: "/cvfast-vercel-avatar.png", type: "image/png" }],
+    icon: [
+      { url: "/icons/icone-32.png", type: "image/png", sizes: "32x32" },
+      { url: "/icons/icone-192.png", type: "image/png", sizes: "192x192" },
+    ],
+    apple: [
+      { url: "/icons/icone-apple-180.png", sizes: "180x180", type: "image/png" },
+    ],
   },
+  manifest: "/manifest.json",
   openGraph: {
     type: "website",
     locale: "fr_FR",
