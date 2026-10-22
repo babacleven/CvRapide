@@ -2,6 +2,8 @@
 
 Générateur de CV en ligne, moderne et rapide. Créez, personnalisez et téléchargez votre CV en PDF en quelques minutes.
 
+<img width="183" height="186" alt="Capture d&#39;écran 2026-10-21 134029" src="https://github.com/user-attachments/assets/356d2cf5-828b-4089-8b5f-7b7e19ec62a3" />
+
 ## Fonctionnalités
 
 **6 modèles de CV** - Classique, Moderne, Minimaliste, Audacieux, Profil, Compétences
@@ -25,6 +27,7 @@ Générateur de CV en ligne, moderne et rapide. Créez, personnalisez et téléc
 | **Lucide React** | Icônes SVG |
 
 ## Démarrage Rapide
+
 
 ### Prérequis
 
